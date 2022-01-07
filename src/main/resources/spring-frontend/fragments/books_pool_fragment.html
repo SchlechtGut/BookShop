@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="Cards Cards_refresh" th:fragment="pool">
+<!--    <div class="Card">-->
+<!--        <div class="Card-picture"><a href="#"><img src="/assets/img/content/main/card.jpg" alt="card.jpg"/></a>-->
+<!--        </div>-->
+<!--        <div class="Card-content">-->
+<!--            <strong class="Card-title"><a href="#">Техника</a>-->
+<!--            </strong>-->
+<!--            <div class="Card-description">Кондратенко Александр Петрович-->
+<!--            </div>-->
+<!--            <div class="Card-cost"><span class="Card-priceOld">₽300.00</span><span class="Card-price">₽190.00</span>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="Card" th:each="book: ${booksList}">
+        <div class="Card-picture">
+            <a href="#a" th:href="${book.id}">
+                <img src="/assets/img/content/main/card.jpg" alt="card.jpg"/>
+            </a>
+        </div>
+        <div class="Card-content">
+            <strong class="Card-title">
+                <a href="#" th:text="${book.title}"></a>
+            </strong>
+            <div class="Card-description" th:text="${book.author}"></div>
+            <div class="Card-cost">
+                <span class="Card-priceOld" th:text="${book.priceOld}" th:if="${book.priceOld} != 0">₽300.00</span>
+                <span class="Card-price" th:text="${book.price}">₽190.00</span>
+            </div>
+        </div>
+    </div>
+    <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary" href="#" th:attr="data-refreshshow = ${category}" data-refreshshow="recent"
+                                                     data-refreshoffset="20" data-refreshlimit="20">Показать еще</a>
+    </div>
+</div>
+</html>
