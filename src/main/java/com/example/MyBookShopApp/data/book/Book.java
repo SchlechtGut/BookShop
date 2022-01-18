@@ -14,10 +14,33 @@ import java.util.List;
 @Entity
 @Table(name = "books")
 public class Book {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
+    private String title;
+
+    @Column(columnDefinition = "INT NOT NULL")
+    private String price;
+
+    @Column(columnDefinition = "text")
+    private String description;
+
+    @Column(columnDefinition = "SMALLINT NOT NULL DEFAULT 0")
+    private int discount;
+
+    @Column(columnDefinition = "VARCHAR(255)")
+    private String image;
+
+    @Column(columnDefinition = "TINYINT NOT NULL")
+    private int isBestseller;
+
+    @Column(columnDefinition = "DATE NOT NULL")
+    private Date pubDate;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
+    private String slug;
 
     @OneToMany(mappedBy = "book")
     private List<Book2AuthorEntity> book2AuthorEntities;
@@ -42,15 +65,6 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id", columnDefinition = "INT NOT NULL"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", columnDefinition = "INT NOT NULL"))
     private List<GenreEntity> genres;
-
-    private String title;
-    private String price;
-    private String description;
-    private int discount;
-    private String image;
-    private int isBestseller;
-    private Date pubDate;
-    private String slug;
 
     public String getDescription() {
         return description;

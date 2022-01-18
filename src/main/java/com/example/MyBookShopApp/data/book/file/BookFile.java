@@ -9,8 +9,14 @@ public class BookFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String hash;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String path;
+
+    @Column(columnDefinition = "INT NOT NULL")
     private int typeId;
 
     public int getId() {
