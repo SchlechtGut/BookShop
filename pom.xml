@@ -60,6 +60,23 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -72,7 +89,7 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                    <propertyFile>${project.build.outputDirectory}/liquibase.properties</propertyFile>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -88,6 +105,8 @@
                 </dependencies>
             </plugin>
         </plugins>
+
+
     </build>
 
 </project>
