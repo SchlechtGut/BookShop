@@ -8,20 +8,23 @@ public class BookFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String hash;
 
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String path;
 
+    @Column(name = "type_id", columnDefinition = "INT NOT NULL")
     private int typeId;
 
-    public void setId(Long id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
-    public Long getId() {
-        return id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getHash() {
