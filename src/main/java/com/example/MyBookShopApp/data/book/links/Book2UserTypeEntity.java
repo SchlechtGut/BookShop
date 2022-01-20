@@ -12,9 +12,6 @@ public class Book2UserTypeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
-//    private String code;
-
     @Column(name = "code", columnDefinition = "VARCHAR(255) NOT NULL")
     private Book2UserType code;
 

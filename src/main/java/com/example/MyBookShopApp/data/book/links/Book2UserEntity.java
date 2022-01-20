@@ -15,7 +15,7 @@ public class Book2UserEntity {
     @Column(columnDefinition = "TIMESTAMP NOT NULL")
     private LocalDateTime time;
 
-    @Column(columnDefinition = "INT NOT NULL")
+    @Column(name = "type_id", columnDefinition = "INT NOT NULL")
     private int typeId;
 
     @Id

@@ -33,10 +33,10 @@ public class Book {
     @Column(columnDefinition = "VARCHAR(255)")
     private String image;
 
-    @Column(columnDefinition = "TINYINT NOT NULL")
+    @Column(name = "is_bestseller", columnDefinition = "SMALLINT NOT NULL")
     private int isBestseller;
 
-    @Column(columnDefinition = "DATE NOT NULL")
+    @Column(name = "pub_date", columnDefinition = "DATE NOT NULL")
     private Date pubDate;
 
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")

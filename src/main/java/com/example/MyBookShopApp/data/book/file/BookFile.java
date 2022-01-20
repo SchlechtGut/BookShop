@@ -16,7 +16,7 @@ public class BookFile {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String path;
 
-    @Column(columnDefinition = "INT NOT NULL")
+    @Column(name = "type_id", columnDefinition = "INT NOT NULL")
     private int typeId;
 
     public int getId() {
