@@ -2,42 +2,47 @@ package com.example.MyBookShopApp.data.book.links;
 
 import com.example.MyBookShopApp.data.author.Author;
 import com.example.MyBookShopApp.data.book.Book;
-import com.example.MyBookShopApp.data.book.links.keys.BookAuthorId;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "book2author")
-@IdClass(BookAuthorId.class)
 public class Book2AuthorEntity {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "book_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
-    private Book book;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
-    private Author author;
+    @Column(columnDefinition = "INT NOT NULL")
+    private int bookId;
 
-    @Column(name = "sort_index" ,columnDefinition = "INT NOT NULL  DEFAULT 0")
+    @Column(columnDefinition = "INT NOT NULL")
+    private int authorId;
+
+    @Column(columnDefinition = "INT NOT NULL DEFAULT 0")
     private int sortIndex;
 
-    public Book getBook() {
-        return book;
+    public int getId() {
+        return id;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Author getAuthor() {
-        return author;
+    public int getBookId() {
+        return bookId;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     public int getSortIndex() {
