@@ -13,7 +13,7 @@ public class GenreEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(columnDefinition = "INT")
+    @Column(name = "parent_id", columnDefinition = "INT")
     private int parentId;
 
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")

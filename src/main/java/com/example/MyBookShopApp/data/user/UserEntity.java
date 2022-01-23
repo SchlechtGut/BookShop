@@ -31,7 +31,7 @@ public class UserEntity {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String name;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "userId")
     private List<Book2UserEntity> book2UserEntities;
 
     @OneToMany

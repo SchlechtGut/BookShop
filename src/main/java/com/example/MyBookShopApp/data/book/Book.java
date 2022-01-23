@@ -1,11 +1,13 @@
 package com.example.MyBookShopApp.data.book;
 
+import com.example.MyBookShopApp.data.author.Author;
 import com.example.MyBookShopApp.data.book.file.FileDownloadEntity;
 import com.example.MyBookShopApp.data.book.links.Book2AuthorEntity;
 import com.example.MyBookShopApp.data.book.links.Book2UserEntity;
 import com.example.MyBookShopApp.data.book.review.BookReviewEntity;
 import com.example.MyBookShopApp.data.genre.GenreEntity;
 import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -42,11 +44,15 @@ public class Book {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String slug;
 
-    @OneToMany(mappedBy = "book")
-    private List<Book2AuthorEntity> book2AuthorEntities;
+    @ManyToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    private Author author;             //дублирование
 
-    @OneToMany(mappedBy = "book")
-    private List<Book2UserEntity> book2UserEntities;
+//    @OneToMany(mappedBy = "bookId")
+//    private List<Book2AuthorEntity> book2AuthorEntities;
+
+//    @OneToMany(mappedBy = "bookId")
+//    private List<Book2UserEntity> book2UserEntities;
 
     @OneToMany
     @JoinColumn(name = "book_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
@@ -122,13 +128,21 @@ public class Book {
         this.id = id;
     }
 
-    public List<Book2AuthorEntity> getBook2AuthorEntities() {
-        return book2AuthorEntities;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setBook2AuthorEntities(List<Book2AuthorEntity> book2AuthorEntities) {
-        this.book2AuthorEntities = book2AuthorEntities;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
+
+    //    public List<Book2AuthorEntity> getBook2AuthorEntities() {
+//        return book2AuthorEntities;
+//    }
+//
+//    public void setBook2AuthorEntities(List<Book2AuthorEntity> book2AuthorEntities) {
+//        this.book2AuthorEntities = book2AuthorEntities;
+//    }
 
     public String getTitle() {
         return title;
@@ -178,20 +192,20 @@ public class Book {
         this.genres = genres;
     }
 
-    public List<Book2UserEntity> getBook2UserEntities() {
-        return book2UserEntities;
-    }
+//    public List<Book2UserEntity> getBook2UserEntities() {
+//        return book2UserEntities;
+//    }
 
-    public void setBook2UserEntities(List<Book2UserEntity> book2UserEntities) {
-        this.book2UserEntities = book2UserEntities;
-    }
+//    public void setBook2UserEntities(List<Book2UserEntity> book2UserEntities) {
+//        this.book2UserEntities = book2UserEntities;
+//    }
 
     @Override
     public String toString() {
         return "Book{" +
                 "id=" + id +
-                ", book2AuthorEntities=" + book2AuthorEntities +
-                ", book2UserEntities=" + book2UserEntities +
+                ", book2AuthorEntities="  +
+                ", book2UserEntities=" +
                 ", fileDownloads=" + fileDownloads +
                 ", balanceTransactions=" + balanceTransactions +
                 ", bookReviews=" + bookReviews +
