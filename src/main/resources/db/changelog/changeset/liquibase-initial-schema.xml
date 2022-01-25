@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-1">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-1">
         <createTable tableName="authors">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="authorsPK"/>
@@ -11,7 +11,7 @@
             <column name="slug" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-2">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-2">
         <createTable tableName="balance_transaction">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="balance_transactionPK"/>
@@ -23,17 +23,17 @@
             <column name="book_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-3">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-3">
         <createTable tableName="book2author">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="book2authorPK"/>
             </column>
-            <column name="authorId" type="INTEGER"/>
-            <column name="bookId" type="INTEGER"/>
-            <column defaultValueNumeric="0" name="sortIndex" type="INTEGER"/>
+            <column name="author_id" type="INTEGER"/>
+            <column name="book_id" type="INTEGER"/>
+            <column defaultValueNumeric="0" name="sort_index" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-4">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-4">
         <createTable tableName="book2genre">
             <column name="book_id" type="INTEGER">
                 <constraints nullable="false"/>
@@ -43,7 +43,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-5">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-5">
         <createTable tableName="book2user">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="book2userPK"/>
@@ -54,7 +54,7 @@
             <column name="userId" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-6">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-6">
         <createTable tableName="book2user_type">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="book2user_typePK"/>
@@ -63,7 +63,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-7">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-7">
         <createTable tableName="book_file">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="book_filePK"/>
@@ -73,7 +73,7 @@
             <column name="type_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-8">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-8">
         <createTable tableName="book_file_type">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="book_file_typePK"/>
@@ -82,7 +82,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-9">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-9">
         <createTable tableName="book_review">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="book_reviewPK"/>
@@ -93,7 +93,7 @@
             <column name="book_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-10">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-10">
         <createTable tableName="book_review_like">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="book_review_likePK"/>
@@ -104,7 +104,7 @@
             <column name="user_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-11">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-11">
         <createTable tableName="books">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="booksPK"/>
@@ -120,7 +120,7 @@
             <column name="author_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-12">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-12">
         <createTable tableName="document">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="documentPK"/>
@@ -131,7 +131,7 @@
             <column name="title" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-13">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-13">
         <createTable tableName="faq">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="faqPK"/>
@@ -141,7 +141,7 @@
             <column defaultValueNumeric="0" name="sortIndex" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-14">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-14">
         <createTable tableName="file_download">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="file_downloadPK"/>
@@ -151,7 +151,7 @@
             <column name="book_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-15">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-15">
         <createTable tableName="genre">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="genrePK"/>
@@ -161,7 +161,7 @@
             <column name="slug" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-16">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-16">
         <createTable tableName="message">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="messagePK"/>
@@ -174,7 +174,7 @@
             <column name="user_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-17">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-17">
         <createTable tableName="test_entities">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="test_entitiesPK"/>
@@ -182,7 +182,7 @@
             <column name="data" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-18">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-18">
         <createTable tableName="user_contact">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="user_contactPK"/>
@@ -196,7 +196,7 @@
             <column name="user_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-19">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-19">
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
@@ -207,40 +207,40 @@
             <column name="regTime" type="TIMESTAMP NOT NULL"/>
         </createTable>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-20">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-20">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="book_review_like" constraintName="FKbh4qufg71ntnx2v11gy8ldc5f" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-21">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-21">
         <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="book2genre" constraintName="FKceqa97sssb6d5xg7n8jtt5gqb" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="books" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-22">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-22">
         <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="balance_transaction" constraintName="FKe2aw1i7lhjey4rskq9qhed9qs" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="books" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-23">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-23">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="file_download" constraintName="FKelm7ats7ftrgyvfn8a1xwhin9" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-24">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-24">
         <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="books" constraintName="FKfjixh2vym2cvfj3ufxj91jem7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="authors" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-25">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-25">
         <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="book_review" constraintName="FKgme5o68sylsmw5hw0ys2x8iw8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="books" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-26">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-26">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_contact" constraintName="FKigqfory4r46pqd0sl4csnwp72" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-27">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-27">
         <addForeignKeyConstraint baseColumnNames="genre_id" baseTableName="book2genre" constraintName="FKkdc8kcprnkl4ygg2f0v9588wi" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="genre" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-28">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-28">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="balance_transaction" constraintName="FKndi1dijwreoyd8stngrabtx8m" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-29">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-29">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="book_review" constraintName="FKntncp0b191bex8jkm3vy3l13x" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-30">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-30">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="message" constraintName="FKpdrb79dg3bgym7pydlf9k3p1n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="SchlechtGut (generated)" id="1642962204144-31">
+    <changeSet author="SchlechtGut (generated)" id="1643091547774-31">
         <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="file_download" constraintName="FKswtliibr0mrua60wbmecwlfyo" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="books" validate="true"/>
     </changeSet>
 </databaseChangeLog>

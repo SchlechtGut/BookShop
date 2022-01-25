@@ -6,7 +6,9 @@ import com.example.MyBookShopApp.data.TestEntityCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDate;
 import java.util.logging.Logger;
 
 //@Configuration
@@ -45,7 +47,8 @@ public class CommandLineRunnerImp implements CommandLineRunner {
 //
 //        deleteTestEntityById(4L);
 
-
+//        Logger.getLogger(CommandLineRunnerImp.class.getSimpleName())
+//                .info(bookRepository.findBooksByPubDateAfter(LocalDate.of(2015, 1, 1), PageRequest.of(0, 50)).getContent().toString());
 
 //        Logger.getLogger(CommandLineRunnerImp.class.getSimpleName()).info(bookRepository.findBooksByAuthorFirstName("Burtie").toString());
 //        Logger.getLogger(CommandLineRunnerImp.class.getSimpleName()).info(bookRepository.customFindAllBooks().toString());

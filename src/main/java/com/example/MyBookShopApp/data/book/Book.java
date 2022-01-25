@@ -2,15 +2,12 @@ package com.example.MyBookShopApp.data.book;
 
 import com.example.MyBookShopApp.data.author.Author;
 import com.example.MyBookShopApp.data.book.file.FileDownloadEntity;
-import com.example.MyBookShopApp.data.book.links.Book2AuthorEntity;
-import com.example.MyBookShopApp.data.book.links.Book2UserEntity;
 import com.example.MyBookShopApp.data.book.review.BookReviewEntity;
 import com.example.MyBookShopApp.data.genre.GenreEntity;
 import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -39,7 +36,7 @@ public class Book {
     private int isBestseller;
 
     @Column(name = "pub_date", columnDefinition = "DATE NOT NULL")
-    private Date pubDate;
+    private LocalDate pubDate;
 
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String slug;
@@ -104,11 +101,11 @@ public class Book {
         this.isBestseller = isBestseller;
     }
 
-    public Date getPubDate() {
+    public LocalDate getPubDate() {
         return pubDate;
     }
 
-    public void setPubDate(Date pubDate) {
+    public void setPubDate(LocalDate pubDate) {
         this.pubDate = pubDate;
     }
 

@@ -4,12 +4,12 @@ import com.example.MyBookShopApp.data.book.Book;
 
 import java.util.List;
 
-public class RecommendedBooksPageDto {
+public class BooksPageDto {
 
     private Integer count;
     private List<Book> books;
 
-    public RecommendedBooksPageDto(List<Book> books) {
+    public BooksPageDto(List<Book> books) {
         this.count = books.size();
         this.books = books;
     }
