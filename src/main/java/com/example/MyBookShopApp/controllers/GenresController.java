@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class GenresController {
+public class GenresController  extends DefaultController {
 
     @GetMapping("/genres")
     public String mainPage(){

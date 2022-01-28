@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ToolsController {
+public class ToolsController  extends DefaultController {
 
     @GetMapping("/postponed")
     public String postponed(){

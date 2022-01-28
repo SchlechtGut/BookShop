@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class MainPageController {
+@RequestMapping("/")
+public class MainPageController extends DefaultController {
 
     private final BookService bookService;
 
@@ -37,19 +38,35 @@ public class MainPageController {
         return bookService.getPageOfPopularBooks(0, 6).getContent();
     }
 
-    @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto() {
-        return new SearchWordDto();
-    }
-
     @ModelAttribute("searchResults")
     public List<Book> searchResults() {
         return new ArrayList<>();
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String mainPage(){
         return "index";
+    }
+
+    @GetMapping("recent")
+    @ResponseBody
+    public BooksPageDto recent(@RequestParam("offset") Integer offset,
+                               @RequestParam("limit") Integer limit){
+        return new BooksPageDto(bookService.getPageOfRecentBooks(offset, limit).getContent());
+    }
+
+    @GetMapping("recommended")
+    @ResponseBody
+    public BooksPageDto recommended(@RequestParam("offset") Integer offset,
+                                    @RequestParam("limit") Integer limit) {
+        return new BooksPageDto(bookService.getPageOfRecommendedBooks(offset, limit).getContent());
+    }
+
+    @GetMapping("popular")
+    @ResponseBody
+    public BooksPageDto popular(@RequestParam("offset") Integer offset,
+                                @RequestParam("limit") Integer limit) {
+        return new BooksPageDto(bookService.getPageOfPopularBooks(offset, limit).getContent());
     }
 
     @GetMapping(value = {"/search", "/search/{searchWord}"})

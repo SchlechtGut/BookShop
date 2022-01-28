@@ -11,7 +11,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/books/")
-public class BooksController {
+public class BooksController extends DefaultController {
 
     private final BookService bookService;
 
@@ -25,26 +25,21 @@ public class BooksController {
         return bookService.getBooksData();
     }
 
-    @GetMapping("recent")
-    @ResponseBody
-    public BooksPageDto recent(@RequestParam("offset") Integer offset,
-                         @RequestParam("limit") Integer limit){
-        return new BooksPageDto(bookService.getPageOfRecentBooks(offset, limit).getContent());
+    @ModelAttribute("recentBooks")
+    public List<Book> recentBooks() {
+        return bookService.getPageOfRecentBooks(0, 100).getContent();
     }
 
-    @GetMapping("recommended")
-    @ResponseBody
-    public BooksPageDto recommended(@RequestParam("offset") Integer offset,
-                                     @RequestParam("limit") Integer limit) {
-        return new BooksPageDto(bookService.getPageOfRecommendedBooks(offset, limit).getContent());
+    @GetMapping("recent")
+    public String recent(){
+        return "books/recent";
     }
 
     @GetMapping("popular")
-    @ResponseBody
-    public BooksPageDto popular(@RequestParam("offset") Integer offset,
-                                    @RequestParam("limit") Integer limit) {
-        return new BooksPageDto(bookService.getPageOfPopularBooks(offset, limit).getContent());
+    public String popular(){
+        return "books/popular";
     }
+
 
 
 }

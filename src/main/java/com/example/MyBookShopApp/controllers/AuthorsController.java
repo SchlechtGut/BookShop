@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Controller
 @Api(description = "authors data")
-public class AuthorsController {
+public class AuthorsController extends DefaultController {
 
     public AuthorService authorService;
 

@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class BookService {
 
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
     public BookService(BookRepository bookRepository) {
@@ -42,7 +42,7 @@ public class BookService {
 
     public Page<Book> getPageOfRecentBooks(Integer offset, Integer limit) {
         Pageable nextPage = PageRequest.of(offset,limit);
-        return bookRepository.findBooksByPubDateAfter(LocalDate.now().minusMonths(24), nextPage);
+        return bookRepository.findBooksByPubDateAfter(LocalDate.now().minusMonths(60), nextPage);
     }
 
     public Page<Book> getPageOfPopularBooks(Integer offset, Integer limit) {
