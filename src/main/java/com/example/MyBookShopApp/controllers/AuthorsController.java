@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.controllers;
 
-import com.example.MyBookShopApp.data.AuthorService;
+import com.example.MyBookShopApp.service.AuthorService;
 import com.example.MyBookShopApp.data.author.Author;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

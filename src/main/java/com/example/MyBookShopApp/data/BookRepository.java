@@ -27,7 +27,13 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     Page<Book> findBookByTitleContainingIgnoreCase(String bookTitle, Pageable nextPage);
 
-    Page<Book> findBooksByPubDateAfter(LocalDate pubDate, Pageable pageable);
+    Page<Book> findBooksByPubDateBetweenOrderByPubDateDesc(LocalDate from, LocalDate to, Pageable pageable);
+
+    Page<Book> findBooksByPubDateAfterOrderByPubDateDesc(LocalDate from, Pageable pageable);
+
+    Page<Book> findBooksByPubDateBeforeOrderByPubDateDesc(LocalDate pubDate, Pageable pageable);
+
+    Page<Book> findBooksByOrderByPubDateDesc(Pageable pageable);
 
     Page<Book> findBooksByIsBestsellerEquals(int isBestseller, Pageable pageable);
 }

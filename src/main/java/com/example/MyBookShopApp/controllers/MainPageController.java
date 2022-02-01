@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.controllers;
 
-import com.example.MyBookShopApp.data.BookService;
+import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.SearchWordDto;
 import com.example.MyBookShopApp.data.book.Book;
@@ -9,11 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping
 public class MainPageController extends DefaultController {
 
     private final BookService bookService;
@@ -23,6 +24,11 @@ public class MainPageController extends DefaultController {
         this.bookService = bookService;
     }
 
+    @ModelAttribute("searchResults")
+    public List<Book> searchResults() {
+        return new ArrayList<>();
+    }
+
     @ModelAttribute("recommendedBooks")
     public List<Book> recommendedBooks() {
         return bookService.getPageOfRecommendedBooks(0, 6).getContent();
@@ -30,7 +36,7 @@ public class MainPageController extends DefaultController {
 
     @ModelAttribute("recentBooks")
     public List<Book> recentBooks() {
-        return bookService.getPageOfRecentBooks(0, 6).getContent();
+        return bookService.getRightPageOfRecentBooks(null, null,0, 6).getBooks();
     }
 
     @ModelAttribute("popularBooks")
@@ -38,35 +44,9 @@ public class MainPageController extends DefaultController {
         return bookService.getPageOfPopularBooks(0, 6).getContent();
     }
 
-    @ModelAttribute("searchResults")
-    public List<Book> searchResults() {
-        return new ArrayList<>();
-    }
-
-    @GetMapping
+    @GetMapping("/")
     public String mainPage(){
         return "index";
-    }
-
-    @GetMapping("recent")
-    @ResponseBody
-    public BooksPageDto recent(@RequestParam("offset") Integer offset,
-                               @RequestParam("limit") Integer limit){
-        return new BooksPageDto(bookService.getPageOfRecentBooks(offset, limit).getContent());
-    }
-
-    @GetMapping("recommended")
-    @ResponseBody
-    public BooksPageDto recommended(@RequestParam("offset") Integer offset,
-                                    @RequestParam("limit") Integer limit) {
-        return new BooksPageDto(bookService.getPageOfRecommendedBooks(offset, limit).getContent());
-    }
-
-    @GetMapping("popular")
-    @ResponseBody
-    public BooksPageDto popular(@RequestParam("offset") Integer offset,
-                                @RequestParam("limit") Integer limit) {
-        return new BooksPageDto(bookService.getPageOfPopularBooks(offset, limit).getContent());
     }
 
     @GetMapping(value = {"/search", "/search/{searchWord}"})

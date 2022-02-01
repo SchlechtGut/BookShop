@@ -41,6 +41,13 @@ public class Book {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String slug;
 
+    @Column(columnDefinition = "INTEGER NOT NULL DEFAULT 0")
+    private int bought;
+    @Column(name = "added_to_cart", columnDefinition = "INTEGER NOT NULL DEFAULT 0")
+    private int addedToCart;
+    @Column(columnDefinition = "INTEGER NOT NULL DEFAULT 0")
+    private int postponed;
+
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;             //дублирование
@@ -196,6 +203,31 @@ public class Book {
 //    public void setBook2UserEntities(List<Book2UserEntity> book2UserEntities) {
 //        this.book2UserEntities = book2UserEntities;
 //    }
+
+
+    public int getBought() {
+        return bought;
+    }
+
+    public void setBought(int bought) {
+        this.bought = bought;
+    }
+
+    public int getAddedToCart() {
+        return addedToCart;
+    }
+
+    public void setAddedToCart(int addedToCart) {
+        this.addedToCart = addedToCart;
+    }
+
+    public int getPostponed() {
+        return postponed;
+    }
+
+    public void setPostponed(int postponed) {
+        this.postponed = postponed;
+    }
 
     @Override
     public String toString() {

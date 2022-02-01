@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class GenresController  extends DefaultController {
 
     @GetMapping("/genres")
-    public String mainPage(){
+    public String mainPage() {
         return "/genres/index";
     }
 }
