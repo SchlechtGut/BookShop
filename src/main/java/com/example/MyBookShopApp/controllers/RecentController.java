@@ -26,8 +26,9 @@ public class RecentController extends DefaultController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
         String from = LocalDate.now().minusMonths(1).format(formatter);
+        String to = LocalDate.now().format(formatter);
 
-        return bookService.getRightPageOfRecentBooks(from,null,0, 20).getBooks();
+        return bookService.getRightPageOfRecentBooks(from, to,0, 20).getBooks();
     }
 
     @GetMapping("/books/recent")

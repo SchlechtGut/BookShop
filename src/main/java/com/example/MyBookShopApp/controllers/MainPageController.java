@@ -4,12 +4,12 @@ import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.SearchWordDto;
 import com.example.MyBookShopApp.data.book.Book;
+import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +18,12 @@ import java.util.List;
 public class MainPageController extends DefaultController {
 
     private final BookService bookService;
+    private final BooksRatingAndPopularityService booksRatingAndPopularityService;
 
     @Autowired
-    public MainPageController(BookService bookService) {
+    public MainPageController(BookService bookService, BooksRatingAndPopularityService booksRatingAndPopularityService) {
         this.bookService = bookService;
+        this.booksRatingAndPopularityService = booksRatingAndPopularityService;
     }
 
     @ModelAttribute("searchResults")
@@ -41,7 +43,7 @@ public class MainPageController extends DefaultController {
 
     @ModelAttribute("popularBooks")
     public List<Book> popularBooks() {
-        return bookService.getPageOfPopularBooks(0, 6).getContent();
+        return booksRatingAndPopularityService.getPageOfPopularBooks(0, 6).getContent();
     }
 
     @GetMapping("/")

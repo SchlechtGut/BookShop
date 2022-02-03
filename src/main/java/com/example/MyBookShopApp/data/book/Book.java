@@ -3,6 +3,7 @@ package com.example.MyBookShopApp.data.book;
 import com.example.MyBookShopApp.data.author.Author;
 import com.example.MyBookShopApp.data.book.file.FileDownloadEntity;
 import com.example.MyBookShopApp.data.book.review.BookReviewEntity;
+import com.example.MyBookShopApp.data.book.tag.Tag;
 import com.example.MyBookShopApp.data.genre.GenreEntity;
 import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
 
@@ -75,6 +76,9 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id", columnDefinition = "INT NOT NULL"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", columnDefinition = "INT NOT NULL"))
     private List<GenreEntity> genres;
+
+    @ManyToMany(mappedBy = "books")
+    private List<Tag> tags;
 
     public String getDescription() {
         return description;
@@ -227,6 +231,14 @@ public class Book {
 
     public void setPostponed(int postponed) {
         this.postponed = postponed;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override

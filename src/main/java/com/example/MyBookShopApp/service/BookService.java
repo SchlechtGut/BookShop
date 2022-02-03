@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -39,30 +40,42 @@ public class BookService {
     }
 
     public BooksPageDto getRightPageOfRecentBooks(String from, String to, Integer offset, Integer limit) {
+        Page<Book> page;
+
         if (from == null && to == null) {
-            return new BooksPageDto(getPageOfRecentBooks(offset, limit).getContent());
+            page = getPageOfRecentBooks(offset, limit);
+
+            return new BooksPageDto(page.getTotalElements(), page.getContent());
         } else if (to == null) {
             LocalDate dateFrom = convertToLocalDate(from);
-            return new BooksPageDto(getPageOfRecentBooksAfter(dateFrom, offset, limit).getContent());
+            page = getPageOfRecentBooksAfter(dateFrom, offset, limit);
+            return new BooksPageDto(page.getTotalElements(), page.getContent());
         } else if (from == null) {
             LocalDate dateTo = convertToLocalDate(to);
-            return new BooksPageDto(getPageOfRecentBooksBefore(dateTo, offset, limit).getContent());
+            page = getPageOfRecentBooksBefore(dateTo, offset, limit);
+            return new BooksPageDto(page.getTotalElements(), page.getContent());
         }
 
         LocalDate dateFrom = convertToLocalDate(from);
         LocalDate dateTo = convertToLocalDate(to);
+        page = getPageOfRecentBooksBetweenDates(dateFrom, dateTo, offset, limit);
 
-        return new BooksPageDto(getPageOfRecentBooksBetweenDates(dateFrom, dateTo, offset, limit).getContent());
+        return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
 
-    public Page<Book> getPageOfPopularBooks(Integer offset, Integer limit) {
-        Pageable nextPage = PageRequest.of(offset,limit);
-        return bookRepository.findBooksByIsBestsellerEquals(1, nextPage);
-    }
+
 
     public Page<Book> getPageOfSearchResultBooks(String searchWord, int offset, int limit) {
         Pageable nextPage = PageRequest.of(offset, limit);
         return bookRepository.findBookByTitleContainingIgnoreCase(searchWord, nextPage);
+    }
+
+
+    public Page<Book> getPageOfBooksByTag(Integer tagId, int offset, int limit) {
+        Pageable nextPage = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "pub_date"));
+
+        return bookRepository.findBooksByTag(tagId, nextPage);
+
     }
 
     private Page<Book> getPageOfRecentBooks(Integer offset, Integer limit) {

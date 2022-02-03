@@ -6,19 +6,24 @@ import java.util.List;
 
 public class BooksPageDto {
 
-    private Integer count;
+    private Long count;
     private List<Book> books;
 
     public BooksPageDto(List<Book> books) {
-        this.count = books.size();
+        this.count = (long) books.size();
         this.books = books;
     }
 
-    public Integer getCount() {
+    public BooksPageDto(Long overallCount, List<Book> books) {
+        this.count = overallCount;
+        this.books = books;
+    }
+
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
