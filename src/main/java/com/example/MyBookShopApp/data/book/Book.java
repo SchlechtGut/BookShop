@@ -2,13 +2,17 @@ package com.example.MyBookShopApp.data.book;
 
 import com.example.MyBookShopApp.data.author.Author;
 import com.example.MyBookShopApp.data.book.file.FileDownloadEntity;
+import com.example.MyBookShopApp.data.book.links.Book2AuthorEntity;
+import com.example.MyBookShopApp.data.book.links.Book2UserEntity;
 import com.example.MyBookShopApp.data.book.review.BookReviewEntity;
 import com.example.MyBookShopApp.data.book.tag.Tag;
-import com.example.MyBookShopApp.data.genre.GenreEntity;
+import com.example.MyBookShopApp.data.genre.Genre;
 import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -49,34 +53,35 @@ public class Book {
     @Column(columnDefinition = "INTEGER NOT NULL DEFAULT 0")
     private int postponed;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    private Author author;             //дублирование
+    @OneToMany(mappedBy = "bookId")
+    private List<Book2AuthorEntity> book2AuthorEntities;
 
-//    @OneToMany(mappedBy = "bookId")
-//    private List<Book2AuthorEntity> book2AuthorEntities;
+    @OneToMany(mappedBy = "bookId")
+    private List<Book2UserEntity> book2UserEntities;
 
-//    @OneToMany(mappedBy = "bookId")
-//    private List<Book2UserEntity> book2UserEntities;
-
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "book_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
     private List<FileDownloadEntity> fileDownloads;
 
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "book_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
     private List<BalanceTransactionEntity> balanceTransactions;
 
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "book_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
     private List<BookReviewEntity> bookReviews;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "book2genre",
             joinColumns = @JoinColumn(name = "book_id", columnDefinition = "INT NOT NULL"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", columnDefinition = "INT NOT NULL"))
-    private List<GenreEntity> genres;
+    private List<Genre> genres;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "books")
     private List<Tag> tags;
 
@@ -136,21 +141,13 @@ public class Book {
         this.id = id;
     }
 
-    public Author getAuthor() {
-        return author;
+    public List<Book2AuthorEntity> getBook2AuthorEntities() {
+        return book2AuthorEntities;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setBook2AuthorEntities(List<Book2AuthorEntity> book2AuthorEntities) {
+        this.book2AuthorEntities = book2AuthorEntities;
     }
-
-    //    public List<Book2AuthorEntity> getBook2AuthorEntities() {
-//        return book2AuthorEntities;
-//    }
-//
-//    public void setBook2AuthorEntities(List<Book2AuthorEntity> book2AuthorEntities) {
-//        this.book2AuthorEntities = book2AuthorEntities;
-//    }
 
     public String getTitle() {
         return title;
@@ -192,22 +189,21 @@ public class Book {
         this.bookReviews = bookReviews;
     }
 
-    public List<GenreEntity> getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<GenreEntity> genres) {
+    public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
 
-//    public List<Book2UserEntity> getBook2UserEntities() {
-//        return book2UserEntities;
-//    }
+    public List<Book2UserEntity> getBook2UserEntities() {
+        return book2UserEntities;
+    }
 
-//    public void setBook2UserEntities(List<Book2UserEntity> book2UserEntities) {
-//        this.book2UserEntities = book2UserEntities;
-//    }
-
+    public void setBook2UserEntities(List<Book2UserEntity> book2UserEntities) {
+        this.book2UserEntities = book2UserEntities;
+    }
 
     public int getBought() {
         return bought;

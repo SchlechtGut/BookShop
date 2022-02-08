@@ -1,4 +1,4 @@
-package com.example.MyBookShopApp.data;
+package com.example.MyBookShopApp.repository;
 
 import com.example.MyBookShopApp.data.book.Book;
 import org.springframework.data.domain.Page;
@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
@@ -38,7 +39,36 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             "WHERE t.id = ?1", nativeQuery = true)
     Page<Book> findBooksByTag(Integer tagId, Pageable pageable);
 
-    Page<Book> findBooksByIsBestsellerEquals(int isBestseller, Pageable pageable);
+    @Query(value = "SELECT * FROM books b " +
+            "LEFT JOIN book2genre bg ON bg.book_id = b.id " +
+            "LEFT JOIN genre g ON g.id = bg.genre_id " +
+            "WHERE g.id = ?1", nativeQuery = true)
+    Page<Book> findBooksByGenre(Integer genreId, Pageable pageable);
+
+    @Query(value = "SELECT * FROM books b " +
+            "LEFT JOIN book2author ba ON ba.book_id = b.id " +
+            "LEFT JOIN authors a ON a.id = ba.author_id " +
+            "WHERE a.id = ?1", nativeQuery = true)
+    Page<Book> findBooksByAuthor(Integer authorId, Pageable pageable);
+
+    @Query(value = "SELECT * FROM books b " +
+            "LEFT JOIN book2author ba ON ba.book_id = b.id " +
+            "LEFT JOIN authors a ON a.id = ba.author_id " +
+            "WHERE a.id = ?1 LIMIT 10", nativeQuery = true)
+    List<Book> findSeveralBooksByAuthorId(Integer authorId);
+
+    @Query(value = "SELECT COUNT(*) FROM books b " +
+            "LEFT JOIN book2author ba ON ba.book_id = b.id " +
+            "LEFT JOIN authors a ON a.id = ba.author_id " +
+            "WHERE a.slug = ?1", nativeQuery = true)
+    int findBooksCountByAuthorSlug(String slug);
+
+    @Query(value = "SELECT * FROM books b " +
+            "LEFT JOIN book2author ba ON ba.book_id = b.id " +
+            "LEFT JOIN authors a ON a.id = ba.author_id " +
+            "WHERE a.slug = ?1", nativeQuery = true)
+    Page<Book> findBooksByAuthorSlug(String slug, Pageable pageable);
+
 
 
     //@Query("SELECT b FROM Book b " +

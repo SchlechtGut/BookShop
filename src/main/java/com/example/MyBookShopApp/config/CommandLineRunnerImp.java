@@ -1,15 +1,10 @@
 package com.example.MyBookShopApp.config;
 
-import com.example.MyBookShopApp.data.BookRepository;
+import com.example.MyBookShopApp.repository.BookRepository;
 import com.example.MyBookShopApp.data.TestEntity;
 import com.example.MyBookShopApp.data.TestEntityCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.PageRequest;
-
-import java.time.LocalDate;
-import java.util.logging.Logger;
 
 //@Configuration
 public class CommandLineRunnerImp implements CommandLineRunner {

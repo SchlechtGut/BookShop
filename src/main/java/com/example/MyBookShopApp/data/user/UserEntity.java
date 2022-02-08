@@ -58,6 +58,8 @@ public class UserEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
     private List<BookReviewLikeEntity> bookReviewLikes;
 
+
+
     public int getId() {
         return id;
     }
@@ -104,5 +106,53 @@ public class UserEntity {
 
     public void setBook2UserEntities(List<Book2UserEntity> book2UserEntities) {
         this.book2UserEntities = book2UserEntities;
+    }
+
+    public List<UserContactEntity> getUserContacts() {
+        return userContacts;
+    }
+
+    public void setUserContacts(List<UserContactEntity> userContacts) {
+        this.userContacts = userContacts;
+    }
+
+    public List<FileDownloadEntity> getFileDownloads() {
+        return fileDownloads;
+    }
+
+    public void setFileDownloads(List<FileDownloadEntity> fileDownloads) {
+        this.fileDownloads = fileDownloads;
+    }
+
+    public List<BalanceTransactionEntity> getBalanceTransactions() {
+        return balanceTransactions;
+    }
+
+    public void setBalanceTransactions(List<BalanceTransactionEntity> balanceTransactions) {
+        this.balanceTransactions = balanceTransactions;
+    }
+
+    public List<MessageEntity> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<MessageEntity> messages) {
+        this.messages = messages;
+    }
+
+    public List<BookReviewEntity> getBookReviews() {
+        return bookReviews;
+    }
+
+    public void setBookReviews(List<BookReviewEntity> bookReviews) {
+        this.bookReviews = bookReviews;
+    }
+
+    public List<BookReviewLikeEntity> getBookReviewLikes() {
+        return bookReviewLikes;
+    }
+
+    public void setBookReviewLikes(List<BookReviewLikeEntity> bookReviewLikes) {
+        this.bookReviewLikes = bookReviewLikes;
     }
 }

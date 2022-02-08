@@ -52,4 +52,14 @@ public class Book2AuthorEntity {
     public void setSortIndex(int sortIndex) {
         this.sortIndex = sortIndex;
     }
+
+    @Override
+    public String toString() {
+        return "Book2AuthorEntity{" +
+                "id=" + id +
+                ", bookId=" + bookId +
+                ", authorId=" + authorId +
+                ", sortIndex=" + sortIndex +
+                '}';
+    }
 }

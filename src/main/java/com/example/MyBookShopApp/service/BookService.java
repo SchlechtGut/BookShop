@@ -1,9 +1,8 @@
 package com.example.MyBookShopApp.service;
 
-import com.example.MyBookShopApp.data.BookRepository;
+import com.example.MyBookShopApp.repository.BookRepository;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
-import org.apache.catalina.WebResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -75,8 +73,34 @@ public class BookService {
         Pageable nextPage = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "pub_date"));
 
         return bookRepository.findBooksByTag(tagId, nextPage);
-
     }
+
+    public Page<Book> getPageOfBooksByGenre(Integer id, Integer offset, Integer limit) {
+        Pageable nextPage = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "pub_date"));
+
+        return bookRepository.findBooksByGenre(id, nextPage);
+    }
+
+    public Page<Book> getPageOfAuthorBooks(Integer id, Integer offset, Integer limit) {
+        Pageable nextPage = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "pub_date"));
+
+        return bookRepository.findBooksByAuthor(id, nextPage);
+    }
+
+    public int getBooksCountByAuthorSlug(String slug) {
+        return bookRepository.findBooksCountByAuthorSlug(slug);
+    }
+
+    public Page<Book> getPageOfAuthorBooksBySlug(String slug, Integer offset, Integer limit) {
+        Pageable nextPage = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "pub_date"));
+        return bookRepository.findBooksByAuthorSlug(slug, nextPage);
+    }
+
+    public List<Book> getSeveralBooksByAuthorID(Integer id) {
+        return bookRepository.findSeveralBooksByAuthorId(id);
+    }
+
+    //////////private///////////////////////////////////////////////////////////////////////////////////////////////////
 
     private Page<Book> getPageOfRecentBooks(Integer offset, Integer limit) {
         Pageable nextPage = PageRequest.of(offset, limit);
@@ -102,4 +126,7 @@ public class BookService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return LocalDate.parse(dateInString, formatter);
     }
+
+
+
 }

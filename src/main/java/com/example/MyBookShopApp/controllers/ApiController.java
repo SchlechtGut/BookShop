@@ -49,11 +49,31 @@ public class ApiController {
     }
 
     @GetMapping("/api/books/tag/{id}")
-    public BooksPageDto booksTag(@RequestParam("offset") Integer offset,
+    public BooksPageDto tagBooks(@RequestParam("offset") Integer offset,
                                  @RequestParam("limit") Integer limit,
                                  @PathVariable Integer id) {
         Page<Book> page = bookService.getPageOfBooksByTag(id, offset, limit);
 
         return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
+
+    @GetMapping("/api/books/genre/{id}")
+    public BooksPageDto genreBooks(@RequestParam("offset") Integer offset,
+                                 @RequestParam("limit") Integer limit,
+                                 @PathVariable Integer id) {
+        Page<Book> page = bookService.getPageOfBooksByGenre(id, offset, limit);
+
+        return new BooksPageDto(page.getTotalElements(), page.getContent());
+    }
+
+    @GetMapping("/api/books/author/{id}")
+    public BooksPageDto authorBooks(@RequestParam("offset") Integer offset,
+                                    @RequestParam("limit") Integer limit,
+                                    @PathVariable Integer id) {
+        Page<Book> page = bookService.getPageOfAuthorBooks(id, offset, limit);
+
+        return new BooksPageDto(page.getTotalElements(), page.getContent());
+    }
+
+
 }

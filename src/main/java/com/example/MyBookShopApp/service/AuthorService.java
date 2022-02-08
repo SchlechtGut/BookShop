@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.service;
 
-import com.example.MyBookShopApp.data.AuthorRepository;
+import com.example.MyBookShopApp.repository.AuthorRepository;
 import com.example.MyBookShopApp.data.author.Author;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,5 +23,9 @@ public class AuthorService {
         List<Author> authors = authorRepository.findAll();
 
         return authors.stream().collect(Collectors.groupingBy((Author a) -> a.getName().substring(0, 1)));
+    }
+
+    public Author getAuthorBySlug(String slug) {
+        return authorRepository.findAuthorBySlug(slug);
     }
 }

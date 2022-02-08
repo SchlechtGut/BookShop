@@ -5,8 +5,8 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
                    http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-<include file="db/changelog/changeset/liquibase-initial-schema.xml"></include>
-
+    <include file="db/changelog/changeset/liquibase-initial-schema.xml"/>
+    <include file="db/changelog/changeset/liquibase-change-schema.xml"/>
 </databaseChangeLog>
 
 

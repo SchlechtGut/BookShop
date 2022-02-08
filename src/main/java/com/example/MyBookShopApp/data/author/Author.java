@@ -32,10 +32,6 @@ public class Author {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany(mappedBy = "author")
-    @JsonIgnore
-    private List<Book> bookList;             //дублирование
-
     @OneToMany(mappedBy = "authorId")
     @JsonIgnore
     private List<Book2AuthorEntity> book2AuthorEntities;

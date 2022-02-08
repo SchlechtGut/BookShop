@@ -1,10 +1,12 @@
 package com.example.MyBookShopApp.controllers;
 
+import com.example.MyBookShopApp.data.book.tag.Tag;
 import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.SearchWordDto;
 import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
+import com.example.MyBookShopApp.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +21,13 @@ public class MainPageController extends DefaultController {
 
     private final BookService bookService;
     private final BooksRatingAndPopularityService booksRatingAndPopularityService;
+    private final TagService tagService;
 
     @Autowired
-    public MainPageController(BookService bookService, BooksRatingAndPopularityService booksRatingAndPopularityService) {
+    public MainPageController(BookService bookService, BooksRatingAndPopularityService booksRatingAndPopularityService, TagService tagService) {
         this.bookService = bookService;
         this.booksRatingAndPopularityService = booksRatingAndPopularityService;
+        this.tagService = tagService;
     }
 
     @ModelAttribute("searchResults")
@@ -44,6 +48,11 @@ public class MainPageController extends DefaultController {
     @ModelAttribute("popularBooks")
     public List<Book> popularBooks() {
         return booksRatingAndPopularityService.getPageOfPopularBooks(0, 6).getContent();
+    }
+
+    @ModelAttribute("tagList")
+    public List<Tag> tags() {
+        return tagService.getTags();
     }
 
     @GetMapping("/")

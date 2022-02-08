@@ -1,6 +1,7 @@
 package com.example.MyBookShopApp.data.book.tag;
 
 import com.example.MyBookShopApp.data.book.Book;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +16,14 @@ public class Tag {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    private String slug;
+
+    @JsonIgnore
+    @Transient
+    private Double weight;
+
+    @JsonIgnore
+    @ManyToMany
     @JoinTable(name = "book2tag",
             joinColumns = @JoinColumn(name = "tag_id", columnDefinition = "INT NOT NULL"),
             inverseJoinColumns = @JoinColumn(name = "book_id", columnDefinition = "INT NOT NULL"))
@@ -43,5 +51,30 @@ public class Tag {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", slug='" + slug + '\'' +
+                '}';
     }
 }
