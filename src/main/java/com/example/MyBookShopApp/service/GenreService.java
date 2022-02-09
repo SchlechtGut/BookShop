@@ -33,4 +33,8 @@ public class GenreService {
 
         return genreTree;
     }
+
+    public Genre getGenreBySlug(String slug) {
+        return genreRepository.findBySlug(slug);
+    }
 }

@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=93601584">
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=93601584"></script>
+    <div th:replace="~{fragments/locale_change_fragment :: localeChange}"></div>
 </head>
 <body class="Site">
 <header class="Header" th:replace="~{fragments/header_fragment :: headFragment}"></header>
@@ -37,11 +38,11 @@
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs">
-                <li class="breadcrumbs-item"><a href="/index.html">Главная</a>
+                <li class="breadcrumbs-item"><a th:href="@{/}">Главная</a>
                 </li>
-                <li class="breadcrumbs-item"><a href="/authors/index.html">Авторы</a>
+                <li class="breadcrumbs-item"><a th:href="@{/authors}">Авторы</a>
                 </li>
-                <li class="breadcrumbs-item breadcrumbs-item_current"><span>Борис Васильевич Бедный</span>
+                <li class="breadcrumbs-item breadcrumbs-item_current"><span th:text="${author.name}"></span>
                 </li>
             </ul>
             <h1 class="Middle-title" th:text="${author.name}">author-name</h1>
@@ -62,8 +63,8 @@
                     <div class="Spoiler-hide">
                         <div th:if="${author.description.length()} >= 700" th:text="${author.description.substring(700)}"></div>
                     </div>
-                    <div class="Spoiler-footer">
-                        <button class="Spoiler-trigger btn btn_primary btn_nr" type="button"  th:data-showtext="#{button.collapse}" th:data-hidetext="#{button.more}">
+                    <div class="Spoiler-footer" >
+                        <button class="Spoiler-trigger btn btn_primary btn_nr" type="button" th:if="${author.description.length()} >= 700" th:data-showtext="#{button.collapse}" th:data-hidetext="#{button.more}">
                         </button>
                     </div>
                 </div>
@@ -73,7 +74,7 @@
                     <h2 class="Section-title">Книги автора
                     </h2>
                 </header>
-                <div class="Slider Slider_carousel">
+                <div class="Slider Slider_carousel" th:if="${severalBooks.size()} >= 5">
                     <div class="Slider-box Cards" >
                         <div class="Slider-item" th:each="book : ${severalBooks}">
                             <div class="Slider-content">
@@ -101,6 +102,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="Cards Cards_refresh" th:if="${severalBooks.size()} < 5">
+                    <div class="Card" th:each="book : ${severalBooks}">
+                        <div class="Card-picture">
+                            <a href="#"><img th:src="${book.image}" alt="card.jpg"/></a>
+                        </div>
+                        <div class="Card-content">
+                            <strong class="Card-title">
+                                <a th:text="${book.title}" href="#">Техника</a>
+                            </strong>
+                            <div class="Card-description" th:text="${book.description}">Кондратенко Александр Петрович</div>
+                            <div class="Card-cost">
+                                <span class="Card-priceOld" th:text="${book.price}">₽300.00</span>
+                                <span class="Card-price" th:text="${book.price} * (100 - ${book.discount}) / 100">₽190.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <footer class="Section-footer" th:if="${authorBooksCount > 10}">
                     <a class="Author-books" th:href="@{'/books/author/' + ${author.slug}}">Все книги автора<span class="Author-amount" th:text="${authorBooksCount}">(55)</span></a>
                 </footer>
@@ -113,3 +131,4 @@
 <script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
 </body>
 </html>
+

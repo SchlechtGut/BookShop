@@ -157,8 +157,10 @@ p.error-browser
             </h2>
 
 
-            <div class="Tags" id="tags" th:each="tag : ${tagList}">
-                <a class="Tag" th:href="@{'/tags/' + ${tag.slug}}" th:text="${tag.name}" th:size="${tag.weight * 20}"></a>
+            <div class="Tags" id="tags" >
+                <div class="Tag Tag_xs" th:each="tag : ${tagList}">
+                    <a th:style="${tag.weight < 0.3} ? 'font-size: 0.3 * 30px' : 'font-size:' + ${tag.weight * 30} + 'px' "  th:href="@{'/tags/' + ${tag.slug}}" th:text="${tag.name}" th:size="${tag.weight * 20}">современная литература</a>
+                </div>
             </div>
         </main>
     </div>

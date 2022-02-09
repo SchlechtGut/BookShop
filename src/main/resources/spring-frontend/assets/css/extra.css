@@ -4311,9 +4311,9 @@ img {
 .Tag_sm {
   font-size: 0.8em;
 }
-.Tag_xs {
-  font-size: 0.7em;
-}
+/*.Tag_xs {*/
+/*  font-size: 0.7em;*/
+/*}*/
 
 .Topup {
   visibility: visible;

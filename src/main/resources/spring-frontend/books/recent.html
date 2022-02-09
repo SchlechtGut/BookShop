@@ -7,7 +7,7 @@
 <html class="ie8" lang="ru">
 <![endif]-->
 <!--[if IE 9]>
-<html class="ie9" lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html class="ie9" lang="ru" xmlns:th="http://www.thymeleaf.orп">
 <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="ru"> <!--<![endif]-->
 <head>
@@ -46,9 +46,9 @@
     <div class="wrap">
       <main class="Middle-main">
         <ul class="breadcrumbs">
-          <li class="breadcrumbs-item"><a href="/index.html">Главная</a>
+          <li class="breadcrumbs-item"><a th:href="@{/}">Главная</a>
           </li>
-          <li class="breadcrumbs-item"><a href="/genres/index.html">Книги</a>
+          <li class="breadcrumbs-item"><a th:href="@{/genres}">Книги</a>
           </li>
           <li class="breadcrumbs-item breadcrumbs-item_current"><span>Новинки</span>
           </li>

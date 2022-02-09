@@ -7,6 +7,7 @@ import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,8 +43,10 @@ public class ApiController {
 
     @GetMapping("/api/books/popular")
     public BooksPageDto popular(@RequestParam("offset") Integer offset,
-                                @RequestParam("limit") Integer limit) {
+                                @RequestParam("limit") Integer limit,
+                                Model model) {
         Page<Book> page = booksRatingAndPopularityService.getPageOfPopularBooks(offset, limit);
+        model.addAttribute("newPage" , page.getContent().size());
 
         return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
