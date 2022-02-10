@@ -20,18 +20,18 @@ public class GenreService {
 
     public List<Genre> getAllGenres() {
         List<Genre> allGenres = genreRepository.findAll();
-        List<Genre> genreTree = new ArrayList<>();
+//        List<Genre> genreTree = new ArrayList<>();
+//
+//        for (Genre genre : allGenres) {
+//            if (genre.getParentId() != null) {
+//                int parentId = genre.getParentId();
+//                allGenres.stream().filter(x -> x.getId() == parentId).findFirst().get().getChildren().add(genre);
+//            } else {
+//                genreTree.add(genre);
+//            }
+//        }
 
-        for (Genre genre : allGenres) {
-            if (genre.getParentId() != null) {
-                int parentId = genre.getParentId();
-                allGenres.stream().filter(x -> x.getId() == parentId).findFirst().get().getChildren().add(genre);
-            } else {
-                genreTree.add(genre);
-            }
-        }
-
-        return genreTree;
+        return allGenres;
     }
 
     public Genre getGenreBySlug(String slug) {

@@ -28,7 +28,7 @@ public class TagController extends DefaultController {
     public String getBooksByTag(@PathVariable String slug, Model model) {
         Tag tag = tagService.getTagBySlug(slug);
 
-        List<Book> booksByTag = bookService.getPageOfBooksByTag(tag.getId(), 0, 6).getContent();
+        List<Book> booksByTag = bookService.getPageOfBooksByTag(tag.getId(), 0, 20).getContent();
 
         model.addAttribute("tagName", tag.getName());
         model.addAttribute("booksByTag", booksByTag);

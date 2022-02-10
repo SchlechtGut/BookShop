@@ -45,8 +45,8 @@
                         </div>
                     </div>
 
-                    <div class="Cards-footer Cards-footer_center" th:if="${booksByTag.size() > 5}">
-                        <a class="btn btn_primary" href="#" data-refreshshow="tag" th:attr="data-refreshid=${tagId}" data-refreshoffset="0" data-refreshlimit="6">Показать еще</a>
+                    <div class="Cards-footer Cards-footer_center">
+                        <a class="btn btn_primary" href="#" data-refreshshow="tag" th:attr="data-refreshid=${tagId}" data-refreshoffset="0" data-refreshlimit="20">Показать еще</a>
                     </div>
                 </div>
             </div>

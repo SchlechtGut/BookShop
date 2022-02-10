@@ -1,15 +1,14 @@
 package com.example.MyBookShopApp.controllers;
 
-import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.data.genre.Genre;
 import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.service.GenreService;
-import com.sun.tools.javac.jvm.Gen;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -25,13 +24,10 @@ public class GenresController  extends DefaultController {
         this.bookService = bookService;
     }
 
-    @ModelAttribute("genreList")
-    public List<Genre> genres() {
-        return genreService.getAllGenres();
-    }
-
     @GetMapping("/genres")
-    public String genresPage() {
+    public String genresPage(Model model) {
+        model.addAttribute("genreList", genreService.getAllGenres());
+
         return "/genres/index";
     }
 

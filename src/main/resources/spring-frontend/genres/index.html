@@ -49,21 +49,10 @@
         </h1>
         <div class="Section">
           <div class="Tags Tags_genres">
-            <div class="Tags" th:each="genre : ${genreList}">
-              <div class="Tags-title Tag"  >
-                <div class="Tag" th:text="${genre.name}"></div>
-              </div>
-              <div class="Tag" th:if="${child.children.size() == 0}" th:each="child : ${genre.children}" th:text="${child.name}">
-
-              </div>
-              <div class="Tags" th:if="${child.children.size() == 0}" th:each="child : ${genre.children}">
-                <div class="Tags-title Tag"  >
-                  <div class="Tag" th:text="${child.name}">
-
-                  </div>
-                </div>
-                <div class="Tag" th:each="child_ : ${child}" >
-
+            <div class="Tags Tags_embed">
+              <div class="Tags-title" th:each="genre : ${genreList}">
+                <div class="Tag"><a th:href="@{'/genres/' + ${genre.slug}}" th:text="${genre.name}">Лёгкое чтение</a>
+                  <span th:text="'(' + ${genre.books.size()} + ')'"></span>
                 </div>
               </div>
             </div>
@@ -72,6 +61,7 @@
       </main>
     </div>
   </div>
+
   <footer class="Footer" th:replace="~{fragments/footer_fragment :: footerFragment}">
 
   </footer>
