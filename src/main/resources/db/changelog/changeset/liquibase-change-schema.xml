@@ -42,4 +42,12 @@
     <changeSet author="SchlechtGut (generated)" id="1644344904187-6">
         <dropNotNullConstraint columnDataType="timestamp NOT NULL" columnName="time" tableName="message"/>
     </changeSet>
+    <changeSet author="SchlechtGut (generated)" id="1644663857551-1">
+        <addColumn tableName="book_file">
+            <column name="book_id" type="int4"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="SchlechtGut (generated)" id="1644663857551-2">
+        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="book_file" constraintName="FKg7meofferi2glg6uwj2yhfmp9" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="books" validate="true"/>
+    </changeSet>
 </databaseChangeLog>

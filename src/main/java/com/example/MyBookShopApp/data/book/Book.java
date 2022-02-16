@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.data.book;
 
-import com.example.MyBookShopApp.data.author.Author;
+import com.example.MyBookShopApp.data.book.file.BookFile;
 import com.example.MyBookShopApp.data.book.file.FileDownloadEntity;
 import com.example.MyBookShopApp.data.book.links.Book2AuthorEntity;
 import com.example.MyBookShopApp.data.book.links.Book2UserEntity;
@@ -8,7 +8,9 @@ import com.example.MyBookShopApp.data.book.review.BookReviewEntity;
 import com.example.MyBookShopApp.data.book.tag.Tag;
 import com.example.MyBookShopApp.data.genre.Genre;
 import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "books")
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,14 +28,15 @@ public class Book {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String title;
 
-    @Column(columnDefinition = "INT NOT NULL")
-    private String price;
+    @Column(name = "price", columnDefinition = "INT NOT NULL")
+    @JsonProperty("price")
+    private Integer priceOld;
 
     @Column(columnDefinition = "text")
     private String description;
 
     @Column(columnDefinition = "SMALLINT NOT NULL DEFAULT 0")
-    private int discount;
+    private Integer discount;
 
     @Column(columnDefinition = "VARCHAR(255)")
     private String image;
@@ -85,6 +89,17 @@ public class Book {
     @ManyToMany(mappedBy = "books")
     private List<Tag> tags;
 
+    @OneToMany(mappedBy = "book")
+    @JsonIgnore
+    private List<BookFile> bookFileList = new ArrayList<>();
+
+
+
+    @JsonGetter
+    public Integer getDiscountPrice(){
+        return priceOld - priceOld * discount / 100;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -93,11 +108,11 @@ public class Book {
         this.description = description;
     }
 
-    public int getDiscount() {
+    public Integer getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(Integer discount) {
         this.discount = discount;
     }
 
@@ -157,12 +172,12 @@ public class Book {
         this.title = title;
     }
 
-    public String getPrice() {
-        return price;
+    public Integer getPriceOld() {
+        return priceOld;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setPriceOld(Integer price) {
+        this.priceOld = price;
     }
 
     public List<FileDownloadEntity> getFileDownloads() {
@@ -237,6 +252,14 @@ public class Book {
         this.tags = tags;
     }
 
+    public List<BookFile> getBookFileList() {
+        return bookFileList;
+    }
+
+    public void setBookFileList(List<BookFile> bookFileList) {
+        this.bookFileList = bookFileList;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -248,7 +271,7 @@ public class Book {
                 ", bookReviews=" + bookReviews +
                 ", genres=" + genres +
                 ", title='" + title + '\'' +
-                ", price='" + price + '\'' +
+                ", price='" + priceOld + '\'' +
                 ", description='" + description + '\'' +
                 ", discount=" + discount +
                 ", image='" + image + '\'' +

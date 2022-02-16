@@ -89,8 +89,8 @@
                                         </strong>
                                         <div class="Card-description" th:text="${book.description}"></div>
                                         <div class="Card-cost">
-                                            <span class="Card-priceOld" th:text="${book.price}">₽500.00</span>
-                                            <span class="Card-price" th:text="${book.price} * (100 - ${book.discount}) / 100">₽390.00</span>
+                                            <span class="Card-priceOld" th:text="${book.priceOld}">₽500.00</span>
+                                            <span class="Card-price" th:text="${book.priceOld} * (100 - ${book.discount}) / 100">₽390.00</span>
                                         </div>
                                     </div>
                                 </div>
@@ -113,8 +113,8 @@
                             </strong>
                             <div class="Card-description" th:text="${book.description}">Кондратенко Александр Петрович</div>
                             <div class="Card-cost">
-                                <span class="Card-priceOld" th:text="${book.price}">₽300.00</span>
-                                <span class="Card-price" th:text="${book.price} * (100 - ${book.discount}) / 100">₽190.00</span>
+                                <span class="Card-priceOld" th:text="${book.priceOld}">₽300.00</span>
+                                <span class="Card-price" th:text="${book.priceOld} * (100 - ${book.discount}) / 100">₽190.00</span>
                             </div>
                         </div>
                     </div>

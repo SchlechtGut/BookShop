@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.service;
 
+import com.example.MyBookShopApp.errs.BookstoreApiWrongParameterException;
 import com.example.MyBookShopApp.repository.BookRepository;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
@@ -127,6 +128,46 @@ public class BookService {
         return LocalDate.parse(dateInString, formatter);
     }
 
+    public Book getBookBySlug(String slug) {
+        return bookRepository.findBySlug(slug);
+    }
 
+    public void save(Book bookToUpdate) {
+        bookRepository.save(bookToUpdate);
+    }
 
+    //NEW BOOK SERVICE METHODS
+
+    public List<Book> getBooksByAuthor(String authorName){
+        return bookRepository.findBooksByAuthorNameContaining(authorName);
+    }
+
+    public List<Book> getBooksByTitle(String title) throws BookstoreApiWrongParameterException {
+        if (title.length() <= 1) {
+            throw new BookstoreApiWrongParameterException("Wrong values passed to one or more parameters");
+        } else {
+            List<Book> data = bookRepository.findBooksByTitleContainingIgnoreCase(title);
+            if (data.size() > 0) {
+                return data;
+            } else {
+                throw new BookstoreApiWrongParameterException("No data found with specified parameters...");
+            }
+        }
+    }
+
+    public List<Book> getBooksWithPriceBetween(Integer min, Integer max){
+        return bookRepository.findBooksByPriceOldBetween(min, max);
+    }
+
+    public List<Book> getBooksWithMaxPrice(){
+        return bookRepository.getBooksWithMaxDiscount();
+    }
+
+    public List<Book> getBestsellers(){
+        return bookRepository.getBestsellers();
+    }
+
+    public List<Book> findBooksBySlugIn(String[] cookieSlugs) {
+        return bookRepository.findBooksBySlugIn(cookieSlugs);
+    }
 }

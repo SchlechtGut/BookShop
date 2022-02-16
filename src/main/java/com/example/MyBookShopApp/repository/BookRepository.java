@@ -69,6 +69,25 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             "WHERE a.slug = ?1", nativeQuery = true)
     Page<Book> findBooksByAuthorSlug(String slug, Pageable pageable);
 
+    Book findBySlug(String slug);
+
+    List<Book> findBooksBySlugIn(String[] slugs);
+
+    @Query(value = "SELECT * FROM books b " +
+            "LEFT JOIN book2author ba ON ba.book_id = b.id " +
+            "LEFT JOIN authors a ON a.id = ba.author_id " +
+            "WHERE a.name = ?1", nativeQuery = true)
+    List<Book> findBooksByAuthorNameContaining(String name);
+
+    List<Book> findBooksByTitleContainingIgnoreCase(String title);
+
+    List<Book> findBooksByPriceOldBetween(Integer min, Integer max);
+
+    @Query("from Book where isBestseller=1")
+    List<Book> getBestsellers();
+
+    @Query(value = "SELECT * FROM books WHERE discount = (SELECT MAX(discount) FROM books", nativeQuery = true)
+    List<Book> getBooksWithMaxDiscount();
 
 
     //@Query("SELECT b FROM Book b " +

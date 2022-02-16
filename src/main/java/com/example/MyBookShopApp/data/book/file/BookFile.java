@@ -1,5 +1,9 @@
 package com.example.MyBookShopApp.data.book.file;
 
+import com.example.MyBookShopApp.data.book.Book;
+import com.example.MyBookShopApp.data.enums.BookFileType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,6 +22,15 @@ public class BookFile {
 
     @Column(name = "type_id", columnDefinition = "INT NOT NULL")
     private int typeId;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id",referencedColumnName = "id")
+    @JsonIgnore
+    private Book book;
+
+    public String getBookFileExtensionString() {
+        return BookFileType.getExtensionStringByTypeID(typeId);
+    }
 
     public int getId() {
         return id;
@@ -49,5 +62,13 @@ public class BookFile {
 
     public void setTypeId(int typeId) {
         this.typeId = typeId;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

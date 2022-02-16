@@ -11,7 +11,7 @@ import java.util.List;
 @Controller
 public class ToolsController  extends DefaultController {
 
-    private GenreService genreService;
+    private final GenreService genreService;
 
     public ToolsController(GenreService genreService) {
         this.genreService = genreService;
@@ -23,19 +23,9 @@ public class ToolsController  extends DefaultController {
         return "postponed";
     }
 
-    @GetMapping("/cart")
-    public String cart(){
-        return "cart";
-    }
-
     @GetMapping("/signin")
     public String signin(){
         return "signin";
-    }
-
-    @GetMapping("/search")
-    public String search(){
-        return "/search/index";
     }
 
     @GetMapping("/documents")

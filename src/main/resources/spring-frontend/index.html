@@ -55,16 +55,18 @@ p.error-browser
                         <div class="Slider-item" th:each="book : ${recommendedBooks}">
                             <div class="Slider-content">
                                 <div class="Card">
-                                    <a class="Card-picture" href="/books/slug.html"><img th:src="${book.image}" alt="card.jpg"/></a>
+                                    <a class="Card-picture" th:href="@{'/books/' + ${book.slug}}">
+                                        <img th:src="${book.image}" alt="card.jpg"/>
+                                    </a>
                                     <div class="Card-content">
                                         <strong class="Card-title">
-                                            <a href="/books/slug.html" th:text="${book.title}">Техника</a>
+                                            <a th:href="@{'/books/' + ${book.slug}}" th:text="${book.title}">Техника</a>
                                         </strong>
                                         <div class="Card-description" th:text="${book.description}">Кондратенко Валерий Петрович
                                         </div>
                                         <div class="Card-cost">
-                                            <span class="Card-priceOld" th:text="${book.price}">₽300.00</span>
-                                            <span class="Card-price" th:text="${book.discount}">₽190.00</span>
+                                            <span class="Card-priceOld" th:text="${book.priceOld}">₽300.00</span>
+                                            <span class="Card-price" th:text="${book.getDiscountPrice()}">₽190.00</span>
                                         </div>
                                     </div>
                                 </div>
@@ -99,7 +101,7 @@ p.error-browser
                                         <div class="Card-description" th:text="${book.description}">Кондратенко Александр Петрович
                                         </div>
                                         <div class="Card-cost">
-                                            <span class="Card-priceOld" th:text="${book.price}">₽500.00</span>
+                                            <span class="Card-priceOld" th:text="${book.priceOld}">₽500.00</span>
                                             <span class="Card-price" th:text="${book.discount}">₽390.00</span>
                                         </div>
                                     </div>
@@ -135,7 +137,7 @@ p.error-browser
                                         <div class="Card-description" th:text="${book.description}">Кондратенко Александр Петрович
                                         </div>
                                         <div class="Card-cost">
-                                            <span class="Card-priceOld" th:text="${book.price}">₽500.00</span>
+                                            <span class="Card-priceOld" th:text="${book.priceOld}">₽500.00</span>
                                             <span class="Card-price" th:text="${book.discount}">₽390.00</span>
                                         </div>
                                     </div>
@@ -159,7 +161,7 @@ p.error-browser
 
             <div class="Tags" id="tags" >
                 <div class="Tag Tag_xs" th:each="tag : ${tagList}">
-                    <a th:style="${tag.weight < 0.3} ? 'font-size: 0.3 * 30px' : 'font-size:' + ${tag.weight * 30} + 'px' "  th:href="@{'/tags/' + ${tag.slug}}" th:text="${tag.name}" th:size="${tag.weight * 20}">современная литература</a>
+                    <a th:style="${tag.weight < 0.3} ? 'font-size: 0.3 * 30px' : 'font-size:' + ${tag.weight * 30} + 'px'"  th:href="@{'/tags/' + ${tag.slug}}" th:text="${tag.name}" th:size="${tag.weight * 20}">современная литература</a>
                 </div>
             </div>
         </main>
