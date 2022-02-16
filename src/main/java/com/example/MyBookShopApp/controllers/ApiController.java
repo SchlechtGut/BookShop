@@ -8,12 +8,16 @@ import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api")
 public class ApiController {
     private final BookService bookService;
     private final ApiService apiService;
@@ -26,14 +30,14 @@ public class ApiController {
         this.booksRatingAndPopularityService = booksRatingAndPopularityService;
     }
 
-    @GetMapping("/api/books/recent")
+    @GetMapping("/books/recent")
     public BooksPageDto recent(@RequestParam(required = false) String from, @RequestParam(required = false) String to,
                                @RequestParam Integer offset, @RequestParam Integer limit) {
 
         return bookService.getRightPageOfRecentBooks(from, to, offset, limit);
     }
 
-    @GetMapping("/api/books/recommended")
+    @GetMapping("/books/recommended")
     public BooksPageDto recommended(@RequestParam("offset") Integer offset,
                                     @RequestParam("limit") Integer limit) {
         Page<Book> page = bookService.getPageOfRecommendedBooks(offset, limit);
@@ -41,7 +45,7 @@ public class ApiController {
         return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
 
-    @GetMapping("/api/books/popular")
+    @GetMapping("/books/popular")
     public BooksPageDto popular(@RequestParam("offset") Integer offset,
                                 @RequestParam("limit") Integer limit,
                                 Model model) {
@@ -51,7 +55,7 @@ public class ApiController {
         return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
 
-    @GetMapping("/api/books/tag/{id}")
+    @GetMapping("/books/tag/{id}")
     public BooksPageDto tagBooks(@RequestParam("offset") Integer offset,
                                  @RequestParam("limit") Integer limit,
                                  @PathVariable Integer id) {
@@ -60,7 +64,7 @@ public class ApiController {
         return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
 
-    @GetMapping("/api/books/genre/{id}")
+    @GetMapping("/books/genre/{id}")
     public BooksPageDto genreBooks(@RequestParam("offset") Integer offset,
                                  @RequestParam("limit") Integer limit,
                                  @PathVariable Integer id) {
@@ -69,7 +73,7 @@ public class ApiController {
         return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
 
-    @GetMapping("/api/books/author/{id}")
+    @GetMapping("/books/author/{id}")
     public BooksPageDto authorBooks(@RequestParam("offset") Integer offset,
                                     @RequestParam("limit") Integer limit,
                                     @PathVariable Integer id) {
@@ -77,6 +81,41 @@ public class ApiController {
 
         return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
+
+
+//    @PostMapping("/changeBookStatus")
+//    public String changeBookStatus(@RequestParam String bookIds, @RequestParam String status, @CookieValue(name =
+//            "cartContents", required = false) String cartContents, HttpServletResponse response, Model model) {
+//
+//        List<Integer> ids = Arrays.stream(bookIds.split("/")).map(Integer::parseInt).collect(Collectors.toList());
+//
+//        List<String> bookSlugs = bookService.getBooksByIdIn(ids).stream().map(Book::getSlug).collect(Collectors.toList());
+//
+//        if (status.equals("CART")) {
+//            if (cartContents == null || cartContents.equals("")) {
+//
+//                String cookieValue = Strings.join(bookSlugs, "/");
+//
+//                Cookie cookie = new Cookie("cartContents", cookieValue);
+//                cookie.setPath("/books");
+//                response.addCookie(cookie);
+//                model.addAttribute("isCartEmpty", false);
+//
+//            } else if (!cartContents.contains(slug)) {
+//
+//                StringJoiner stringJoiner = new StringJoiner("/");
+//                stringJoiner.add(cartContents).add(slug);
+//                Cookie cookie = new Cookie("cartContents", stringJoiner.toString());
+//                cookie.setPath("/books");
+//                response.addCookie(cookie);
+//                model.addAttribute("isCartEmpty", false);
+//            }
+//
+//        }
+//
+//
+//
+//    }
 
 
 }

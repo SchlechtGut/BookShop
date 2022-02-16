@@ -5,6 +5,7 @@ import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.time.LocalDate;
@@ -21,7 +22,24 @@ public class DefaultController {
         return new SearchWordDto();
     }
 
+    @ModelAttribute("cartContentsCount")
+    public Integer cartContentsCount(@CookieValue(value = "cartContentsCount", required = false) String cartContents) {
+        if (cartContents == null || cartContents.equals("")) {
+            return 0;
+        }
 
+
+        return Integer.parseInt(cartContents);
+    }
+
+    @ModelAttribute("postponedCount")
+    public Integer postponedCount(@CookieValue(value = "postponedCount", required = false) String postponedCount) {
+        if (postponedCount == null || postponedCount.equals("")) {
+            return 0;
+        }
+
+        return Integer.parseInt(postponedCount);
+    }
 
 
 }

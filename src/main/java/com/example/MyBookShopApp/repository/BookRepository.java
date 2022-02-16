@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
@@ -88,6 +89,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query(value = "SELECT * FROM books WHERE discount = (SELECT MAX(discount) FROM books", nativeQuery = true)
     List<Book> getBooksWithMaxDiscount();
+
+    List<Book> findBooksByIdIn(Collection<Integer> id);
 
 
     //@Query("SELECT b FROM Book b " +

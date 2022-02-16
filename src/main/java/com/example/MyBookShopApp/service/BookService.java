@@ -4,6 +4,7 @@ import com.example.MyBookShopApp.errs.BookstoreApiWrongParameterException;
 import com.example.MyBookShopApp.repository.BookRepository;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -170,4 +171,9 @@ public class BookService {
     public List<Book> findBooksBySlugIn(String[] cookieSlugs) {
         return bookRepository.findBooksBySlugIn(cookieSlugs);
     }
+
+    public List<Book> getBooksByIdIn(List<Integer> bookIds) {
+        return bookRepository.findBooksByIdIn(bookIds);
+    }
+
 }
