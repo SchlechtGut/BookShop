@@ -19,7 +19,7 @@
   <!--meta( http-equiv="cache-control" content="no-cache")-->
   <!--meta( http-equiv="expires" content="0")-->
   <!--link(rel="preload" href="assets/css/extra.min.css?v=" + version as="style" crossorigin="anonymous")-->
-  <link href="/favicon.ico" rel="shortcut icon">
+  <link href="favicon.ico" rel="shortcut icon">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -103,7 +103,7 @@
                 </div>
                 <div class="Cart-buttons">
                   <div class="Cart-btn">
-                    <button class="btn btn_primary btn_outline" data-sendstatus="KEPT" data-bookid="[1122]">
+                    <button class="btn btn_primary btn_outline" data-sendstatus="KEPT" th:attr="data-bookid = ${book.slug}" data-bookid="[1122]">
                       <span class="btn-icon">
                         <img src="/assets/img/icons/heart.svg" alt="heart.svg"/>
                       </span>

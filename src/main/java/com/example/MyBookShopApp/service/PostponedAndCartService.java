@@ -14,33 +14,29 @@ public class PostponedAndCartService {
 
     public void addToCart(String slug, String cartContents, HttpServletResponse response, Model model) {
         if (cartContents == null || cartContents.equals("")) {
-
             Cookie cookie = new Cookie("cartContents", slug);
-            updatePostponedCount(response, model, cookie);
+            updateCartContentsCount(response, model, cookie);
 
         } else if (!cartContents.contains(slug)) {
 
             StringJoiner stringJoiner = new StringJoiner("/");
             stringJoiner.add(cartContents).add(slug);
             Cookie cookie = new Cookie("cartContents", stringJoiner.toString());
-            updatePostponedCount(response, model, cookie);
+            updateCartContentsCount(response, model, cookie);
         }
     }
 
-
-
     public void addToPostponedBooks(String slug, String postponedBooks, HttpServletResponse response, Model model) {
         if (postponedBooks == null || postponedBooks.equals("")) {
-
             Cookie cookie = new Cookie("postponedBooks", slug);
-            updateCartContentsCount(response, model, cookie);
+            updatePostponedCount(response, model, cookie);
 
         } else if (!postponedBooks.contains(slug)) {
 
             StringJoiner stringJoiner = new StringJoiner("/");
             stringJoiner.add(postponedBooks).add(slug);
             Cookie cookie = new Cookie("postponedBooks", stringJoiner.toString());
-            updateCartContentsCount(response, model, cookie);
+            updatePostponedCount(response, model, cookie);
         }
     }
 
@@ -68,6 +64,30 @@ public class PostponedAndCartService {
         }
     }
 
+    public void removeBookFromPostponed(String slug, String postponedBooks, HttpServletResponse response, Model model) {
+        if (postponedBooks != null && !postponedBooks.equals("")) {
+            ArrayList<String> cookieBooks = new ArrayList<>(Arrays.asList(postponedBooks.split("/")));
+            cookieBooks.remove(slug);
+            Cookie cookie = new Cookie("postponedBooks", String.join("/", cookieBooks));
+            cookie.setPath("/books");
+            response.addCookie(cookie);
+            model.addAttribute("isPostponedEmpty", false);
+
+            if (cookie.getValue().length() == 0) {
+                Cookie numberOfAddedToCart = new Cookie("postponedCount", "0");
+                numberOfAddedToCart.setPath("/");
+                response.addCookie(numberOfAddedToCart);
+            } else {
+                Cookie numberOfAddedToCart = new Cookie("postponedCount", String.valueOf(cookie.getValue().split("/").length));
+                numberOfAddedToCart.setPath("/");
+                response.addCookie(numberOfAddedToCart);
+            }
+
+        } else {
+            model.addAttribute("isPostponedEmpty", true);
+        }
+    }
+
     private void updateCartContentsCount(HttpServletResponse response, Model model, Cookie cookie) {
         cookie.setPath("/books");
         response.addCookie(cookie);
@@ -89,6 +109,7 @@ public class PostponedAndCartService {
 
         model.addAttribute("isPostponedEmpty", false);
     }
+
 
 
 }

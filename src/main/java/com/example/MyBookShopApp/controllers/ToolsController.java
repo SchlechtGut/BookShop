@@ -17,12 +17,6 @@ public class ToolsController  extends DefaultController {
         this.genreService = genreService;
     }
 
-
-    @GetMapping("/postponed")
-    public String postponed(){
-        return "postponed";
-    }
-
     @GetMapping("/signin")
     public String signin(){
         return "signin";

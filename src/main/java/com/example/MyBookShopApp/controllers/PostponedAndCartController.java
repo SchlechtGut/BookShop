@@ -25,14 +25,8 @@ public class PostponedAndCartController extends DefaultController {
         this.postponedAndCartService = postponedAndCartService;
     }
 
-    @ModelAttribute(name = "bookCart")
-    public List<Book> bookCart() {
-        return new ArrayList<>();
-    }
-
     @GetMapping("/cart")
-    public String handleCartRequest(@CookieValue(value = "cartContents", required = false) String cartContents,
-                                    Model model) {
+    public String cart(@CookieValue(required = false) String cartContents, Model model) {
         if (cartContents == null || cartContents.equals("")) {
             model.addAttribute("isCartEmpty", true);
         } else {
@@ -49,23 +43,72 @@ public class PostponedAndCartController extends DefaultController {
         return "cart";
     }
 
+    @GetMapping("/postponed")
+    public String postponed(@CookieValue(required = false) String postponedBooks, Model model) {
+        if (postponedBooks == null || postponedBooks.equals("")) {
+            model.addAttribute("isPostponedEmpty", true);
+        } else {
+            model.addAttribute("isPostponedEmpty", false);
+            postponedBooks = postponedBooks.startsWith("/") ? postponedBooks.substring(1) : postponedBooks;
+            postponedBooks = postponedBooks.endsWith("/") ? postponedBooks.substring(0, postponedBooks.length() - 1) : postponedBooks;
+            String[] cookieSlugs = postponedBooks.split("/");
+            List<Book> booksFromCookieSlugs = bookService.findBooksBySlugIn(cookieSlugs);
+            model.addAttribute("postponedBooks", booksFromCookieSlugs);
+            model.addAttribute("totalPrice", booksFromCookieSlugs.stream().mapToInt(Book::getDiscountPrice).sum());
+            model.addAttribute("totalOldPrice", booksFromCookieSlugs.stream().mapToInt(Book::getPriceOld).sum());
+        }
+
+        System.out.println("before");
+
+        return "postponed";
+    }
+
     @PostMapping("/changeBookStatus/cart/remove/{slug}")
-    public String handleRemoveBookFromCartRequest(@PathVariable("slug") String slug, @CookieValue(name =
-            "cartContents", required = false) String cartContents, HttpServletResponse response, Model model) {
+    public String handleRemoveBookFromCartRequest(@PathVariable String slug, @CookieValue(required = false) String cartContents,
+                                                  HttpServletResponse response, Model model) {
         postponedAndCartService.removeBookFromCart(slug, cartContents, response, model);
 
         return "redirect:/books/cart";
     }
 
+    @PostMapping("/changeBookStatus/postponed/remove/{slug}")
+    public String handleRemoveBookFromPostponedRequest(@PathVariable String slug, @CookieValue(required = false) String postponedBooks,
+                                                  HttpServletResponse response, Model model) {
+        postponedAndCartService.removeBookFromPostponed(slug, postponedBooks, response, model);
+
+        return "redirect:/books/postponed";
+    }
+
 
 
     @PostMapping("/changeBookStatus/{slug}")
-    public String handleChangeBookStatus(@PathVariable("slug") String slug, @CookieValue(name = "cartContents",
-            required = false) String cartContents, @CookieValue(name = "postponedBooks", required = false) String postponedBooks,
+    public String handleChangeBookStatus(@RequestParam String status , @PathVariable String slug,
+                                         @CookieValue(required = false) String cartContents,
+                                         @CookieValue(required = false) String postponedBooks,
                                          HttpServletResponse response, Model model) {
 
-        postponedAndCartService.addToCart(slug, cartContents, response, model);
-        postponedAndCartService.addToPostponedBooks(slug, postponedBooks, response, model);
+        if (cartContents == null) cartContents = "";
+        if (postponedBooks == null) postponedBooks = "";
+
+        if (!cartContents.contains(slug) && !postponedBooks.contains(slug)) {
+            if (status.equals("KEPT")) {
+                postponedAndCartService.addToPostponedBooks(slug, postponedBooks, response, model);
+            } else if (status.equals("CART")) {
+                postponedAndCartService.addToCart(slug, cartContents, response, model);
+            }
+        } else if (postponedBooks.contains(slug)) {
+            if (status.equals("CART")) {
+                postponedAndCartService.addToCart(slug, cartContents, response, model);
+            }
+            postponedAndCartService.removeBookFromPostponed(slug, postponedBooks, response, model);
+        } else if (cartContents.contains(slug)) {
+            if (status.equals("KEPT")) {
+                postponedAndCartService.addToPostponedBooks(slug, postponedBooks, response, model);
+                postponedAndCartService.removeBookFromCart(slug, cartContents, response, model);
+            } else {
+                return "redirect:/books/cart";
+            }
+        }
 
         return ("redirect:/books/" + slug);
     }
