@@ -21,14 +21,17 @@ public class UserContactEntity {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String code;
 
-    @Column(columnDefinition = "INT")
+    @Column(name = "code_trails", columnDefinition = "INT")
     private int codeTrails;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(name = "code_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime codeTime;
 
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String contact;
+
+    @Column(name = "user_id", columnDefinition = "INT NOT NULL")
+    private Integer userId;
 
     public int getId() {
         return id;
@@ -84,5 +87,13 @@ public class UserContactEntity {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

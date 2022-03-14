@@ -783,8 +783,11 @@
 -- insert into book2genre (book_id, genre_id) values (45, 6);
 -- insert into book2genre (book_id, genre_id) values (12, 51);
 -- insert into book2genre (book_id, genre_id) values (9, 14);
+--
+--
+-- insert into book_file (id, hash, type_id, path, book_id) values (1, 'fsdl342ladads76432', 1, '/Twelve.pdf',1);
+-- insert into book_file (id, hash, type_id, path, book_id) values (2, 'asdl35436dads34235', 2, '/Twelve.epub',1);
+-- insert into book_file (id, hash, type_id, path, book_id) values (3, 'qwer342lafdss34123', 3, '/Twelve.fb2',1);
 
 
-insert into book_file (id, hash, type_id, path, book_id) values (1, 'fsdl342ladads76432', 1, '/Twelve.pdf',1);
-insert into book_file (id, hash, type_id, path, book_id) values (2, 'asdl35436dads34235', 2, '/Twelve.epub',1);
-insert into book_file (id, hash, type_id, path, book_id) values (3, 'qwer342lafdss34123', 3, '/Twelve.fb2',1);
+insert into users (id, hash, reg_time, balance, name) values (0, 'somehash', '2022-02-22 22:22:22', 0, 'Zero uzer');

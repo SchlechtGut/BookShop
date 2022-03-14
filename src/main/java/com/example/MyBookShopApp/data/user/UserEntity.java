@@ -6,6 +6,7 @@ import com.example.MyBookShopApp.data.book.review.BookReviewEntity;
 import com.example.MyBookShopApp.data.book.review.BookReviewLikeEntity;
 import com.example.MyBookShopApp.data.book.review.MessageEntity;
 import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class UserEntity {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String hash;
 
-    @Column(columnDefinition = "TIMESTAMP NOT NULL")
+    @Column(name = "reg_time", columnDefinition = "TIMESTAMP NOT NULL")
     private LocalDateTime regTime;
 
     @Column(columnDefinition = "INT NOT NULL")
@@ -31,31 +32,32 @@ public class UserEntity {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private List<Book2UserEntity> book2UserEntities;
 
-    @OneToMany
-    @JoinColumn(name = "user_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
     private List<UserContactEntity> userContacts;
 
-    @OneToMany
-    @JoinColumn(name = "user_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
     private List<FileDownloadEntity> fileDownloads;
 
-    @OneToMany
-    @JoinColumn(name = "user_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
     private List<BalanceTransactionEntity> balanceTransactions;
 
-    @OneToMany
-    @JoinColumn(name = "user_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
     private List<MessageEntity> messages;
 
-    @OneToMany
-    @JoinColumn(name = "user_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
     private List<BookReviewEntity> bookReviews;
 
-    @OneToMany
-    @JoinColumn(name = "user_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
     private List<BookReviewLikeEntity> bookReviewLikes;
 
 

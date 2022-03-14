@@ -13,6 +13,12 @@ public class FileDownloadEntity {
     @Column(columnDefinition = "INT NOT NULL DEFAULT 1")
     private int count;
 
+    @Column(name = "book_id", columnDefinition = "INT NOT NULL")
+    private Integer bookId;
+
+    @Column(name = "user_id", columnDefinition = "INT NOT NULL")
+    private Integer userId;
+
     public int getId() {
         return id;
     }
@@ -27,5 +33,21 @@ public class FileDownloadEntity {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public Integer getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

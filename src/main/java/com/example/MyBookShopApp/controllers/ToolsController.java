@@ -22,6 +22,11 @@ public class ToolsController  extends DefaultController {
         return "signin";
     }
 
+    @GetMapping("/signup")
+    public String signup(){
+        return "signup";
+    }
+
     @GetMapping("/documents")
     public String documents(){
         return "/documents/index";

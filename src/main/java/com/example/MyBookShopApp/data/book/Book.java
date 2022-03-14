@@ -4,6 +4,7 @@ import com.example.MyBookShopApp.data.book.file.BookFile;
 import com.example.MyBookShopApp.data.book.file.FileDownloadEntity;
 import com.example.MyBookShopApp.data.book.links.Book2AuthorEntity;
 import com.example.MyBookShopApp.data.book.links.Book2UserEntity;
+import com.example.MyBookShopApp.data.book.rating.BookRating;
 import com.example.MyBookShopApp.data.book.review.BookReviewEntity;
 import com.example.MyBookShopApp.data.book.tag.Tag;
 import com.example.MyBookShopApp.data.genre.Genre;
@@ -16,6 +17,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -64,18 +66,15 @@ public class Book {
     private List<Book2UserEntity> book2UserEntities;
 
     @JsonIgnore
-    @OneToMany
-    @JoinColumn(name = "book_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
+    @OneToMany(mappedBy = "bookId")
     private List<FileDownloadEntity> fileDownloads;
 
     @JsonIgnore
-    @OneToMany
-    @JoinColumn(name = "book_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
+    @OneToMany(mappedBy = "bookId")
     private List<BalanceTransactionEntity> balanceTransactions;
 
     @JsonIgnore
-    @OneToMany
-    @JoinColumn(name = "book_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
+    @OneToMany(mappedBy = "bookId")
     private List<BookReviewEntity> bookReviews;
 
     @JsonIgnore
@@ -93,7 +92,14 @@ public class Book {
     @JsonIgnore
     private List<BookFile> bookFileList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "bookId")
+    @JsonIgnore
+    private Set<BookRating> ratings;
 
+    @JsonIgnore
+    public Integer getRating() {
+        return Math.toIntExact(Math.round(ratings.stream().map(BookRating::getValue).mapToInt(Integer::intValue).average().orElse(0)));
+    }
 
     @JsonGetter
     public Integer getDiscountPrice(){
@@ -258,6 +264,14 @@ public class Book {
 
     public void setBookFileList(List<BookFile> bookFileList) {
         this.bookFileList = bookFileList;
+    }
+
+    public Set<BookRating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<BookRating> ratings) {
+        this.ratings = ratings;
     }
 
     @Override

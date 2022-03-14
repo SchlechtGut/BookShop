@@ -20,6 +20,12 @@ public class BalanceTransactionEntity {
     @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
 
+    @Column(name = "book_id", columnDefinition = "INT NOT NULL")
+    private Integer bookId;
+
+    @Column(name = "user_id", columnDefinition = "INT NOT NULL")
+    private Integer userId;
+
     public int getId() {
         return id;
     }
@@ -50,5 +56,21 @@ public class BalanceTransactionEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

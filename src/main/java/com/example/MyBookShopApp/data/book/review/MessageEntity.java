@@ -26,6 +26,9 @@ public class MessageEntity {
     @Column(columnDefinition = "TEXT NOT NULL")
     private String text;
 
+    @Column(name = "user_id", columnDefinition = "INT NOT NULL")
+    private int userId;
+
     public int getId() {
         return id;
     }
@@ -72,5 +75,13 @@ public class MessageEntity {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

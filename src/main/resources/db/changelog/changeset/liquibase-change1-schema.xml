@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="SchlechtGut (generated)" id="1647156010519-7">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="book_review" constraintName="FKntncp0b191bex8jkm3vy3l13x" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="SchlechtGut (generated)" id="1647156010519-1">
+        <dropNotNullConstraint columnDataType="timestamp NOT NULL" columnName="regTime" tableName="users"/>
+    </changeSet>
+    <changeSet author="SchlechtGut (generated)" id="1647156010519-2">
+        <dropNotNullConstraint columnDataType="timestamp NOT NULL" columnName="time" tableName="balance_transaction"/>
+    </changeSet>
+    <changeSet author="SchlechtGut (generated)" id="1647156010519-3">
+        <dropNotNullConstraint columnDataType="timestamp NOT NULL" columnName="time" tableName="book2user"/>
+    </changeSet>
+    <changeSet author="SchlechtGut (generated)" id="1647156010519-4">
+        <dropNotNullConstraint columnDataType="timestamp NOT NULL" columnName="time" tableName="book_review"/>
+    </changeSet>
+    <changeSet author="SchlechtGut (generated)" id="1647156010519-5">
+        <dropNotNullConstraint columnDataType="timestamp NOT NULL" columnName="time" tableName="book_review_like"/>
+    </changeSet>
+    <changeSet author="SchlechtGut (generated)" id="1647156010519-6">
+        <dropNotNullConstraint columnDataType="timestamp NOT NULL" columnName="time" tableName="message"/>
+    </changeSet>
+</databaseChangeLog>

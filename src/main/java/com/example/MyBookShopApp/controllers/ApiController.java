@@ -38,16 +38,16 @@ public class ApiController {
     }
 
     @GetMapping("/books/recommended")
-    public BooksPageDto recommended(@RequestParam("offset") Integer offset,
-                                    @RequestParam("limit") Integer limit) {
+    public BooksPageDto recommended(@RequestParam Integer offset,
+                                    @RequestParam Integer limit) {
         Page<Book> page = bookService.getPageOfRecommendedBooks(offset, limit);
 
         return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
 
     @GetMapping("/books/popular")
-    public BooksPageDto popular(@RequestParam("offset") Integer offset,
-                                @RequestParam("limit") Integer limit,
+    public BooksPageDto popular(@RequestParam Integer offset,
+                                @RequestParam Integer limit,
                                 Model model) {
         Page<Book> page = booksRatingAndPopularityService.getPageOfPopularBooks(offset, limit);
         model.addAttribute("newPage" , page.getContent().size());
@@ -56,8 +56,8 @@ public class ApiController {
     }
 
     @GetMapping("/books/tag/{id}")
-    public BooksPageDto tagBooks(@RequestParam("offset") Integer offset,
-                                 @RequestParam("limit") Integer limit,
+    public BooksPageDto tagBooks(@RequestParam Integer offset,
+                                 @RequestParam Integer limit,
                                  @PathVariable Integer id) {
         Page<Book> page = bookService.getPageOfBooksByTag(id, offset, limit);
 
@@ -65,8 +65,8 @@ public class ApiController {
     }
 
     @GetMapping("/books/genre/{id}")
-    public BooksPageDto genreBooks(@RequestParam("offset") Integer offset,
-                                 @RequestParam("limit") Integer limit,
+    public BooksPageDto genreBooks(@RequestParam Integer offset,
+                                 @RequestParam Integer limit,
                                  @PathVariable Integer id) {
         Page<Book> page = bookService.getPageOfBooksByGenre(id, offset, limit);
 
@@ -74,8 +74,8 @@ public class ApiController {
     }
 
     @GetMapping("/books/author/{id}")
-    public BooksPageDto authorBooks(@RequestParam("offset") Integer offset,
-                                    @RequestParam("limit") Integer limit,
+    public BooksPageDto authorBooks(@RequestParam Integer offset,
+                                    @RequestParam Integer limit,
                                     @PathVariable Integer id) {
         Page<Book> page = bookService.getPageOfAuthorBooks(id, offset, limit);
 

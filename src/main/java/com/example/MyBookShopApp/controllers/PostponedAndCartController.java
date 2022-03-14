@@ -82,7 +82,7 @@ public class PostponedAndCartController extends DefaultController {
 
 
     @PostMapping("/changeBookStatus/{slug}")
-    public String handleChangeBookStatus(@RequestParam String status , @PathVariable String slug,
+    public String handleChangeBookStatus(@RequestParam String status, @PathVariable String slug,
                                          @CookieValue(required = false) String cartContents,
                                          @CookieValue(required = false) String postponedBooks,
                                          HttpServletResponse response, Model model) {

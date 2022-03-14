@@ -9,30 +9,43 @@ public class BookReviewLikeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @Column(columnDefinition = "INT NOT NULL")
-    private int reviewId;
+    @Column(name = "review_id", columnDefinition = "INT NOT NULL")
+    private Integer reviewId;
+
+    @Column(name = "user_id", columnDefinition = "INT NOT NULL")
+    private Integer userId;
 
     @Column(columnDefinition = "TIMESTAMP NOT NULL")
     private LocalDateTime time;
 
     @Column(columnDefinition = "SMALLINT NOT NULL")
-    private short value;
+    private Integer value;
 
-    public int getId() {
+    public BookReviewLikeEntity(Integer reviewId, Integer userId, LocalDateTime time, Integer value) {
+        this.reviewId = reviewId;
+        this.userId = userId;
+        this.time = time;
+        this.value = value;
+    }
+
+    public BookReviewLikeEntity() {
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getReviewId() {
+    public Integer getReviewId() {
         return reviewId;
     }
 
-    public void setReviewId(int reviewId) {
+    public void setReviewId(Integer reviewId) {
         this.reviewId = reviewId;
     }
 
@@ -44,11 +57,19 @@ public class BookReviewLikeEntity {
         this.time = time;
     }
 
-    public short getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(short value) {
+    public void setValue(Integer value) {
         this.value = value;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

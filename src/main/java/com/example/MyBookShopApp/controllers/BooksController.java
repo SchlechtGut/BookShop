@@ -2,6 +2,9 @@ package com.example.MyBookShopApp.controllers;
 
 import com.example.MyBookShopApp.data.ResourceStorage;
 import com.example.MyBookShopApp.data.book.Book;
+import com.example.MyBookShopApp.data.book.rating.BookRating;
+import com.example.MyBookShopApp.service.BookRatingService;
+import com.example.MyBookShopApp.service.BookReviewService;
 import com.example.MyBookShopApp.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
@@ -22,18 +26,36 @@ import java.util.logging.Logger;
 public class BooksController extends DefaultController {
 
     private final BookService bookService;
+    private final BookRatingService bookRatingService;
+    private final BookReviewService bookReviewService;
     private final ResourceStorage storage;
 
     @Autowired
-    public BooksController(BookService bookService, ResourceStorage storage) {
+    public BooksController(BookService bookService, BookRatingService bookRatingService, BookReviewService bookReviewService, ResourceStorage storage) {
         this.bookService = bookService;
+        this.bookRatingService = bookRatingService;
+        this.bookReviewService = bookReviewService;
         this.storage = storage;
     }
 
-
     @GetMapping("/{slug}")
     public String bookPage(@PathVariable String slug, Model model) {
-        model.addAttribute("slugBook", bookService.getBookBySlug(slug));
+        Book book = bookService.getBookBySlug(slug);
+        List<BookRating> rates = bookRatingService.getRatesDistribution(book.getId());
+
+        model.addAttribute("slugBook", book);
+        model.addAttribute("rating", book.getRating());
+        model.addAttribute("ratesCount", book.getRatings().size());
+        model.addAttribute("tagsCount", book.getTags().size());
+        model.addAttribute("reviews", bookReviewService.getPageOfBookReviews(book.getId(), 0, 3).getContent());
+        model.addAttribute("oneStar",  rates.stream().filter(x->x.getValue() == 1).count());
+        model.addAttribute("twoStars",  rates.stream().filter(x->x.getValue() == 2).count());
+        model.addAttribute("threeStars",  rates.stream().filter(x->x.getValue() == 3).count());
+        model.addAttribute("fourStars",  rates.stream().filter(x->x.getValue() == 4).count());
+        model.addAttribute("fiveStars",  rates.stream().filter(x->x.getValue() == 5).count());
+
+        model.addAttribute("signedIn", true); // let's say user is here
+
         return "/books/slug";
     }
 

@@ -5,3 +5,6 @@ $('#uploadButton').on('click', function () {
 $('#dialog').on('change',function () {
     $('#imgForm').submit();
 });
+
+
+

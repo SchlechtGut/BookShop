@@ -1,10 +1,10 @@
 package com.example.MyBookShopApp.service;
 
 import com.example.MyBookShopApp.errs.BookstoreApiWrongParameterException;
+import com.example.MyBookShopApp.repository.BookRatingRepository;
 import com.example.MyBookShopApp.repository.BookRepository;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,10 +21,12 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final BookRatingRepository bookRatingRepository;
 
     @Autowired
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, BookRatingRepository bookRatingRepository) {
         this.bookRepository = bookRepository;
+        this.bookRatingRepository = bookRatingRepository;
     }
 
     public List<Book> getBooksData(){
@@ -176,4 +178,7 @@ public class BookService {
         return bookRepository.findBooksByIdIn(bookIds);
     }
 
+    public Book getBookById(Integer bookId) {
+        return bookRepository.findById(bookId).get();
+    }
 }
