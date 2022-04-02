@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.data.book.review;
 
-import com.example.MyBookShopApp.data.user.UserEntity;
+import com.example.MyBookShopApp.data.user.User;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -26,7 +26,7 @@ public class BookReviewEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", columnDefinition = "INT NOT NULL")
-    private UserEntity user;
+    private User user;
 
     @OneToMany(mappedBy = "reviewId")
     @Where(clause = "value = 1")
@@ -36,7 +36,7 @@ public class BookReviewEntity {
     @Where(clause = "value = -1")
     private Set<BookReviewLikeEntity> dislikeSet;
 
-    public BookReviewEntity(LocalDateTime time, String text, Integer bookId, UserEntity user) {
+    public BookReviewEntity(LocalDateTime time, String text, Integer bookId, User user) {
         this.time = time;
         this.text = text;
         this.bookId = bookId;
@@ -97,11 +97,11 @@ public class BookReviewEntity {
         this.bookId = bookId;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity userId) {
+    public void setUser(User userId) {
         this.user = userId;
     }
 

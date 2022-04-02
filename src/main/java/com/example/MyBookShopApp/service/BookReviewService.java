@@ -2,13 +2,12 @@ package com.example.MyBookShopApp.service;
 
 import com.example.MyBookShopApp.data.book.review.BookReviewEntity;
 import com.example.MyBookShopApp.data.book.review.BookReviewLikeEntity;
-import com.example.MyBookShopApp.data.user.UserEntity;
+import com.example.MyBookShopApp.data.user.User;
 import com.example.MyBookShopApp.repository.BookReviewRateRepository;
 import com.example.MyBookShopApp.repository.BookReviewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -35,7 +34,7 @@ public class BookReviewService {
         bookReviewRateRepository.save(bookReviewLike);
     }
 
-    public void addReview(Integer bookId, String text, UserEntity user) {
+    public void addReview(Integer bookId, String text, User user) {
         BookReviewEntity bookReviewEntity = new BookReviewEntity(LocalDateTime.now(), text, bookId, user);
         bookReviewRepository.save(bookReviewEntity);
 

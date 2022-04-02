@@ -47,7 +47,7 @@ public class BooksController extends DefaultController {
         model.addAttribute("rating", book.getRating());
         model.addAttribute("ratesCount", book.getRatings().size());
         model.addAttribute("tagsCount", book.getTags().size());
-        model.addAttribute("reviews", bookReviewService.getPageOfBookReviews(book.getId(), 0, 3).getContent());
+        model.addAttribute("reviews", book.getBookReviews());
         model.addAttribute("oneStar",  rates.stream().filter(x->x.getValue() == 1).count());
         model.addAttribute("twoStars",  rates.stream().filter(x->x.getValue() == 2).count());
         model.addAttribute("threeStars",  rates.stream().filter(x->x.getValue() == 3).count());

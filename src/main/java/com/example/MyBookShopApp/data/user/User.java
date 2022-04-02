@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,10 @@ public class UserEntity {
 
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String name;
+
+    private String email;
+    private String phone;
+    private String password;
 
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
@@ -156,5 +160,29 @@ public class UserEntity {
 
     public void setBookReviewLikes(List<BookReviewLikeEntity> bookReviewLikes) {
         this.bookReviewLikes = bookReviewLikes;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

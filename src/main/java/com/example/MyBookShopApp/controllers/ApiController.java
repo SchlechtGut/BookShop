@@ -77,6 +77,7 @@ public class ApiController {
     public BooksPageDto authorBooks(@RequestParam Integer offset,
                                     @RequestParam Integer limit,
                                     @PathVariable Integer id) {
+
         Page<Book> page = bookService.getPageOfAuthorBooks(id, offset, limit);
 
         return new BooksPageDto(page.getTotalElements(), page.getContent());

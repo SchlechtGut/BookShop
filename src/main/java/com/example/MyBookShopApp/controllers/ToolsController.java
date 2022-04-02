@@ -9,22 +9,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-public class ToolsController  extends DefaultController {
+public class ToolsController extends DefaultController {
 
     private final GenreService genreService;
 
     public ToolsController(GenreService genreService) {
         this.genreService = genreService;
-    }
-
-    @GetMapping("/signin")
-    public String signin(){
-        return "signin";
-    }
-
-    @GetMapping("/signup")
-    public String signup(){
-        return "signup";
     }
 
     @GetMapping("/documents")

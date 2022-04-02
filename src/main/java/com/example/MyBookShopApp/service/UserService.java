@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.service;
 
-import com.example.MyBookShopApp.data.user.UserEntity;
+import com.example.MyBookShopApp.data.user.User;
 import com.example.MyBookShopApp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<UserEntity> getUserById(int id) {
+    public Optional<User> getUserById(int id) {
         return userRepository.findById(id);
     }
 }

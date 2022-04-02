@@ -1,7 +1,5 @@
 package com.example.MyBookShopApp.data.book.links;
 
-import com.example.MyBookShopApp.data.book.Book;
-import com.example.MyBookShopApp.data.user.UserEntity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

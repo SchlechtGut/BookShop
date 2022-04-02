@@ -51,8 +51,6 @@ public class ReviewController {
     @GetMapping("/api/book/{id}/reviews")
     @ResponseBody
     public BookReviewsResponse getReviewsByBookId(@RequestParam Integer offset, @RequestParam Integer limit, @PathVariable Integer id) {
-        System.out.println(offset);
-        System.out.println(limit);
         Page<BookReviewEntity> page = bookReviewService.getPageOfBookReviews(id, offset, limit);
         return new BookReviewsResponse(page.getTotalElements(), page.getContent());
     }
