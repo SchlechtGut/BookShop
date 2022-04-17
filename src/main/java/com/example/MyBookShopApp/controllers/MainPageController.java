@@ -1,11 +1,11 @@
 package com.example.MyBookShopApp.controllers;
 
-import com.example.MyBookShopApp.data.book.tag.Tag;
-import com.example.MyBookShopApp.errs.EmptySearchException;
-import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.SearchWordDto;
 import com.example.MyBookShopApp.data.book.Book;
+import com.example.MyBookShopApp.data.book.tag.Tag;
+import com.example.MyBookShopApp.errs.EmptySearchException;
+import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
 import com.example.MyBookShopApp.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class MainPageController extends DefaultController {
     }
 
     @GetMapping()
-    public String mainPage(){
+    public String mainPage() throws Exception {
         return "index";
     }
 

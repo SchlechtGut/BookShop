@@ -2,18 +2,15 @@ package com.example.MyBookShopApp.security;
 
 import com.example.MyBookShopApp.controllers.DefaultController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @Controller
 public class AuthUserController extends DefaultController {
@@ -75,11 +72,17 @@ public class AuthUserController extends DefaultController {
     }
 
     @GetMapping("/profile")
-    public String handleProfile(Model model) {
-        model.addAttribute("curUsr", userRegister.getCurrentUser());
+    public String handleProfile(Model model, Authentication authentication) {
+        model.addAttribute("curUsr", userRegister.getCurrentUser(authentication));
         return "profile";
     }
-//
+
+    @GetMapping("/oauth-success-login")
+    public String oauthSuccess(OAuth2AuthenticationToken auth2AuthenticationToken) {
+        userRegister.registerOauthUser(auth2AuthenticationToken.getPrincipal());
+        return "redirect:/my";
+    }
+
 //    @GetMapping("/logout")
 //    public String handleLogout(HttpServletRequest request) {
 //        HttpSession session = request.getSession();

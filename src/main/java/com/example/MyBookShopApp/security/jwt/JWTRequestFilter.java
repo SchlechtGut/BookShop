@@ -2,6 +2,8 @@ package com.example.MyBookShopApp.security.jwt;
 
 import com.example.MyBookShopApp.security.BookstoreUserDetails;
 import com.example.MyBookShopApp.security.BookstoreUserDetailsService;
+import com.example.MyBookShopApp.security.SecurityConfig;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -15,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
@@ -38,10 +41,25 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     token = cookie.getValue();
-                    username = jwtUtil.extractUsername(token);
+
+                    if (jwtUtil.blackListContains(token)) {
+                        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
+                        return;
+                    }
+
+                    try {
+                        username = jwtUtil.extractUsername(token);
+                    } catch (ExpiredJwtException e) {
+                        Logger.getLogger("JWTRequestFilter").info("JWT expired, need to log out");
+                        httpServletResponse.sendRedirect("/logout");
+                        Logger.getLogger("JWTRequestFilter").info("logged out");
+                        return;
+                    }
                 }
 
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+
                     BookstoreUserDetails userDetails = (BookstoreUserDetails) bookstoreUserDetailsService.loadUserByUsername(username);
                     if (jwtUtil.validateToken(token, userDetails)) {
                         UsernamePasswordAuthenticationToken authenticationToken =

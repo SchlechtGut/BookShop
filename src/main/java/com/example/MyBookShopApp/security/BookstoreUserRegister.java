@@ -9,6 +9,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -64,9 +66,32 @@ public class BookstoreUserRegister {
         return response;
     }
 
-    public Object getCurrentUser() {
-        BookstoreUserDetails userDetails =
-                (BookstoreUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userDetails.getBookstoreUser();
+    public User getCurrentUser(Authentication authentication) {
+        User user;
+
+        if (authentication instanceof OAuth2AuthenticationToken) {
+            OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+            user = bookstoreUserRepository.findByEmail(oAuth2User.getAttribute("email"));
+
+            System.out.println(user);
+
+        } else {
+            BookstoreUserDetails userDetails = (BookstoreUserDetails) authentication.getPrincipal();
+            user = userDetails.getBookstoreUser();
+
+            System.out.println(user);
+        }
+
+        return user;
+    }
+
+    public void registerOauthUser(OAuth2User principal) {
+        if (!bookstoreUserRepository.existsByEmail(principal.getAttribute("email"))) {
+            User user = new User();
+            user.setEmail(principal.getAttribute("email"));
+            user.setName(principal.getAttribute("name"));
+
+            bookstoreUserRepository.save(user);
+        }
     }
 }
