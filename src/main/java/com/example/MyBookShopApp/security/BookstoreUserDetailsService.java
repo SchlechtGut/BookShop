@@ -20,10 +20,14 @@ public class BookstoreUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         User bookstoreUser = userRepository.findByEmail(name);
+
         if(bookstoreUser!=null){
             return new BookstoreUserDetails(bookstoreUser);
         }else{
             throw new UsernameNotFoundException("user not found doh!");
         }
     }
+
+
+
 }

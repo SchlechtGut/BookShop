@@ -73,13 +73,9 @@ public class BookstoreUserRegister {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
             user = bookstoreUserRepository.findByEmail(oAuth2User.getAttribute("email"));
 
-            System.out.println(user);
-
         } else {
             BookstoreUserDetails userDetails = (BookstoreUserDetails) authentication.getPrincipal();
             user = userDetails.getBookstoreUser();
-
-            System.out.println(user);
         }
 
         return user;
@@ -90,6 +86,7 @@ public class BookstoreUserRegister {
             User user = new User();
             user.setEmail(principal.getAttribute("email"));
             user.setName(principal.getAttribute("name"));
+            user.setPhone(principal.getAttribute("phone"));
 
             bookstoreUserRepository.save(user);
         }

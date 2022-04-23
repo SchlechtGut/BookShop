@@ -11,6 +11,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class BooksController extends DefaultController {
     }
 
     @GetMapping("/{slug}")
-    public String bookPage(@PathVariable String slug, Model model) {
+    public String bookPage(@PathVariable String slug, Model model, Authentication authentication) {
         Book book = bookService.getBookBySlug(slug);
         List<BookRating> rates = bookRatingService.getRatesDistribution(book.getId());
 
@@ -54,7 +55,7 @@ public class BooksController extends DefaultController {
         model.addAttribute("fourStars",  rates.stream().filter(x->x.getValue() == 4).count());
         model.addAttribute("fiveStars",  rates.stream().filter(x->x.getValue() == 5).count());
 
-        model.addAttribute("signedIn", true); // let's say user is here
+        model.addAttribute("signedIn", authentication != null ); // let's say user is here
 
         return "/books/slug";
     }

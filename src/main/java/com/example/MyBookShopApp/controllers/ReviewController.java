@@ -7,6 +7,7 @@ import com.example.MyBookShopApp.data.book.review.BookReviewLikeEntity;
 import com.example.MyBookShopApp.service.BookReviewService;
 import com.example.MyBookShopApp.service.UserService;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

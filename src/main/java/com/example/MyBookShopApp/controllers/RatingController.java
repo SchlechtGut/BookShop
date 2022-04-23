@@ -5,6 +5,7 @@ import com.example.MyBookShopApp.data.book.rating.BookRating;
 import com.example.MyBookShopApp.service.BookRatingService;
 import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.service.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,14 +22,22 @@ public class RatingController {
     }
 
     @PostMapping("/api/rateBook")
-    public String rateBook(@RequestParam Integer value, @RequestParam Integer bookId) {
+    public String rateBook(@RequestParam Integer value, @RequestParam Integer bookId, Authentication authentication) {
         Book book = bookService.getBookById(bookId);
-        BookRating bookRating = new BookRating(value, book.getId());
 
-        if (bookRatingService.hasBookId(book.getId()) && bookRatingService.hasUserId(null)) { // null is a temporary global user
-            bookRatingService.deleteBookRatingByBookId(book.getId());
+        System.out.println("before");
+
+        if (authentication == null) {
+            System.out.println("null");
+            return ("redirect:/books/" + book.getSlug());
+        } else if (bookRatingService.hasBookId(bookId)){
+            bookRatingService.deleteBookRatingByBookId(bookId);
+            System.out.println("else if");
         }
 
+        System.out.println("after");
+
+        BookRating bookRating = new BookRating(value, book.getId());
         bookRatingService.addRating(bookRating);
 
         return ("redirect:/books/" + book.getSlug());

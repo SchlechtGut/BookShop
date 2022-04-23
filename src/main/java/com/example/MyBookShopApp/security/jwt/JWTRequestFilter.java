@@ -4,6 +4,7 @@ import com.example.MyBookShopApp.security.BookstoreUserDetails;
 import com.example.MyBookShopApp.security.BookstoreUserDetailsService;
 import com.example.MyBookShopApp.security.SecurityConfig;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -43,7 +44,8 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                     token = cookie.getValue();
 
                     if (jwtUtil.blackListContains(token)) {
-                        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
+                        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT token in black list");
+                        Logger.getLogger("JWTRequestFilter").info("JWT token in black list");
                         return;
                     }
 
@@ -54,11 +56,16 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                         httpServletResponse.sendRedirect("/logout");
                         Logger.getLogger("JWTRequestFilter").info("logged out");
                         return;
+                    } catch (SignatureException e) {
+                        httpServletResponse.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "JWT signature does not match locally computed signature");
+                        Logger.getLogger("JWTRequestFilter").info("JWT signature does not match locally computed signature");
+                        return;
                     }
                 }
 
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
+                    System.out.println("first");
 
                     BookstoreUserDetails userDetails = (BookstoreUserDetails) bookstoreUserDetailsService.loadUserByUsername(username);
                     if (jwtUtil.validateToken(token, userDetails)) {
