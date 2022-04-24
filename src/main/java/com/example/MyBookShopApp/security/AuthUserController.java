@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 @Controller
 public class AuthUserController extends DefaultController {
 
-    private final BookstoreUserRegister userRegister;
+    private final UserRegister userRegister;
 
     @Autowired
-    public AuthUserController(BookstoreUserRegister userRegister) {
+    public AuthUserController(UserRegister userRegister) {
         this.userRegister = userRegister;
     }
 

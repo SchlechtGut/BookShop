@@ -19,16 +19,12 @@ public class BookRatingService {
         bookRatingRepository.save(rating);
     }
 
-    public boolean hasBookId(Integer id) {
-        return bookRatingRepository.existsBookRatingByBookId(id);
+    public boolean userRatedBook(Integer userId, Integer bookId) {
+        return bookRatingRepository.existsByUserIdAndBookId(userId, bookId);
     }
 
-    public boolean hasUserId(Integer id) {
-        return bookRatingRepository.existsBookRatingByUserId(id);
-    }
-
-    public void deleteBookRatingByBookId(Integer id) {
-        bookRatingRepository.deleteByBookId(id);
+    public void deleteBookRating(Integer userId, Integer bookId) {
+        bookRatingRepository.deleteByUserIdAndBookId(userId, bookId);
     }
 
     public List<BookRating> getRatesDistribution(Integer bookId) {

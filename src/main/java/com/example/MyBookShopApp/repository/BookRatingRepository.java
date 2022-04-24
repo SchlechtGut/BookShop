@@ -11,8 +11,10 @@ public interface BookRatingRepository extends JpaRepository<BookRating, Integer>
 
     boolean existsBookRatingByUserId(Integer userId);
 
+    boolean existsByUserIdAndBookId(Integer userId, Integer bookId);
+
     @Transactional
-    void deleteByBookId(Integer bookId);
+    void deleteByUserIdAndBookId(Integer userId, Integer bookId);
 
     List<BookRating> findByBookId(Integer bookId);
 }

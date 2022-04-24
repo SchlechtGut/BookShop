@@ -18,9 +18,10 @@ public class BookRating {
     @Column(name = "user_id")
     private Integer userId;
 
-    public BookRating(Integer value, Integer bookId) {
+    public BookRating(Integer value, Integer bookId, Integer userId) {
         this.value = value;
         this.bookId = bookId;
+        this.userId = userId;
     }
 
     public BookRating() {
@@ -57,5 +58,15 @@ public class BookRating {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "BookRating{" +
+                "id=" + id +
+                ", value=" + value +
+                ", bookId=" + bookId +
+                ", userId=" + userId +
+                '}';
     }
 }

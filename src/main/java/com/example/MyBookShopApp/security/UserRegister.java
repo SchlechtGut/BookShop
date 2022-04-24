@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BookstoreUserRegister {
+public class UserRegister {
 
     private final UserRepository bookstoreUserRepository;
     private final PasswordEncoder passwordEncoder;
@@ -23,7 +23,7 @@ public class BookstoreUserRegister {
     private final JWTUtil jwtUtil;
 
     @Autowired
-    public BookstoreUserRegister(UserRepository bookstoreUserRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, BookstoreUserDetailsService bookstoreUserDetailsService, JWTUtil jwtUtil) {
+    public UserRegister(UserRepository bookstoreUserRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, BookstoreUserDetailsService bookstoreUserDetailsService, JWTUtil jwtUtil) {
         this.bookstoreUserRepository = bookstoreUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;

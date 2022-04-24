@@ -55,7 +55,7 @@ public class BooksController extends DefaultController {
         model.addAttribute("fourStars",  rates.stream().filter(x->x.getValue() == 4).count());
         model.addAttribute("fiveStars",  rates.stream().filter(x->x.getValue() == 5).count());
 
-        model.addAttribute("signedIn", authentication != null ); // let's say user is here
+        model.addAttribute("signedIn", authentication != null );
 
         return "/books/slug";
     }
