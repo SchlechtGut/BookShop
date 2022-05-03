@@ -31,7 +31,7 @@ public class UserRegister {
         this.jwtUtil = jwtUtil;
     }
 
-    public void registerNewUser(RegistrationForm registrationForm) {
+    public User registerNewUser(RegistrationForm registrationForm) {
 
         if (bookstoreUserRepository.findByEmail(registrationForm.getEmail()) == null) {
             User user = new User();
@@ -40,7 +40,10 @@ public class UserRegister {
             user.setPhone(registrationForm.getPhone());
             user.setPassword(passwordEncoder.encode(registrationForm.getPassword()));
             bookstoreUserRepository.save(user);
+            return user;
         }
+
+        return null;
     }
 
     public ContactConfirmationResponse login(ContactConfirmationPayload payload) {

@@ -273,25 +273,4 @@ public class Book {
     public void setRatings(Set<BookRating> ratings) {
         this.ratings = ratings;
     }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", book2AuthorEntities="  +
-                ", book2UserEntities=" +
-                ", fileDownloads=" + fileDownloads +
-                ", balanceTransactions=" + balanceTransactions +
-                ", bookReviews=" + bookReviews +
-                ", genres=" + genres +
-                ", title='" + title + '\'' +
-                ", price='" + priceOld + '\'' +
-                ", description='" + description + '\'' +
-                ", discount=" + discount +
-                ", image='" + image + '\'' +
-                ", isBestseller=" + isBestseller +
-                ", pubDate=" + pubDate +
-                ", slug='" + slug + '\'' +
-                '}';
-    }
 }
