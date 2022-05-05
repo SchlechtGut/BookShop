@@ -43,6 +43,8 @@ public class BookReviewEntity {
         this.user = user;
     }
 
+
+
     public BookReviewEntity() {
     }
 
@@ -119,5 +121,12 @@ public class BookReviewEntity {
 
     public void setDislikeSet(Set<BookReviewLikeEntity> dislikeSet) {
         this.dislikeSet = dislikeSet;
+    }
+
+    @Override
+    public String toString() {
+        return "BookReviewEntity{" +
+                "rating=" + getRating() +
+                '}';
     }
 }

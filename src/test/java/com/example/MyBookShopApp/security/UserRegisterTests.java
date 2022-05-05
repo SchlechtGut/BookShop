@@ -41,10 +41,6 @@ class UserRegisterTests {
         registrationForm.setName("Tester");
         registrationForm.setPassword("123456");
         registrationForm.setPhone("9253018770");
-
-        contactConfirmationPayload = new ContactConfirmationPayload();
-        contactConfirmationPayload.setContact("test@mail.ru");
-        contactConfirmationPayload.setCode("123456");
     }
 
     @AfterEach
@@ -76,15 +72,5 @@ class UserRegisterTests {
         assertNull(user);
     }
 
-    @Test
-    void jwtLogin() {
-        User user = new User();
-        user.setEmail("test@mail.ru");
-        BookstoreUserDetails userDetails = new BookstoreUserDetails(user);
-        String jwtToken = jwtUtil.generateToken(userDetails);
 
-        ContactConfirmationResponse response = userRegister.jwtLogin(contactConfirmationPayload);
-        assertNotNull(response);
-        assertTrue(jwtToken.matches(response.getResult()));
-    }
 }

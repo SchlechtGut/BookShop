@@ -48,14 +48,14 @@ public class BooksController extends DefaultController {
         model.addAttribute("rating", book.getRating());
         model.addAttribute("ratesCount", book.getRatings().size());
         model.addAttribute("tagsCount", book.getTags().size());
-        model.addAttribute("reviews", book.getBookReviews());
+        model.addAttribute("reviews", bookReviewService.sortReviewsByRating(book.getBookReviews()));
         model.addAttribute("oneStar",  rates.stream().filter(x->x.getValue() == 1).count());
         model.addAttribute("twoStars",  rates.stream().filter(x->x.getValue() == 2).count());
         model.addAttribute("threeStars",  rates.stream().filter(x->x.getValue() == 3).count());
         model.addAttribute("fourStars",  rates.stream().filter(x->x.getValue() == 4).count());
         model.addAttribute("fiveStars",  rates.stream().filter(x->x.getValue() == 5).count());
 
-        model.addAttribute("signedIn", authentication != null );
+        model.addAttribute("signedIn", authentication != null);
 
         return "/books/slug";
     }

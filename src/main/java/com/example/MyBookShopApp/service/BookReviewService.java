@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class BookReviewService {
@@ -44,5 +46,10 @@ public class BookReviewService {
         Pageable nextPage = PageRequest.of(offset, limit);
 
         return bookReviewRepository.findByBookId(id, nextPage);
+    }
+
+    public List<BookReviewEntity> sortReviewsByRating(List<BookReviewEntity> reviews) {
+        reviews.sort((o1, o2) -> Long.compare(o2.getRating(), o1.getRating()));
+        return reviews;
     }
 }
