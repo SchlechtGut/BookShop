@@ -17,7 +17,7 @@ class MainPageSeleniumTests {
 
     @BeforeAll
     static void setup() {
-        System.setProperty("webdriver.chrome.driver", "/Users/SchlechtGut/Downloads/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/Users/SchlechtGut/Downloads/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
     }

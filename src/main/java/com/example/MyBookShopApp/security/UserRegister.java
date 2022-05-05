@@ -58,6 +58,7 @@ public class UserRegister {
     }
 
     public ContactConfirmationResponse jwtLogin(ContactConfirmationPayload payload) {
+
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(payload.getContact(),
                 payload.getCode()));
         BookstoreUserDetails userDetails =
