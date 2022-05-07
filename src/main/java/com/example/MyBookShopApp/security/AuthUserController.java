@@ -60,7 +60,7 @@ public class AuthUserController extends DefaultController {
     public String handleUserRegistration(RegistrationForm registrationForm, Model model) {
         userRegister.registerNewUser(registrationForm);
         model.addAttribute("regOk", true);
-        return "signin";
+        return "redirect:/signin";
     }
 
     @PostMapping("/login")
