@@ -7,10 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -18,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-
 @TestPropertySource("/application-test.properties")
 class AuthUserControllerTests {
 
@@ -49,9 +50,35 @@ class AuthUserControllerTests {
 
         String body = objectMapper.writeValueAsString(registrationForm);
 
-        mockMvc.perform(post("/reg").content(body))
+        mockMvc.perform(post("/reg")
+                        .param("name", "Tester")
+                        .param("email", "test@mail.ru")
+                        .param("password", "123456")
+                        .param("phone", "1112223334"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/signin"));
+    }
+
+    @Test
+    void handleLogin() throws Exception {
+        ContactConfirmationPayload payload = new ContactConfirmationPayload();
+        payload.setCode("123456");
+        payload.setContact("test@mail.ru");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String body = objectMapper.writeValueAsString(payload);
+
+        mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(body))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void handleLogout() throws Exception {
+        mockMvc.perform(logout().logoutUrl("/logout"))  //
+                .andDo(print())
+                .andExpect(status().isOk());
+
     }
 }

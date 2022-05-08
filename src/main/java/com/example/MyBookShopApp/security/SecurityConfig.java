@@ -81,13 +81,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/my", "/profile").authenticated()//.hasRole("USER")
                 .antMatchers("/**").permitAll()
-                .and().formLogin().successForwardUrl("/profile")
-                .loginPage("/signin").failureUrl("/signin")
-                .and().logout().addLogoutHandler(logoutHandler()).deleteCookies("token").invalidateHttpSession(true).clearAuthentication(true).logoutSuccessUrl("/signin")
-                .and().oauth2Login().defaultSuccessUrl("/oauth-success-login")
-                .and().oauth2Client()
                 .and()
-                .exceptionHandling().accessDeniedPage("/");
+                    .formLogin()
+                    .successForwardUrl("/profile")
+                    .loginPage("/signin")
+                    .failureUrl("/signin")
+                .and()
+                    .logout()
+                    .addLogoutHandler(logoutHandler())
+                    .deleteCookies("token")
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .logoutSuccessUrl("/signin")
+                .and()
+                    .oauth2Login()
+                    .defaultSuccessUrl("/oauth-success-login")
+                .and()
+                    .oauth2Client()
+                .and()
+                    .exceptionHandling()
+                    .accessDeniedPage("/");
 
 //        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
