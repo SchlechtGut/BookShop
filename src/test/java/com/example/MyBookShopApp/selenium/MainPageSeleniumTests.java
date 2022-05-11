@@ -51,4 +51,23 @@ class MainPageSeleniumTests {
         assertTrue(driver.getPageSource().contains("Pushover"));
     }
 
+    @Test
+    public void testNavigation() throws InterruptedException {
+        MainPage mainPage = new MainPage(driver);
+
+        mainPage
+                .callPage()
+                .pause()
+                .toGenres()
+                .pause()
+                .toSomeGenre()
+                .pause()
+                .toNew()
+                .pause()
+                .changeDate()
+                .pause();
+
+
+    }
+
 }

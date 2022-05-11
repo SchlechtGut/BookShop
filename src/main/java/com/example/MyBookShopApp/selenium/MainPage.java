@@ -1,6 +1,7 @@
 package com.example.MyBookShopApp.selenium;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -34,5 +35,42 @@ public class MainPage {
         WebElement element = driver.findElement(By.id("search"));
         element.submit();
         return this;
+    }
+
+    public MainPage toGenres() {
+        WebElement navigationPanel = driver.findElement(By.id("navigate"));
+        WebElement genresUrl = navigationPanel.findElement(By.cssSelector("a[href='/genres']"));
+        genresUrl.click();
+        return this;
+    }
+
+    public MainPage toSomeGenre() {
+        WebElement someTag = driver.findElement(By.className("Tag")).findElement(By.tagName("a"));
+        someTag.click();
+        return this;
+    }
+
+    public MainPage toNew() {
+        WebElement navigationPanel = driver.findElement(By.id("navigate"));
+        WebElement recentUrl = navigationPanel.findElement(By.cssSelector("a[href='/books/recent']"));
+        recentUrl.click();
+        return this;
+    }
+
+    public MainPage changeDate() {
+        WebElement fromDate = driver.findElement(By.id("fromdaterecent"));
+        fromDate.click();
+        setAttribute(fromDate, "data-refreshfrom", "01.01.2021");
+
+
+
+//        JavascriptExecutor js = driver;
+//        js.executeScript("document.getElementById('fromdaterecent').setAttribute('data-refreshfrom', '01.01.2021')");
+        return this;
+    }
+
+    private void setAttribute(WebElement element, String attName, String attValue) {
+        driver.executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);",
+                element, attName, attValue);
     }
 }
