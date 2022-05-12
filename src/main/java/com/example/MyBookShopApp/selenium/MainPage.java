@@ -57,14 +57,23 @@ public class MainPage {
         return this;
     }
 
-    public MainPage changeDate() {
+    public MainPage changeDate() throws InterruptedException {
         WebElement fromDate = driver.findElement(By.id("fromdaterecent"));
+
         fromDate.click();
-        setAttribute(fromDate, "data-refreshfrom", "01.01.2021");
 
+//        fromDate.sendKeys("20150612");
 
+//        setAttribute(fromDate, "data-refreshfrom", "01.01.2021");
 
-//        JavascriptExecutor js = driver;
+        JavascriptExecutor js = driver;
+
+        js.executeScript("document.getElementById('fromdaterecent').value = '01.01.2020'");
+        pause();
+
+        WebElement form = driver.findElement(By.className("Section-header-form"));
+        form.submit();
+
 //        js.executeScript("document.getElementById('fromdaterecent').setAttribute('data-refreshfrom', '01.01.2021')");
         return this;
     }
