@@ -58,20 +58,21 @@ class MainPageSeleniumTests {
         mainPage
                 .callPage()
                 .pause()
-//                .toGenres()
-//                .pause()
-//                .toSomeGenre()
-//                .pause()
+                .toGenres()
+                .pause()
+                .toSomeGenre()
+                .pause()
                 .toNew()
                 .pause()
                 .changeDate()
                 .pause()
+                .toPopular()
                 .pause()
+                .choosePopular()
                 .pause()
-                .callPage()
+                .toAuthors()
+                .pause()
+                .toSomeAuthor()
                 .pause();
-
-
     }
-
 }
