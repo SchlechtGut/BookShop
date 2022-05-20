@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.security;
 
+import com.example.MyBookShopApp.aop.SearchSection;
 import com.example.MyBookShopApp.data.user.User;
 import com.example.MyBookShopApp.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +16,6 @@ public class BookstoreUserDetailsService implements UserDetailsService {
     public BookstoreUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {

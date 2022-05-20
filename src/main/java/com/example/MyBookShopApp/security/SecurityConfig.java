@@ -130,7 +130,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return template;
     }
 
-    @Scheduled(cron = "0 0 * * * *") //ten sec 0 0 * * * * / */5 * * * * *
+    @Scheduled(cron = "0 0 * * * *") //hourly  0 0 * * * * / */5 * * * * *
     public void deleteExpiredTokens() {
         jwtUtil.deleteExpiredTokens();
     }
