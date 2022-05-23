@@ -38,7 +38,7 @@ public class JWTUtil {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
@@ -80,7 +80,6 @@ public class JWTUtil {
     }
 
     public boolean blackListContains(String jwt) {
-        stringRedisTemplate.opsForSet().members("blackList").forEach(System.out::println);
         return stringRedisTemplate.opsForSet().members("blackList").contains(jwt);
     }
 

@@ -1,7 +1,10 @@
 package com.example.MyBookShopApp.security;
 
 import com.example.MyBookShopApp.controllers.DefaultController;
+import com.example.MyBookShopApp.data.SmsCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -23,10 +26,14 @@ import java.util.stream.Collectors;
 public class AuthUserController extends DefaultController {
 
     private final UserRegister userRegister;
+    private final SmsService smsService;
+    private final JavaMailSender javaMailSender;
 
     @Autowired
-    public AuthUserController(UserRegister userRegister) {
+    public AuthUserController(UserRegister userRegister, SmsService smsService, JavaMailSender javaMailSender) {
         this.userRegister = userRegister;
+        this.smsService = smsService;
+        this.javaMailSender = javaMailSender;
     }
 
     @GetMapping("/signin")
@@ -48,11 +55,36 @@ public class AuthUserController extends DefaultController {
         return response;
     }
 
+    @PostMapping("/requestEmailConfirmation")
+    @ResponseBody
+    public ContactConfirmationResponse handleRequestEmailConfirmation(@RequestBody ContactConfirmationPayload payload) {
+        ContactConfirmationResponse response = new ContactConfirmationResponse();
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("schlechtgut@mail.ru");
+        message.setTo(payload.getContact());
+        SmsCode smsCode = new SmsCode(smsService.generateCode(),300); //5 minutes
+        smsService.saveNewCode(smsCode);
+        message.setSubject("Bookstore email verification!");
+        message.setText("Verification code is: " + smsCode.getCode());
+        javaMailSender.send(message);
+        response.setResult("true");
+        return response;
+    }
+
     @PostMapping("/approveContact")
     @ResponseBody
     public ContactConfirmationResponse handleApproveContact(@RequestBody ContactConfirmationPayload payload) {
         ContactConfirmationResponse response = new ContactConfirmationResponse();
-        response.setResult("true");
+
+        if (!payload.getContact().contains("@")) {
+            response.setResult("true");
+            return response;
+        }
+
+        if(smsService.verifyCode(payload.getCode())){
+            response.setResult("true");
+        }
+
         return response;
     }
 
@@ -81,6 +113,7 @@ public class AuthUserController extends DefaultController {
 
     @GetMapping("/profile")
     public String handleProfile(Model model, Authentication authentication) {
+        System.out.println(authentication);
         model.addAttribute("curUsr", userRegister.getCurrentUser(authentication));
         return "profile";
     }

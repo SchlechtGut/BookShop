@@ -11,6 +11,7 @@
     <include file="db/changelog/changeset/liquibase-change3-schema.xml"/>
     <include file="db/changelog/changeset/liquibase-change4-schema.xml"/>
     <include file="db/changelog/changeset/liquibase-change5-schema.xml"/>
+    <include file="db/changelog/changeset/liquibase-change6-schema.xml"/>
 </databaseChangeLog>
 
 
