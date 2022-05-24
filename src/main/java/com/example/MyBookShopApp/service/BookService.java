@@ -1,16 +1,21 @@
 package com.example.MyBookShopApp.service;
 
+import com.example.MyBookShopApp.data.author.Author;
+import com.example.MyBookShopApp.data.google.api.books.Item;
+import com.example.MyBookShopApp.data.google.api.books.Root;
 import com.example.MyBookShopApp.errs.BookstoreApiWrongParameterException;
 import com.example.MyBookShopApp.repository.BookRatingRepository;
 import com.example.MyBookShopApp.repository.BookRepository;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,11 +27,13 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final BookRatingRepository bookRatingRepository;
+    private RestTemplate restTemplate;
 
     @Autowired
-    public BookService(BookRepository bookRepository, BookRatingRepository bookRatingRepository) {
+    public BookService(BookRepository bookRepository, BookRatingRepository bookRatingRepository, RestTemplate restTemplate) {
         this.bookRepository = bookRepository;
         this.bookRatingRepository = bookRatingRepository;
+        this.restTemplate = restTemplate;
     }
 
     public List<Book> getBooksData(){
@@ -180,5 +187,38 @@ public class BookService {
 
     public Book getBookById(Integer bookId) {
         return bookRepository.findById(bookId).get();
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Value("${google.books.api.key}")
+    private String apiKey;
+
+    public List<Book> getPageOfGoogleBooksApiSearchResult(String searchWord, Integer offset, Integer limit) {
+        String REQUEST_URL = "https://www.googleapis.com/books/v1/volumes" +
+                "?q=" + searchWord +
+                "&key=" + apiKey +
+                "&filter=paid-ebooks" +
+                "&startIndex=" + offset +
+                "&maxResult=" + limit;
+
+        Root root = restTemplate.getForEntity(REQUEST_URL, Root.class).getBody();
+        ArrayList<Book> list = new ArrayList<>();
+        if(root != null){
+            for (Item item:root.getItems()){
+                Book book = new Book();
+                if(item.getVolumeInfo()!=null){
+//                    book.setAuthor(new Author(item.getVolumeInfo().getAuthors()));
+                    book.setTitle(item.getVolumeInfo().getTitle());
+                    book.setImage(item.getVolumeInfo().getImageLinks().getThumbnail());
+                }
+                if(item.getSaleInfo()!=null){
+                    double oldPrice = item.getSaleInfo().getListPrice().getAmount();
+                    book.setPriceOld((int) oldPrice);
+                }
+                list.add(book);
+            }
+        }
+        return list;
     }
 }

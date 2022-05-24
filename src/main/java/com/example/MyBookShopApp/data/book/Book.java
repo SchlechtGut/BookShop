@@ -102,7 +102,7 @@ public class Book {
     }
 
     @JsonGetter
-    public Integer getDiscountPrice(){
+    public Integer getDiscountPrice() {
         return priceOld - priceOld * discount / 100;
     }
 
