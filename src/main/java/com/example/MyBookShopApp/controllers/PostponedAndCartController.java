@@ -2,14 +2,18 @@ package com.example.MyBookShopApp.controllers;
 
 import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.service.BookService;
+import com.example.MyBookShopApp.service.PaymentService;
 import com.example.MyBookShopApp.service.PostponedAndCartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Controller
@@ -18,11 +22,13 @@ public class PostponedAndCartController extends DefaultController {
 
     private final BookService bookService;
     private final PostponedAndCartService postponedAndCartService;
+    private final PaymentService paymentService;
 
     @Autowired
-    public PostponedAndCartController(BookService bookService, PostponedAndCartService postponedAndCartService) {
+    public PostponedAndCartController(BookService bookService, PostponedAndCartService postponedAndCartService, PaymentService paymentService) {
         this.bookService = bookService;
         this.postponedAndCartService = postponedAndCartService;
+        this.paymentService = paymentService;
     }
 
     @GetMapping("/cart")
@@ -38,6 +44,8 @@ public class PostponedAndCartController extends DefaultController {
             model.addAttribute("bookCart", booksFromCookieSlugs);
             model.addAttribute("totalPrice", booksFromCookieSlugs.stream().mapToInt(Book::getDiscountPrice).sum());
             model.addAttribute("totalOldPrice", booksFromCookieSlugs.stream().mapToInt(Book::getPriceOld).sum());
+
+
         }
 
         return "cart";
@@ -111,6 +119,16 @@ public class PostponedAndCartController extends DefaultController {
         }
 
         return ("redirect:/books/" + slug);
+    }
+
+    @GetMapping("/pay")
+    public RedirectView handlePay(@CookieValue(required = false) String cartContents) throws NoSuchAlgorithmException {
+        cartContents = cartContents.startsWith("/") ? cartContents.substring(1) : cartContents;
+        cartContents = cartContents.endsWith("/") ? cartContents.substring(0, cartContents.length() - 1) : cartContents;
+        String[] cookieSlugs = cartContents.split("/");
+        List<Book> booksFromCookieSlugs = bookService.findBooksBySlugIn(cookieSlugs);
+        String paymentUrl = paymentService.getPaymentUrl(booksFromCookieSlugs);
+        return new RedirectView(paymentUrl);
     }
 
 

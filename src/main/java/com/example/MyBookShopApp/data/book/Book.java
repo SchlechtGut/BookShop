@@ -103,6 +103,9 @@ public class Book {
 
     @JsonGetter
     public Integer getDiscountPrice() {
+        if (discount == null) {
+            setDiscount(0);
+        }
         return priceOld - priceOld * discount / 100;
     }
 
@@ -272,5 +275,14 @@ public class Book {
 
     public void setRatings(Set<BookRating> ratings) {
         this.ratings = ratings;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

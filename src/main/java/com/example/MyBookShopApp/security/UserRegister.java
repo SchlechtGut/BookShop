@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.security;
 
+import com.example.MyBookShopApp.api.request.ProfileRequest;
 import com.example.MyBookShopApp.data.user.User;
 import com.example.MyBookShopApp.repository.UserRepository;
 import com.example.MyBookShopApp.security.jwt.JWTUtil;
@@ -39,6 +40,9 @@ public class UserRegister {
             user.setEmail(registrationForm.getEmail());
             user.setPhone(registrationForm.getPhone());
             user.setPassword(passwordEncoder.encode(registrationForm.getPassword()));
+
+            user.setHash(String.valueOf(user.hashCode()));
+
             bookstoreUserRepository.save(user);
             return user;
         }
@@ -91,7 +95,17 @@ public class UserRegister {
             user.setEmail(principal.getAttribute("email"));
             user.setName(principal.getAttribute("name"));
             user.setPhone(principal.getAttribute("phone"));
+            user.setHash(String.valueOf(user.hashCode()));
 
+            bookstoreUserRepository.save(user);
+        }
+    }
+
+    public void editProfile(ProfileRequest profileRequest, Authentication authentication) {
+        User user = getCurrentUser(authentication);
+
+        if (profileRequest.getPassword().equals(profileRequest.getPasswordReply())) {
+            user.setPassword(passwordEncoder.encode(profileRequest.getPassword()));
             bookstoreUserRepository.save(user);
         }
     }

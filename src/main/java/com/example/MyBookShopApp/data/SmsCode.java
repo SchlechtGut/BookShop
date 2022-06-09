@@ -22,7 +22,7 @@ public class SmsCode {
 
     public SmsCode(){}
 
-    public Boolean isExpired(){
+    public Boolean isExpired() {
         return LocalDateTime.now().isAfter(expireTime);
     }
 

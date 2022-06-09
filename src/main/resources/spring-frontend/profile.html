@@ -89,7 +89,7 @@
                 <div class="Tabs-wrap">
                     <div class="Tabs-block" id="basic">
                         <div class="Profile">
-                            <form class="form Profile-form" action="#" method="post">
+                            <form class="form Profile-form" th:action="@{/editProfile}" method="POST">
                                 <div class="row">
                                     <div class="row-block">
                                         <div class="form-group">
@@ -136,7 +136,7 @@
                                             <div class="Profile-btn">
                                                 <button class="btn btn_danger" type="button">Отменить
                                                 </button>
-                                                <button class="btn btn_primary" type="submit">Сохранить
+                                                <button class="btn btn_primary" type="submit" >Сохранить
                                                 </button>
                                             </div>
                                             <div class="Profile-success">Профиль успешно сохранен

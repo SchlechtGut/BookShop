@@ -84,7 +84,8 @@ public class MainPageController extends DefaultController {
     public BooksPageDto getNextSearchPage(@RequestParam("offset") Integer offset,
                                           @RequestParam("limit") Integer limit,
                                           @PathVariable(value = "searchWord", required = false) SearchWordDto searchWordDto) {
-        return new BooksPageDto(bookService.getPageOfGoogleBooksApiSearchResult(searchWordDto.getExample(), offset, limit));
+        List<Book> books = bookService.getPageOfGoogleBooksApiSearchResult(searchWordDto.getExample(), offset, limit);
+        return new BooksPageDto(books);
     }
 
 }

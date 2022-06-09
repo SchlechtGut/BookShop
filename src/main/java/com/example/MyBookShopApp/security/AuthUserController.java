@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.security;
 
+import com.example.MyBookShopApp.api.request.ProfileRequest;
 import com.example.MyBookShopApp.controllers.DefaultController;
 import com.example.MyBookShopApp.data.SmsCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +114,6 @@ public class AuthUserController extends DefaultController {
 
     @GetMapping("/profile")
     public String handleProfile(Model model, Authentication authentication) {
-        System.out.println(authentication);
         model.addAttribute("curUsr", userRegister.getCurrentUser(authentication));
         return "profile";
     }
@@ -139,6 +139,15 @@ public class AuthUserController extends DefaultController {
         info.put("tokenAttributes", principal.getPrincipal().getAttributes());
 
         return info;
+    }
+
+    @PostMapping(value = "/editProfile")
+    public String editProfile(@RequestBody ProfileRequest profileRequest, Authentication authentication) {
+        System.out.println(profileRequest);
+
+        userRegister.editProfile(profileRequest, authentication);
+
+        return "redirect:/profile";
     }
 
 //    @GetMapping("/logout")

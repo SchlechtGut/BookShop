@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -64,7 +65,10 @@ public class User {
     @OneToMany(mappedBy = "userId")
     private List<BookReviewLikeEntity> bookReviewLikes;
 
+    public User() {
 
+
+    }
 
     public int getId() {
         return id;
@@ -198,5 +202,18 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(regTime, user.regTime) && Objects.equals(name, user.name) && Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(regTime, name, email);
     }
 }
