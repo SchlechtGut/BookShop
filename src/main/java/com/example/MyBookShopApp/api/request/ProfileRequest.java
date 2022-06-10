@@ -7,6 +7,17 @@ public class ProfileRequest {
     private String password;
     private String passwordReply;
 
+    public ProfileRequest(String name, String mail, String phone, String password, String passwordReply) {
+        this.name = name;
+        this.mail = mail;
+        this.phone = phone;
+        this.password = password;
+        this.passwordReply = passwordReply;
+    }
+
+    public ProfileRequest() {
+    }
+
     public String getName() {
         return name;
     }

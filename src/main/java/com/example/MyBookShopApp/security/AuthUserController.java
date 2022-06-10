@@ -11,10 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -141,9 +138,14 @@ public class AuthUserController extends DefaultController {
         return info;
     }
 
-    @PostMapping(value = "/editProfile")
-    public String editProfile(@RequestBody ProfileRequest profileRequest, Authentication authentication) {
-        System.out.println(profileRequest);
+    @PostMapping(value = "/editProfile", produces = "application/json")
+    public String editProfile(@RequestParam String name,
+                              @RequestParam String mail,
+                              @RequestParam String phone,
+                              @RequestParam String password,
+                              @RequestParam String passwordReply,
+                              Authentication authentication) {
+        ProfileRequest profileRequest = new ProfileRequest(name, mail, phone, password, passwordReply);
 
         userRegister.editProfile(profileRequest, authentication);
 

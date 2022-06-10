@@ -1,20 +1,24 @@
 package com.example.MyBookShopApp.controllers;
 
+import com.example.MyBookShopApp.api.response.SuccessResponse;
 import com.example.MyBookShopApp.data.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
+import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
+import com.example.MyBookShopApp.data.user.User;
+import com.example.MyBookShopApp.repository.BalanceTransactionRepository;
+import com.example.MyBookShopApp.repository.UserRepository;
 import com.example.MyBookShopApp.service.ApiService;
 import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
+import liquibase.pro.packaged.B;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/api")
@@ -22,6 +26,7 @@ public class ApiController {
     private final BookService bookService;
     private final ApiService apiService;
     private final BooksRatingAndPopularityService booksRatingAndPopularityService;
+
 
     @Autowired
     public ApiController(BookService bookService, ApiService apiService, BooksRatingAndPopularityService booksRatingAndPopularityService) {
@@ -81,5 +86,13 @@ public class ApiController {
         Page<Book> page = bookService.getPageOfAuthorBooks(id, offset, limit);
 
         return new BooksPageDto(page.getTotalElements(), page.getContent());
+    }
+
+    @PostMapping("/payment")
+    public SuccessResponse putMoneyIntoAccount(@RequestParam String hash,
+                                               @RequestParam Integer sum,
+                                               @RequestParam Long time) {
+
+        return apiService.putMoney(hash, sum, time);
     }
 }
