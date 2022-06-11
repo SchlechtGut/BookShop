@@ -212,12 +212,13 @@
                         </div>
                     </div>
                     <div class="Tabs-block" id="topup">
-                        <form class="form Topup" action="#" method="post" th:data-sendHash="${curUsr.hash}" >
+                        <form class="form Topup" action="/payment" method="GET" th:data-sendHash="${curUsr.hash}" >
                             <div class="Topup-wrap">
                                 <strong class="Topup-title">Введите сумму, на которую хотите пополнить свой счет:
                                 </strong>
                                 <div class="form-group form-group_row Topup-group">
                                     <input class="form-input" id="sum" name="sum" type="text"/><span>рублей</span>
+                                    <input name="user" th:value="${curUsr.hash}" type="hidden">
                                 </div>
                                 <div class="form-group">
                                     <div class="Topup-btn">

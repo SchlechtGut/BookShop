@@ -17,12 +17,8 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-
     @GetMapping("/payment")
     public RedirectView handlePay(@RequestParam Integer sum, @RequestParam String user) throws NoSuchAlgorithmException {
-        System.out.println(sum);
-        System.out.println(user);
-
         String paymentUrl = paymentService.getPaymentUrl(sum, user);
         return new RedirectView(paymentUrl);
     }

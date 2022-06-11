@@ -110,7 +110,11 @@ public class AuthUserController extends DefaultController {
     }
 
     @GetMapping("/profile")
-    public String handleProfile(Model model, Authentication authentication) {
+    public String handleProfile(@RequestParam(required = false) String result, Model model, Authentication authentication) {
+        if (result != null) {
+            //нужно вызвать метод /api/payment, чтобы сохарнить запись о транзакции (? как узнать сумму транзакции)
+        }
+
         model.addAttribute("curUsr", userRegister.getCurrentUser(authentication));
         return "profile";
     }
