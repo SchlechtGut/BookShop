@@ -1,12 +1,11 @@
 package com.example.MyBookShopApp.service;
 
-import com.example.MyBookShopApp.data.author.Author;
 import com.example.MyBookShopApp.data.google.api.books.Item;
 import com.example.MyBookShopApp.data.google.api.books.Root;
 import com.example.MyBookShopApp.errs.BookstoreApiWrongParameterException;
 import com.example.MyBookShopApp.repository.BookRatingRepository;
 import com.example.MyBookShopApp.repository.BookRepository;
-import com.example.MyBookShopApp.data.BooksPageDto;
+import com.example.MyBookShopApp.data.DTO.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -181,7 +180,7 @@ public class BookService {
         return bookRepository.findBooksBySlugIn(cookieSlugs);
     }
 
-    public List<Book> getBooksByIdIn(List<Integer> bookIds) {
+    public List<Book> findBooksByIdIn(List<Integer> bookIds) {
         return bookRepository.findBooksByIdIn(bookIds);
     }
 

@@ -784,18 +784,17 @@
 -- insert into book2genre (book_id, genre_id) values (12, 51);
 -- insert into book2genre (book_id, genre_id) values (9, 14);
 --
---
 -- insert into book_file (id, hash, type_id, path, book_id) values (1, 'fsdl342ladads76432', 1, '/Twelve.pdf',1);
 -- insert into book_file (id, hash, type_id, path, book_id) values (2, 'asdl35436dads34235', 2, '/Twelve.epub',1);
 -- insert into book_file (id, hash, type_id, path, book_id) values (3, 'qwer342lafdss34123', 3, '/Twelve.fb2',1);
 
 
-insert into users (id, hash, reg_time, balance, name) values (0, 'somehash', '2022-02-22 22:22:22', 0, 'Zero uzer');
-
-insert into book_review (id, book_id, text, time, user_id) values (1, 1, 'lementum arcu id, facilisis erat. Aliquam vitae ante ut elit semper elementum non ac nulla. Donec suscipit, nunc a molestie molestie, felis est ornare libero, sit amet luctus sem neque at erat. Nullam fermentum urna sit amet neque sagittis tempor. Fusce arcu sapien, pretium feugiat massa non, venenatis molestie ex. Integer bibendum, dolor quis laoreet eleifend, nisl ligula faucibus ligula, eu tristique sapien leo non magna. Morbi eget massa ut leo finibus porttitor. In porttitor risus risus, id luctus ligula dapibus nec. Cras blandit placerat dignissim. Sed aliquet, dui nec faucibus efficitur, justo arcu eleifend mi, eget vehicula libero tortor in nisl. Aliquam lobortis euismod leo, eu dignissim diam placerat vel. Fusce at nibh odio.', '2022-01-30 07:14:22', 0)
-insert into book_review (id, book_id, text, time, user_id) values (2, 1, '2', '2022-01-30 07:14:22', 0)
-insert into book_review (id, book_id, text, time, user_id) values (3, 1, '3', '2022-01-30 07:14:22', 0)
-insert into book_review (id, book_id, text, time, user_id) values (4, 1, '4', '2022-01-30 07:14:22', 0)
-insert into book_review (id, book_id, text, time, user_id) values (5, 1, '5', '2022-01-30 07:14:22', 0)
-insert into book_review (id, book_id, text, time, user_id) values (6, 1, '6', '2022-01-30 07:14:22', 0)
-insert into book_review (id, book_id, text, time, user_id) values (7, 1, '7', '2022-01-30 07:14:22', 0)
+-- insert into users (id, hash, reg_time, balance, name) values (0, 'somehash', '2022-02-22 22:22:22', 0, 'Zero uzer');
+--
+-- insert into book_review (id, book_id, text, time, user_id) values (1, 1, 'lementum arcu id, facilisis erat. Aliquam vitae ante ut elit semper elementum non ac nulla. Donec suscipit, nunc a molestie molestie, felis est ornare libero, sit amet luctus sem neque at erat. Nullam fermentum urna sit amet neque sagittis tempor. Fusce arcu sapien, pretium feugiat massa non, venenatis molestie ex. Integer bibendum, dolor quis laoreet eleifend, nisl ligula faucibus ligula, eu tristique sapien leo non magna. Morbi eget massa ut leo finibus porttitor. In porttitor risus risus, id luctus ligula dapibus nec. Cras blandit placerat dignissim. Sed aliquet, dui nec faucibus efficitur, justo arcu eleifend mi, eget vehicula libero tortor in nisl. Aliquam lobortis euismod leo, eu dignissim diam placerat vel. Fusce at nibh odio.', '2022-01-30 07:14:22', 0);
+-- insert into book_review (id, book_id, text, time, user_id) values (2, 1, '2', '2022-01-30 07:14:22', 0);
+-- insert into book_review (id, book_id, text, time, user_id) values (3, 1, '3', '2022-01-30 07:14:22', 0);
+-- insert into book_review (id, book_id, text, time, user_id) values (4, 1, '4', '2022-01-30 07:14:22', 0);
+-- insert into book_review (id, book_id, text, time, user_id) values (5, 1, '5', '2022-01-30 07:14:22', 0);
+-- insert into book_review (id, book_id, text, time, user_id) values (6, 1, '6', '2022-01-30 07:14:22', 0);
+-- insert into book_review (id, book_id, text, time, user_id) values (7, 1, '7', '2022-01-30 07:14:22', 0);

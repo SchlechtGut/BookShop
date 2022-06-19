@@ -39,9 +39,8 @@ public class BooksController extends DefaultController {
         this.storage = storage;
     }
 
-    @GetMapping("/{slug}")
+    @GetMapping("/slugs/{slug}")
     public String bookPage(@PathVariable String slug, Model model, Authentication authentication) {
-
         Book book = bookService.getBookBySlug(slug);
         List<BookRating> rates = bookRatingService.getRatesDistribution(book.getId());
 

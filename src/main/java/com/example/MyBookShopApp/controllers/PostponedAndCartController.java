@@ -5,6 +5,8 @@ import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.service.PaymentService;
 import com.example.MyBookShopApp.service.PostponedAndCartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -85,8 +87,6 @@ public class PostponedAndCartController extends DefaultController {
         return "redirect:/books/postponed";
     }
 
-
-
     @PostMapping("/changeBookStatus/{slug}")
     public String handleChangeBookStatus(@RequestParam String status, @PathVariable String slug,
                                          @CookieValue(required = false) String cartContents,
@@ -116,19 +116,15 @@ public class PostponedAndCartController extends DefaultController {
             }
         }
 
-        return ("redirect:/books/" + slug);
+        return ("redirect:/books/slugs/" + slug);
     }
 
-
-
-    @GetMapping("/pay")
-    public RedirectView handlePay(@CookieValue(required = false) String cartContents) throws NoSuchAlgorithmException {
-        cartContents = cartContents.startsWith("/") ? cartContents.substring(1) : cartContents;
-        cartContents = cartContents.endsWith("/") ? cartContents.substring(0, cartContents.length() - 1) : cartContents;
-        String[] cookieSlugs = cartContents.split("/");
-        List<Book> booksFromCookieSlugs = bookService.findBooksBySlugIn(cookieSlugs);
-        String paymentUrl = paymentService.getPaymentUrlFromBooks(booksFromCookieSlugs);
-        return new RedirectView(paymentUrl);
+    @GetMapping("/buy")
+    @PreAuthorize("isAuthenticated()")
+    public String handleBuy(@CookieValue(required = false) String cartContents, HttpServletResponse response, Model model, Authentication authentication) {
+        System.out.println(cartContents);
+        postponedAndCartService.buyBooks(cartContents, response, model, authentication);
+        return "redirect:/books/cart";
     }
 
 

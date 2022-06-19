@@ -92,7 +92,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     List<Book> findBooksByIdIn(Collection<Integer> id);
 
-
     //@Query("SELECT b FROM Book b " +
     //        "LEFT JOIN Book2AuthorEntity ba ON ba.book.id = b.id " +
     //        "LEFT JOIN Author a ON a.id = ba.author.id " +

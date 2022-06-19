@@ -1,24 +1,18 @@
 package com.example.MyBookShopApp.controllers;
 
 import com.example.MyBookShopApp.api.response.SuccessResponse;
-import com.example.MyBookShopApp.data.BooksPageDto;
+import com.example.MyBookShopApp.api.response.TransactionsResponse;
+import com.example.MyBookShopApp.data.DTO.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
-import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
-import com.example.MyBookShopApp.data.user.User;
-import com.example.MyBookShopApp.repository.BalanceTransactionRepository;
-import com.example.MyBookShopApp.repository.UserRepository;
 import com.example.MyBookShopApp.service.ApiService;
 import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
-import liquibase.pro.packaged.B;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/api")
@@ -86,6 +80,15 @@ public class ApiController {
         Page<Book> page = bookService.getPageOfAuthorBooks(id, offset, limit);
 
         return new BooksPageDto(page.getTotalElements(), page.getContent());
+    }
+
+    @GetMapping("/transactions")
+    @PreAuthorize("isAuthenticated()")
+    public TransactionsResponse getUserTransactions(@RequestParam Integer offset,
+                                                    @RequestParam Integer limit,
+                                                    @RequestParam(defaultValue = "asc") String sort,
+                                                    Authentication authentication) {
+        return apiService.getUserTransactions(offset, limit, sort, authentication);
     }
 
     @PostMapping("/payment")

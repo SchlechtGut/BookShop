@@ -3,6 +3,12 @@ package com.example.MyBookShopApp.security;
 import com.example.MyBookShopApp.api.request.ProfileRequest;
 import com.example.MyBookShopApp.controllers.DefaultController;
 import com.example.MyBookShopApp.data.SmsCode;
+import com.example.MyBookShopApp.data.book.Book;
+import com.example.MyBookShopApp.data.book.links.Book2UserEntity;
+import com.example.MyBookShopApp.data.user.User;
+import com.example.MyBookShopApp.repository.BalanceTransactionRepository;
+import com.example.MyBookShopApp.service.ApiService;
+import com.example.MyBookShopApp.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,10 +20,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,12 +31,18 @@ public class AuthUserController extends DefaultController {
     private final UserRegister userRegister;
     private final SmsService smsService;
     private final JavaMailSender javaMailSender;
+    private final ApiService apiService;
+    private final BalanceTransactionRepository balanceTransactionRepository;
+    private final BookService bookService;
 
     @Autowired
-    public AuthUserController(UserRegister userRegister, SmsService smsService, JavaMailSender javaMailSender) {
+    public AuthUserController(UserRegister userRegister, SmsService smsService, JavaMailSender javaMailSender, ApiService apiService, BalanceTransactionRepository balanceTransactionRepository, BookService bookService) {
         this.userRegister = userRegister;
         this.smsService = smsService;
         this.javaMailSender = javaMailSender;
+        this.apiService = apiService;
+        this.balanceTransactionRepository = balanceTransactionRepository;
+        this.bookService = bookService;
     }
 
     @GetMapping("/signin")
@@ -105,17 +116,22 @@ public class AuthUserController extends DefaultController {
 
     @GetMapping("/my")
     public String handleMy(Model model, Authentication authentication) {
-        model.addAttribute("curUsr", userRegister.getCurrentUser(authentication));
+        User curUser = userRegister.getCurrentUser(authentication);
+        List<Book2UserEntity> book2UserEntities = curUser.getBook2UserEntities();
+        List<Book> boughtBooks = bookService.findBooksByIdIn(book2UserEntities.stream().map(Book2UserEntity::getBookId).collect(Collectors.toList()));
+
+
+
+        model.addAttribute("curUsr", curUser);
+        model.addAttribute("boughtBooks", boughtBooks);
         return "my";
     }
 
     @GetMapping("/profile")
-    public String handleProfile(@RequestParam(required = false) String result, Model model, Authentication authentication) {
-        if (result != null) {
-            //нужно вызвать метод /api/payment, чтобы сохарнить запись о транзакции (? как узнать сумму транзакции)
-        }
-
-        model.addAttribute("curUsr", userRegister.getCurrentUser(authentication));
+    public String handleProfile(Model model, Authentication authentication) {
+        User curUser = userRegister.getCurrentUser(authentication);
+        model.addAttribute("curUsr", curUser);
+        model.addAttribute("transactions", balanceTransactionRepository.findByUserId(curUser.getId()));
         return "profile";
     }
 
@@ -142,19 +158,25 @@ public class AuthUserController extends DefaultController {
         return info;
     }
 
-    @PostMapping(value = "/editProfile", produces = "application/json")
-    public String editProfile(@RequestParam String name,
-                              @RequestParam String mail,
-                              @RequestParam String phone,
-                              @RequestParam String password,
-                              @RequestParam String passwordReply,
-                              Authentication authentication) {
+    @PostMapping(value = "/editProfile")
+    public String resetProfile(@RequestParam String name, @RequestParam String mail,
+                              @RequestParam String phone, @RequestParam String password,
+                              @RequestParam String passwordReply, Authentication authentication, HttpServletRequest request) {
         ProfileRequest profileRequest = new ProfileRequest(name, mail, phone, password, passwordReply);
 
-        userRegister.editProfile(profileRequest, authentication);
+        userRegister.sendConfirmationLinkToChangeProfile(profileRequest, authentication, request);
 
         return "redirect:/profile";
     }
+
+    @GetMapping(value = "/confirmProfile")
+    public String editProfile(@RequestParam String token) {
+        userRegister.editProfile(token);
+        return "redirect:/profile";
+    }
+
+
+
 
 //    @GetMapping("/logout")
 //    public String handleLogout(HttpServletRequest request) {

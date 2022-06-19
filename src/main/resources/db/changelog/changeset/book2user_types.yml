@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1"
+      author: SchlechtGut
+      changes:
+        - insert:
+            tableName: book2user_type
+            columns:
+              - column:
+                  name: code
+                  value: "KEPT"
+              - column:
+                  name: name
+                  value: "Отложена"
+        - insert:
+            tableName: book2user_type
+            columns:
+              - column:
+                  name: code
+                  value: "CART"
+              - column:
+                  name: name
+                  value: "В корзине"
+        - insert:
+            tableName: book2user_type
+            columns:
+              - column:
+                  name: code
+                  value: "PAID"
+              - column:
+                  name: name
+                  value: "Куплена"
+        - insert:
+            tableName: book2user_type
+            columns:
+              - column:
+                  name: code
+                  value: "ARCHIVED"
+              - column:
+                  name: name
+                  value: "В архиве"

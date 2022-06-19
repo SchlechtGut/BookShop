@@ -1,4 +1,4 @@
-package com.example.MyBookShopApp.data;
+package com.example.MyBookShopApp.data.DTO;
 
 import com.example.MyBookShopApp.data.book.Book;
 

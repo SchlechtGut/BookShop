@@ -47,6 +47,7 @@ public class PaymentService {
                 "&Encoding=utf-8" +
                 "&OutSum=" + sum +
                 "&SignatureValue=" + DatatypeConverter.printHexBinary(md.digest()).toUpperCase() +
-                "&IsTest=1";
+                "&IsTest=1" +
+                "&Shp_hash=" + user;
     }
 }
