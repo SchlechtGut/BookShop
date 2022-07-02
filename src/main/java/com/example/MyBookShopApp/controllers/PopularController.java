@@ -1,7 +1,7 @@
 package com.example.MyBookShopApp.controllers;
 
 import com.example.MyBookShopApp.data.book.Book;
-import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
+import com.example.MyBookShopApp.service.BookPopularityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,17 +12,17 @@ import java.util.List;
 @Controller
 public class PopularController extends DefaultController {
 
-    private final BooksRatingAndPopularityService booksRatingAndPopularityService;
+    private final BookPopularityService bookPopularityService;
 
     @Autowired
-    public PopularController(BooksRatingAndPopularityService booksRatingAndPopularityService) {
-        this.booksRatingAndPopularityService = booksRatingAndPopularityService;
+    public PopularController(BookPopularityService bookPopularityService) {
+        this.bookPopularityService = bookPopularityService;
 
     }
 
     @ModelAttribute("popularBooks")
     public List<Book> bookList(){
-        return booksRatingAndPopularityService.getPageOfPopularBooks(0, 20).getContent();
+        return bookPopularityService.getPageOfPopularBooks(0, 20).getContent();
     }
 
     @GetMapping("/books/popular")

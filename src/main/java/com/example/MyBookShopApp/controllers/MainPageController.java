@@ -7,7 +7,7 @@ import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.data.book.tag.Tag;
 import com.example.MyBookShopApp.errs.EmptySearchException;
 import com.example.MyBookShopApp.service.BookService;
-import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
+import com.example.MyBookShopApp.service.BookPopularityService;
 import com.example.MyBookShopApp.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,13 +22,13 @@ import java.util.List;
 public class MainPageController extends DefaultController {
 
     private final BookService bookService;
-    private final BooksRatingAndPopularityService booksRatingAndPopularityService;
+    private final BookPopularityService bookPopularityService;
     private final TagService tagService;
 
     @Autowired
-    public MainPageController(BookService bookService, BooksRatingAndPopularityService booksRatingAndPopularityService, TagService tagService) {
+    public MainPageController(BookService bookService, BookPopularityService bookPopularityService, TagService tagService) {
         this.bookService = bookService;
-        this.booksRatingAndPopularityService = booksRatingAndPopularityService;
+        this.bookPopularityService = bookPopularityService;
         this.tagService = tagService;
     }
 
@@ -49,7 +49,7 @@ public class MainPageController extends DefaultController {
 
     @ModelAttribute("popularBooks")
     public List<Book> popularBooks() {
-        return booksRatingAndPopularityService.getPageOfPopularBooks(0, 6).getContent();
+        return bookPopularityService.getPageOfPopularBooks(0, 6).getContent();
     }
 
     @ModelAttribute("tagList")

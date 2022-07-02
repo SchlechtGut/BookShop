@@ -6,7 +6,7 @@ import com.example.MyBookShopApp.data.DTO.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.service.ApiService;
 import com.example.MyBookShopApp.service.BookService;
-import com.example.MyBookShopApp.service.BooksRatingAndPopularityService;
+import com.example.MyBookShopApp.service.BookPopularityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.*;
 public class ApiController {
     private final BookService bookService;
     private final ApiService apiService;
-    private final BooksRatingAndPopularityService booksRatingAndPopularityService;
+    private final BookPopularityService bookPopularityService;
 
 
     @Autowired
-    public ApiController(BookService bookService, ApiService apiService, BooksRatingAndPopularityService booksRatingAndPopularityService) {
+    public ApiController(BookService bookService, ApiService apiService, BookPopularityService bookPopularityService) {
         this.bookService = bookService;
         this.apiService = apiService;
-        this.booksRatingAndPopularityService = booksRatingAndPopularityService;
+        this.bookPopularityService = bookPopularityService;
     }
 
     @GetMapping("/books/recent")
@@ -48,7 +48,17 @@ public class ApiController {
     public BooksPageDto popular(@RequestParam Integer offset,
                                 @RequestParam Integer limit,
                                 Model model) {
-        Page<Book> page = booksRatingAndPopularityService.getPageOfPopularBooks(offset, limit);
+        Page<Book> page = bookPopularityService.getPageOfPopularBooks(offset, limit);
+        model.addAttribute("newPage" , page.getContent().size());
+
+        return new BooksPageDto(page.getTotalElements(), page.getContent());
+    }
+
+    @GetMapping("/books/popular/test")
+    public BooksPageDto popularTest(@RequestParam Integer offset,
+                                @RequestParam Integer limit,
+                                Model model) {
+        Page<Book> page = bookPopularityService.getPageOfPopularBooksTest(offset, limit);
         model.addAttribute("newPage" , page.getContent().size());
 
         return new BooksPageDto(page.getTotalElements(), page.getContent());

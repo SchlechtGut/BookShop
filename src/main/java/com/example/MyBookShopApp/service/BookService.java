@@ -1,22 +1,28 @@
 package com.example.MyBookShopApp.service;
 
+import com.example.MyBookShopApp.data.book.ViewedBook;
 import com.example.MyBookShopApp.data.google.api.books.Item;
 import com.example.MyBookShopApp.data.google.api.books.Root;
+import com.example.MyBookShopApp.data.user.User;
 import com.example.MyBookShopApp.errs.BookstoreApiWrongParameterException;
 import com.example.MyBookShopApp.repository.BookRatingRepository;
 import com.example.MyBookShopApp.repository.BookRepository;
 import com.example.MyBookShopApp.data.DTO.BooksPageDto;
 import com.example.MyBookShopApp.data.book.Book;
+import com.example.MyBookShopApp.repository.ViewedBookRepository;
+import com.example.MyBookShopApp.security.UserRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +33,16 @@ public class BookService {
     private final BookRepository bookRepository;
     private final BookRatingRepository bookRatingRepository;
     private RestTemplate restTemplate;
+    private final UserRegister userRegister;
+    private final ViewedBookRepository viewedBookRepository;
 
     @Autowired
-    public BookService(BookRepository bookRepository, BookRatingRepository bookRatingRepository, RestTemplate restTemplate) {
+    public BookService(BookRepository bookRepository, BookRatingRepository bookRatingRepository, RestTemplate restTemplate, UserRegister userRegister, ViewedBookRepository viewedBookRepository) {
         this.bookRepository = bookRepository;
         this.bookRatingRepository = bookRatingRepository;
         this.restTemplate = restTemplate;
+        this.userRegister = userRegister;
+        this.viewedBookRepository = viewedBookRepository;
     }
 
     public List<Book> getBooksData(){
@@ -188,6 +198,22 @@ public class BookService {
         return bookRepository.findById(bookId).get();
     }
 
+    public void setBookViewed(Book book, Authentication authentication) {
+        if (authentication != null) {
+            User user = userRegister.getCurrentUser(authentication);
+
+            ViewedBook viewedBook = viewedBookRepository.findByBookIdAndUserId(book.getId(), user.getId());
+
+            if (viewedBook != null) {
+                viewedBook.setTime(LocalDateTime.now());
+            } else {
+                viewedBook = new ViewedBook(book.getId(), user.getId());
+            }
+
+            viewedBookRepository.save(viewedBook);
+        }
+    }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Value("${google.books.api.key}")
@@ -220,4 +246,6 @@ public class BookService {
         }
         return list;
     }
+
+
 }

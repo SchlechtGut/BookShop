@@ -12,6 +12,7 @@ import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -58,6 +59,10 @@ public class Book {
     private int addedToCart;
     @Column(columnDefinition = "INTEGER NOT NULL DEFAULT 0")
     private int postponed;
+
+//    @OneToMany(mappedBy = "bookId")
+//    @Where(clause = "time = true")
+//    private Set<ViewedBook> views;
 
     @OneToMany(mappedBy = "bookId")
     private List<Book2AuthorEntity> book2AuthorEntities;
