@@ -120,8 +120,6 @@ public class AuthUserController extends DefaultController {
         List<Book2UserEntity> book2UserEntities = curUser.getBook2UserEntities();
         List<Book> boughtBooks = bookService.findBooksByIdIn(book2UserEntities.stream().map(Book2UserEntity::getBookId).collect(Collectors.toList()));
 
-
-
         model.addAttribute("curUsr", curUser);
         model.addAttribute("boughtBooks", boughtBooks);
         return "my";

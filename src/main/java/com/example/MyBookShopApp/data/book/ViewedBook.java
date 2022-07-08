@@ -59,4 +59,14 @@ public class ViewedBook {
     public void setTime(LocalDateTime time) {
         this.time = time;
     }
+
+    @Override
+    public String toString() {
+        return "ViewedBook{" +
+                "id=" + id +
+                ", bookId=" + bookId +
+                ", userId=" + userId +
+                ", time=" + time +
+                '}';
+    }
 }

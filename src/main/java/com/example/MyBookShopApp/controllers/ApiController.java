@@ -54,16 +54,6 @@ public class ApiController {
         return new BooksPageDto(page.getTotalElements(), page.getContent());
     }
 
-    @GetMapping("/books/popular/test")
-    public BooksPageDto popularTest(@RequestParam Integer offset,
-                                @RequestParam Integer limit,
-                                Model model) {
-        Page<Book> page = bookPopularityService.getPageOfPopularBooksTest(offset, limit);
-        model.addAttribute("newPage" , page.getContent().size());
-
-        return new BooksPageDto(page.getTotalElements(), page.getContent());
-    }
-
     @GetMapping("/books/tag/{id}")
     public BooksPageDto tagBooks(@RequestParam Integer offset,
                                  @RequestParam Integer limit,

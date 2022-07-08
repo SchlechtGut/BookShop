@@ -12,7 +12,9 @@ import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Where;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -59,6 +61,9 @@ public class Book {
     private int addedToCart;
     @Column(columnDefinition = "INTEGER NOT NULL DEFAULT 0")
     private int postponed;
+
+    @Column(name = "viewed_count", columnDefinition = "INTEGER NOT NULL DEFAULT 0")
+    private int viewedCount;
 
 //    @OneToMany(mappedBy = "bookId")
 //    @Where(clause = "time = true")
@@ -280,6 +285,18 @@ public class Book {
 
     public void setRatings(Set<BookRating> ratings) {
         this.ratings = ratings;
+    }
+
+    public int getViewedCount() {
+        return viewedCount;
+    }
+
+    public void setViewedCount(int viewedCount) {
+        this.viewedCount = viewedCount;
+    }
+
+    public void incrementViewedCount() {
+        viewedCount++;
     }
 
     @Override

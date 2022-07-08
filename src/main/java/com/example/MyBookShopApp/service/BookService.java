@@ -208,6 +208,8 @@ public class BookService {
                 viewedBook.setTime(LocalDateTime.now());
             } else {
                 viewedBook = new ViewedBook(book.getId(), user.getId());
+                book.incrementViewedCount();
+                bookRepository.save(book);
             }
 
             viewedBookRepository.save(viewedBook);

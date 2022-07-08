@@ -31,16 +31,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     Page<Book> findBooksByOrderByPubDateDesc(Pageable pageable);
 
-    @Query(value = "select * , bought + 0.7 * added_to_cart + 0.4 * postponed as \"popularity\" from books", nativeQuery = true)
+    @Query(value = "select * , bought + 0.7 * added_to_cart + 0.4 * postponed + 0.2 * viewed_count as \"popularity\" from books", nativeQuery = true)
     Page<Book> findPopularBooks(Pageable nextPage);
-
-    @Query(value = "WITH viewed AS (select *, " +
-                                        "(select count(*) " +
-                                        "from viewed_book " +
-                                        "where book_id = books.id) " +
-                                    "from books) " +
-            "select *, bought + 0.7 * added_to_cart + 0.4 * postponed + 0.2 * count as \"popularity\" from viewed", nativeQuery = true)
-    Page<Book> testFindPopularBooks(Pageable nextPage);
 
     @Query(value = "SELECT * FROM books b " +
             "LEFT JOIN book2tag bt ON bt.book_id = b.id " +
