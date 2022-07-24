@@ -1,5 +1,7 @@
 package com.example.MyBookShopApp.controllers;
 
+import com.example.MyBookShopApp.security.UserRegister;
+import com.example.MyBookShopApp.service.Book2UserService;
 import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.data.book.Book;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,8 @@ public class RecentController extends DefaultController {
     private final BookService bookService;
 
     @Autowired
-    public RecentController(BookService bookService) {
+    public RecentController(UserRegister userRegister, BookService bookService) {
+        super(userRegister);
         this.bookService = bookService;
     }
 

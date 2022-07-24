@@ -3,9 +3,8 @@ package com.example.MyBookShopApp.controllers;
 import com.example.MyBookShopApp.data.ResourceStorage;
 import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.data.book.rating.BookRating;
-import com.example.MyBookShopApp.data.user.User;
-import com.example.MyBookShopApp.repository.ViewedBookRepository;
 import com.example.MyBookShopApp.security.UserRegister;
+import com.example.MyBookShopApp.service.Book2UserService;
 import com.example.MyBookShopApp.service.BookRatingService;
 import com.example.MyBookShopApp.service.BookReviewService;
 import com.example.MyBookShopApp.service.BookService;
@@ -33,18 +32,14 @@ public class BooksController extends DefaultController {
     private final BookRatingService bookRatingService;
     private final BookReviewService bookReviewService;
     private final ResourceStorage storage;
-    private final UserRegister userRegister;
-    private final ViewedBookRepository viewedBookRepository;
-
 
     @Autowired
-    public BooksController(BookService bookService, BookRatingService bookRatingService, BookReviewService bookReviewService, ResourceStorage storage, UserRegister userRegister, ViewedBookRepository viewedBookRepository) {
+    public BooksController(BookService bookService, BookRatingService bookRatingService, BookReviewService bookReviewService, ResourceStorage storage, UserRegister userRegister) {
+        super(userRegister);
         this.bookService = bookService;
         this.bookRatingService = bookRatingService;
         this.bookReviewService = bookReviewService;
         this.storage = storage;
-        this.userRegister = userRegister;
-        this.viewedBookRepository = viewedBookRepository;
     }
 
     @GetMapping("/slugs/{slug}")

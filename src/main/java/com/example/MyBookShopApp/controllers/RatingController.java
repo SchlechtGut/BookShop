@@ -40,6 +40,6 @@ public class RatingController {
         BookRating bookRating = new BookRating(value, book.getId(), user.getId());
         bookRatingService.addRating(bookRating);
 
-        return ("redirect:/books/" + book.getSlug());
+        return ("redirect:/books/slugs/" + book.getSlug());
     }
 }

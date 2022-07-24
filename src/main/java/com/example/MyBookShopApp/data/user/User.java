@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +39,7 @@ public class User {
     private String password;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private List<Book2UserEntity> book2UserEntities;
 
     @JsonIgnore
@@ -66,8 +67,6 @@ public class User {
     private List<BookReviewLikeEntity> bookReviewLikes;
 
     public User() {
-
-
     }
 
     public int getId() {

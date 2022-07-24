@@ -1,6 +1,8 @@
 package com.example.MyBookShopApp.controllers;
 
 import com.example.MyBookShopApp.data.genre.Genre;
+import com.example.MyBookShopApp.security.UserRegister;
+import com.example.MyBookShopApp.service.Book2UserService;
 import com.example.MyBookShopApp.service.GenreService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,8 @@ public class ToolsController extends DefaultController {
 
     private final GenreService genreService;
 
-    public ToolsController(GenreService genreService) {
+    public ToolsController(UserRegister userRegister, GenreService genreService) {
+        super(userRegister);
         this.genreService = genreService;
     }
 

@@ -39,7 +39,9 @@ class LoginTest{
         registrationForm.setPassword("123456");
         registrationForm.setEmail("test@mail.ru");
 
-        userRegister.registerNewUser(registrationForm);
+        userRegister.registerNewUser(registrationForm, request);
+
+
     }
 
     @AfterEach
@@ -55,7 +57,7 @@ class LoginTest{
         BookstoreUserDetails userDetails = new BookstoreUserDetails(user);
         String jwtToken = jwtUtil.generateToken(userDetails);
 
-        ContactConfirmationResponse response = userRegister.jwtLogin(contactConfirmationPayload);
+        ContactConfirmationResponse response = userRegister.jwtLogin(contactConfirmationPayload, request);
         assertNotNull(response);
         assertTrue(jwtToken.matches(response.getResult()));
     }

@@ -1,0 +1,12 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:fragment="genre">
+    <div th:classappend="${node.embedded ? 'Tags_embed' : ''}" th:class="${node.children.size() > 0} ? 'Tags' : ''" th:each="node : ${nodes}" th:remove="${node.children.size() == 0} ? tag : none">
+        <div class="Tags-title" th:remove="${node.children.size() == 0} ? tag : none">
+            <div class="Tag">
+                <a th:href="@{'/genres/' + ${node.slug}}" th:text="${node.name}">node
+                    <span class="undefined-amount" th:text="'(' + ${node.booksCount} + ')'"></span>
+                </a>
+            </div>
+        </div>
+        <div th:if="${node.children.size() > 0}" th:include="fragments/genreFragment :: genre" th:with="nodes=${node.getChildren()}" th:remove="tag"></div>
+    </div>
+</html>

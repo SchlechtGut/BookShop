@@ -1,7 +1,11 @@
 package com.example.MyBookShopApp.data.book.links;
 
+import com.example.MyBookShopApp.data.enums.Book2UserType;
+import com.example.MyBookShopApp.data.user.User;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "book2user")
@@ -15,13 +19,15 @@ public class Book2UserEntity {
     private LocalDateTime time;
 
     @Column(name = "type_id", columnDefinition = "INT NOT NULL")
-    private int typeId;
+    private Book2UserType type;
 
     @Column(name = "book_id", columnDefinition = "INT NOT NULL")
     private int bookId;
 
-    @Column(name = "user_id", columnDefinition = "INT NOT NULL")
-    private int userId;
+//    @Column(name = "user_id", columnDefinition = "INT NOT NULL")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public int getId() {
         return id;
@@ -39,12 +45,12 @@ public class Book2UserEntity {
         this.time = time;
     }
 
-    public int getTypeId() {
-        return typeId;
+    public Book2UserType getType() {
+        return type;
     }
 
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
+    public void setType(Book2UserType type) {
+        this.type = type;
     }
 
     public int getBookId() {
@@ -55,11 +61,24 @@ public class Book2UserEntity {
         this.bookId = bookId;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book2UserEntity that = (Book2UserEntity) o;
+        return bookId == that.bookId && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, bookId);
     }
 }

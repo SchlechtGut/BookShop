@@ -43,14 +43,17 @@
           | браузера здесь&nbsp;
       | для правильного отображения сайта.
   -->
-<header class="Header" th:replace="~{fragments/header_fragment :: headFragment}"></header>
+<header class="Header" th:replace="${authenticated} ?
+      ~{fragments/authorized_header_fragment :: headFragment} :
+      ~{fragments/header_fragment :: headFragment}">
+</header>
 <div class="Middle">
   <div class="wrap">
     <main class="Middle-main">
       <ul class="breadcrumbs">
-        <li class="breadcrumbs-item"><a href="/index.html">Главная</a>
+        <li class="breadcrumbs-item"><a href="/index">Главная</a>
         </li>
-        <li class="breadcrumbs-item"><a href="/genres/index.html">Книги</a>
+        <li class="breadcrumbs-item"><a href="/genres/index">Книги</a>
         </li>
         <li class="breadcrumbs-item breadcrumbs-item_current"><span th:text="${slugBook.title}">Мара и морок</span>
         </li>
@@ -229,7 +232,11 @@
                 </a>
               </div>
               <div class="ProductCard-cartElement">
-                <button class="btn btn_primary btn_outline" data-sendstatus="ARCHIVED" data-bookid="[1111]" data-btntype="check" data-btnradio="buyblock" data-check="false" data-alttext="Вернуть из архива"><span class="btn-icon"><img src="/assets/img/icons/archive.svg" alt="archive.svg"/></span><span class="btn-content">В архив</span>
+                <button class="btn btn_primary btn_outline" data-sendstatus="ARCHIVED" th:data-bookid="${slugBook.slug}" data-bookid="[1111]" data-btntype="check" data-btnradio="buyblock" data-check="false" data-alttext="Вернуть из архива">
+                  <span class="btn-icon">
+                    <img src="/assets/img/icons/archive.svg" alt="archive.svg"/>
+                  </span>
+                  <span class="btn-content">В архив</span>
                 </button>
               </div>
             </div>

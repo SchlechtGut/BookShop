@@ -18,7 +18,10 @@
     <div th:replace="~{fragments/locale_change_fragment :: localeChange}"></div>
 </head>
 <body class="Site">
-<header class="Header" th:replace="~{fragments/header_fragment :: headFragment}"></header>
+<header class="Header" th:replace="${authenticated} ?
+        ~{fragments/authorized_header_fragment :: headFragment} :
+        ~{fragments/header_fragment :: headFragment}">
+</header>
 <!--<div class="Middle">-->
 <!--    <div class="wrap">-->
 <!--        <main class="Middle-main">-->

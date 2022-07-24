@@ -41,15 +41,17 @@
           | браузера здесь&nbsp;
       | для правильного отображения сайта.
   -->
-<header class="Header" th:replace="~{fragments/header_fragment :: headFragment}"></header>
-
+<header class="Header" th:replace="${authenticated} ?
+      ~{fragments/authorized_header_fragment :: headFragment} :
+      ~{fragments/header_fragment :: headFragment}">
+</header>
 <div class="Middle">
   <div class="wrap">
     <main class="Middle-main">
       <h1 class="Middle-title">Корзина</h1>
       <h3 th:if="${isCartEmpty}">Корзина пуста:(</h3>
       <form class="form Cart" action="#" method="post">
-        <div class="Cart-product" th:each="book : ${bookCart}">
+        <div class="Cart-product" th:each="book : ${booksIn}">
           <div class="Cart-block Cart-block_row">
             <div class="Cart-block Cart-block_pict">
               <a class="Cart-pict" href="#">

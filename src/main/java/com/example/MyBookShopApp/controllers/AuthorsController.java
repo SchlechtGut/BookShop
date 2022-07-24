@@ -1,7 +1,9 @@
 package com.example.MyBookShopApp.controllers;
 
+import com.example.MyBookShopApp.security.UserRegister;
 import com.example.MyBookShopApp.service.AuthorService;
 import com.example.MyBookShopApp.data.author.Author;
+import com.example.MyBookShopApp.service.Book2UserService;
 import com.example.MyBookShopApp.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +25,8 @@ public class AuthorsController extends DefaultController {
     private final BookService bookService;
 
     @Autowired
-    public AuthorsController(AuthorService authorService, BookService bookService) {
+    public AuthorsController(UserRegister userRegister, AuthorService authorService, BookService bookService) {
+        super(userRegister);
         this.authorService = authorService;
         this.bookService = bookService;
     }

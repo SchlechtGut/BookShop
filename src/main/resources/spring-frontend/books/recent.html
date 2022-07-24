@@ -40,7 +40,10 @@
           | браузера здесь&nbsp;
       | для правильного отображения сайта.
   -->
-<header class="Header" th:replace="~{fragments/header_fragment :: headFragment}">
+<header class="Header" th:replace="${authenticated} ?
+      ~{fragments/authorized_header_fragment :: headFragment} :
+      ~{fragments/header_fragment :: headFragment}">
+</header>
 </header>
 <div class="Middle">
   <div class="wrap">

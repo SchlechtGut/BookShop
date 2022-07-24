@@ -6,6 +6,8 @@ import com.example.MyBookShopApp.data.DTO.SearchWordDto;
 import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.data.book.tag.Tag;
 import com.example.MyBookShopApp.errs.EmptySearchException;
+import com.example.MyBookShopApp.security.UserRegister;
+import com.example.MyBookShopApp.service.Book2UserService;
 import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.service.BookPopularityService;
 import com.example.MyBookShopApp.service.TagService;
@@ -26,7 +28,8 @@ public class MainPageController extends DefaultController {
     private final TagService tagService;
 
     @Autowired
-    public MainPageController(BookService bookService, BookPopularityService bookPopularityService, TagService tagService) {
+    public MainPageController(UserRegister userRegister, BookService bookService, BookPopularityService bookPopularityService, TagService tagService) {
+        super(userRegister);
         this.bookService = bookService;
         this.bookPopularityService = bookPopularityService;
         this.tagService = tagService;

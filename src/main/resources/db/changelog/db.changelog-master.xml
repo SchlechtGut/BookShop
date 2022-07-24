@@ -15,6 +15,7 @@
     <include file="db/changelog/changeset/book2user_types.yml"/>
     <include file="db/changelog/changeset/liquibase-change7-schema.xml"/>
     <include file="db/changelog/changeset/liquibase-change8-schema.xml"/>
+    <include file="db/changelog/changeset/liquibase-change9-schema.xml"/>
 </databaseChangeLog>
 
 

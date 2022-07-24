@@ -2,6 +2,7 @@ package com.example.MyBookShopApp.service;
 
 import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.data.book.links.Book2UserEntity;
+import com.example.MyBookShopApp.data.enums.Book2UserType;
 import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
 import com.example.MyBookShopApp.data.user.User;
 import com.example.MyBookShopApp.repository.BalanceTransactionRepository;
@@ -14,12 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
-public class PostponedAndCartService {
+public class AttachedBooksService {
 
     private final BookRepository bookRepository;
     private final UserRegister userRegister;
@@ -28,27 +32,12 @@ public class PostponedAndCartService {
     private final UserRepository userRepository;
 
 
-    public PostponedAndCartService(BookRepository bookRepository, UserRegister userRegister, BalanceTransactionRepository balanceTransactionRepository, Book2UserRepository book2UserRepository, UserRepository userRepository) {
+    public AttachedBooksService(BookRepository bookRepository, UserRegister userRegister, BalanceTransactionRepository balanceTransactionRepository, Book2UserRepository book2UserRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
         this.userRegister = userRegister;
         this.balanceTransactionRepository = balanceTransactionRepository;
         this.book2UserRepository = book2UserRepository;
         this.userRepository = userRepository;
-    }
-
-
-    public void addToCart(String slug, String cartContents, HttpServletResponse response, Model model) {
-        if (cartContents == null || cartContents.equals("")) {
-            Cookie cookie = new Cookie("cartContents", slug);
-            updateCartContentsCount(response, model, cookie);
-
-        } else if (!cartContents.contains(slug)) {
-
-            StringJoiner stringJoiner = new StringJoiner("/");
-            stringJoiner.add(cartContents).add(slug);
-            Cookie cookie = new Cookie("cartContents", stringJoiner.toString());
-            updateCartContentsCount(response, model, cookie);
-        }
     }
 
     public void addToPostponedBooks(String slug, String postponedBooks, HttpServletResponse response, Model model) {
@@ -65,63 +54,41 @@ public class PostponedAndCartService {
         }
     }
 
-    public void removeBookFromCart(String slug, String cartContents, HttpServletResponse response, Model model) {
-        if (cartContents != null && !cartContents.equals("")) {
-            ArrayList<String> cookieBooks = new ArrayList<>(Arrays.asList(cartContents.split("/")));
-            cookieBooks.remove(slug);
-            Cookie cookie = new Cookie("cartContents", String.join("/", cookieBooks));
-            cookie.setPath("/books");
-            response.addCookie(cookie);
-            model.addAttribute("isCartEmpty", false);
+    public void addToPostponedOrCart(User user, String slug, String status) {
+        Book book = bookRepository.findBySlug(slug);
 
-            if (cookie.getValue().length() == 0) {
-                Cookie numberOfAddedToCart = new Cookie("cartContentsCount", "0");
-                numberOfAddedToCart.setPath("/");
-                response.addCookie(numberOfAddedToCart);
-            } else {
-                Cookie numberOfAddedToCart = new Cookie("cartContentsCount", String.valueOf(cookie.getValue().split("/").length));
-                numberOfAddedToCart.setPath("/");
-                response.addCookie(numberOfAddedToCart);
-            }
+        Book2UserType type = status.equals("KEPT") ? Book2UserType.KEPT : Book2UserType.CART;
 
-        } else {
-            model.addAttribute("isCartEmpty", true);
+        Book2UserEntity existingBook2UserEntity = book2UserRepository.findByBookIdAndUserIdAndTypeIn(book.getId(), user.getId(), List.of(Book2UserType.CART, Book2UserType.KEPT));
+
+        if (existingBook2UserEntity == null) {
+            Book2UserEntity book2UserEntity = new Book2UserEntity();
+            book2UserEntity.setBookId(book.getId());
+            book2UserEntity.setUser(user);
+            book2UserEntity.setType(type);
+            book2UserEntity.setTime(LocalDateTime.now());
+
+            book2UserRepository.save(book2UserEntity);
+
+        } else if (!existingBook2UserEntity.getType().equals(type)) {
+            existingBook2UserEntity.setType(type);
+            existingBook2UserEntity.setTime(LocalDateTime.now());
+            book2UserRepository.save(existingBook2UserEntity);
         }
     }
 
-    public void removeBookFromPostponed(String slug, String postponedBooks, HttpServletResponse response, Model model) {
-        if (postponedBooks != null && !postponedBooks.equals("")) {
-            ArrayList<String> cookieBooks = new ArrayList<>(Arrays.asList(postponedBooks.split("/")));
-            cookieBooks.remove(slug);
-            Cookie cookie = new Cookie("postponedBooks", String.join("/", cookieBooks));
-            cookie.setPath("/books");
-            response.addCookie(cookie);
-            model.addAttribute("isPostponedEmpty", false);
+    public void removeFromCartPostponed(String slug, HttpServletRequest request, Authentication authentication, Book2UserType type) {
+        Book book = bookRepository.findBySlug(slug);
+        User user;
 
-            if (cookie.getValue().length() == 0) {
-                Cookie numberOfAddedToCart = new Cookie("postponedCount", "0");
-                numberOfAddedToCart.setPath("/");
-                response.addCookie(numberOfAddedToCart);
-            } else {
-                Cookie numberOfAddedToCart = new Cookie("postponedCount", String.valueOf(cookie.getValue().split("/").length));
-                numberOfAddedToCart.setPath("/");
-                response.addCookie(numberOfAddedToCart);
-            }
-
+        if (authentication != null) {
+            user = userRegister.getCurrentUser(authentication);
         } else {
-            model.addAttribute("isPostponedEmpty", true);
+            HttpSession session = request.getSession();
+            user = (User) session.getAttribute("empty_user");
         }
-    }
 
-    private void updateCartContentsCount(HttpServletResponse response, Model model, Cookie cookie) {
-        cookie.setPath("/books");
-        response.addCookie(cookie);
-
-        Cookie numberOfAddedToCart = new Cookie("cartContentsCount", String.valueOf(cookie.getValue().split("/").length));
-        numberOfAddedToCart.setPath("/");
-        response.addCookie(numberOfAddedToCart);
-
-        model.addAttribute("isCartEmpty", false);
+        book2UserRepository.deleteByUserAndBookIdAndType(user, book.getId(), type);
     }
 
     private void updatePostponedCount(HttpServletResponse response, Model model, Cookie cookie) {
@@ -171,9 +138,9 @@ public class PostponedAndCartService {
 
             Book2UserEntity book2UserEntity = new Book2UserEntity();
             book2UserEntity.setBookId(book.getId());
-            book2UserEntity.setUserId(user.getId());
+            book2UserEntity.setUser(user);
             book2UserEntity.setTime(LocalDateTime.now());
-            book2UserEntity.setTypeId(3);
+            book2UserEntity.setType(Book2UserType.PAID);
 
             transactions.add(transaction);
             book2UserEntities.add(book2UserEntity);
@@ -196,4 +163,48 @@ public class PostponedAndCartService {
     }
 
 
+    public void archiveBook(String slug, Authentication authentication) {
+        Book book = bookRepository.findBySlug(slug);
+        int userId = userRegister.getCurrentUser(authentication).getId();
+
+        Book2UserEntity book2UserEntity = book2UserRepository.findByBookIdAndUserId(book.getId(), userId);
+
+        book2UserEntity.setType(Book2UserType.ARCHIVED);
+        book2UserRepository.save(book2UserEntity);
+
+    }
+
+    public void deArchiveBook(String slug, Authentication authentication) {
+        Book book = bookRepository.findBySlug(slug);
+        int userId = userRegister.getCurrentUser(authentication).getId();
+
+        Book2UserEntity book2UserEntity = book2UserRepository.findByBookIdAndUserId(book.getId(), userId);
+
+        book2UserEntity.setType(Book2UserType.PAID);
+        book2UserRepository.save(book2UserEntity);
+    }
+
+    public void showInnerContent(Model model, HttpServletRequest request, Authentication authentication, Book2UserType type) {
+        HttpSession session = request.getSession();
+        User emptyUser = (User) session.getAttribute("empty_user");
+        List<Book2UserEntity> book2UserEntities = new ArrayList<>();
+
+        if (authentication != null) {
+            book2UserEntities = userRegister.getCurrentUser(authentication).getBook2UserEntities().stream().filter(x-> x.getType().equals(type)).collect(Collectors.toList());
+        } else if (emptyUser != null) {
+            book2UserEntities = userRepository.getById(emptyUser.getId()).getBook2UserEntities().stream().filter(x-> x.getType().equals(type)).collect(Collectors.toList());
+        }
+
+        List<Book> books;
+        books = bookRepository.findAllById(book2UserEntities.stream().map(Book2UserEntity::getBookId).collect(Collectors.toList()));
+
+        if (books.isEmpty()) {
+            model.addAttribute("isCartEmpty", true);
+        } else {
+            model.addAttribute("isCartEmpty", false);
+            model.addAttribute("booksIn", books);
+            model.addAttribute("totalPrice", books.stream().mapToInt(Book::getDiscountPrice).sum());
+            model.addAttribute("totalOldPrice", books.stream().mapToInt(Book::getPriceOld).sum());
+        }
+    }
 }

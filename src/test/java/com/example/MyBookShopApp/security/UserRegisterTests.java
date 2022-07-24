@@ -51,7 +51,7 @@ class UserRegisterTests {
 
     @Test
     void registerNewUser() {
-        User user = userRegister.registerNewUser(registrationForm);
+        User user = userRegister.registerNewUser(registrationForm, request);
         assertNotNull(user);
         assertTrue(passwordEncoder.matches(registrationForm.getPassword(), user.getPassword()));
         assertTrue(CoreMatchers.is(user.getPhone()).matches(registrationForm.getPhone()));
@@ -68,7 +68,7 @@ class UserRegisterTests {
                 .when(userRepositoryMock)
                 .findByEmail(registrationForm.getEmail());
 
-        User user = userRegister.registerNewUser(registrationForm);
+        User user = userRegister.registerNewUser(registrationForm, request);
         assertNull(user);
     }
 

@@ -17,12 +17,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test.properties")
-class PostponedAndCartControllerTests {
+class AttachedBooksControllerTests {
 
     private final MockMvc mockMvc;
 
     @Autowired
-    PostponedAndCartControllerTests(MockMvc mockMvc) {
+    AttachedBooksControllerTests(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
 

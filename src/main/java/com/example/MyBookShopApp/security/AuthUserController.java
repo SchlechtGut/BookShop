@@ -5,9 +5,12 @@ import com.example.MyBookShopApp.controllers.DefaultController;
 import com.example.MyBookShopApp.data.SmsCode;
 import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.data.book.links.Book2UserEntity;
+import com.example.MyBookShopApp.data.enums.Book2UserType;
 import com.example.MyBookShopApp.data.user.User;
 import com.example.MyBookShopApp.repository.BalanceTransactionRepository;
+import com.example.MyBookShopApp.repository.Book2UserTypeRepository;
 import com.example.MyBookShopApp.service.ApiService;
+import com.example.MyBookShopApp.service.Book2UserService;
 import com.example.MyBookShopApp.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -34,15 +37,18 @@ public class AuthUserController extends DefaultController {
     private final ApiService apiService;
     private final BalanceTransactionRepository balanceTransactionRepository;
     private final BookService bookService;
+    private final Book2UserTypeRepository book2UserTypeRepository;
 
     @Autowired
-    public AuthUserController(UserRegister userRegister, SmsService smsService, JavaMailSender javaMailSender, ApiService apiService, BalanceTransactionRepository balanceTransactionRepository, BookService bookService) {
+    public AuthUserController(UserRegister userRegister, SmsService smsService, JavaMailSender javaMailSender, ApiService apiService, BalanceTransactionRepository balanceTransactionRepository, BookService bookService, Book2UserTypeRepository book2UserTypeRepository, Book2UserService book2UserService) {
+        super(userRegister);
         this.userRegister = userRegister;
         this.smsService = smsService;
         this.javaMailSender = javaMailSender;
         this.apiService = apiService;
         this.balanceTransactionRepository = balanceTransactionRepository;
         this.bookService = bookService;
+        this.book2UserTypeRepository = book2UserTypeRepository;
     }
 
     @GetMapping("/signin")
@@ -98,8 +104,8 @@ public class AuthUserController extends DefaultController {
     }
 
     @PostMapping("/reg")
-    public String handleUserRegistration(RegistrationForm registrationForm, Model model) {
-        userRegister.registerNewUser(registrationForm);
+    public String handleUserRegistration(RegistrationForm registrationForm, Model model, HttpServletRequest request) {
+        userRegister.registerNewUser(registrationForm, request);
         model.addAttribute("regOk", true);
         return "redirect:/signin";
     }
@@ -107,22 +113,34 @@ public class AuthUserController extends DefaultController {
     @PostMapping("/login")
     @ResponseBody
     public ContactConfirmationResponse handleLogin(@RequestBody ContactConfirmationPayload payload,
-                                                   HttpServletResponse httpServletResponse) {
-        ContactConfirmationResponse loginResponse = userRegister.jwtLogin(payload);
+                                                   HttpServletResponse httpServletResponse, HttpServletRequest request) {
+        ContactConfirmationResponse loginResponse = userRegister.jwtLogin(payload, request);
         Cookie cookie = new Cookie("token", loginResponse.getResult());
         httpServletResponse.addCookie(cookie);
         return loginResponse;
     }
 
     @GetMapping("/my")
-    public String handleMy(Model model, Authentication authentication) {
+    public String my(Model model, Authentication authentication) {
         User curUser = userRegister.getCurrentUser(authentication);
-        List<Book2UserEntity> book2UserEntities = curUser.getBook2UserEntities();
+        List<Book2UserEntity> book2UserEntities = curUser.getBook2UserEntities().stream().filter(x -> x.getType().equals(Book2UserType.PAID)).collect(Collectors.toList());
+
         List<Book> boughtBooks = bookService.findBooksByIdIn(book2UserEntities.stream().map(Book2UserEntity::getBookId).collect(Collectors.toList()));
 
         model.addAttribute("curUsr", curUser);
         model.addAttribute("boughtBooks", boughtBooks);
         return "my";
+    }
+
+    @GetMapping("/my/archive")
+    public String archived(Model model, Authentication authentication) {
+        User curUser = userRegister.getCurrentUser(authentication);
+        List<Book2UserEntity> book2UserEntities = curUser.getBook2UserEntities().stream().filter(x -> x.getType().equals(Book2UserType.ARCHIVED)).collect(Collectors.toList());
+        List<Book> archived = bookService.findBooksByIdIn(book2UserEntities.stream().map(Book2UserEntity::getBookId).collect(Collectors.toList()));
+
+        model.addAttribute("curUsr", curUser);
+        model.addAttribute("archivedBooks", archived);
+        return "myarchive";
     }
 
     @GetMapping("/profile")
@@ -134,8 +152,8 @@ public class AuthUserController extends DefaultController {
     }
 
     @GetMapping("/oauth-success-login")
-    public String oauthSuccess(OAuth2AuthenticationToken auth2AuthenticationToken) {
-        userRegister.registerOauthUser(auth2AuthenticationToken.getPrincipal());
+    public String oauthSuccess(OAuth2AuthenticationToken auth2AuthenticationToken, HttpServletRequest request) {
+        userRegister.registerOauthUser(auth2AuthenticationToken.getPrincipal(), request);
         return "redirect:/my";
     }
 
@@ -172,7 +190,6 @@ public class AuthUserController extends DefaultController {
         userRegister.editProfile(token);
         return "redirect:/profile";
     }
-
 
 
 

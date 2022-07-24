@@ -3,6 +3,7 @@ package com.example.MyBookShopApp.controllers;
 import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.data.user.User;
 import com.example.MyBookShopApp.security.UserRegister;
+import com.example.MyBookShopApp.service.Book2UserService;
 import com.example.MyBookShopApp.service.BookPopularityService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -16,11 +17,10 @@ import java.util.List;
 public class ViewedController extends DefaultController {
 
     private final BookPopularityService bookPopularityService;
-    private final UserRegister userRegister;
 
     public ViewedController(BookPopularityService bookPopularityService, UserRegister userRegister) {
+        super(userRegister);
         this.bookPopularityService = bookPopularityService;
-        this.userRegister = userRegister;
     }
 
     @ModelAttribute("viewedBooks")

@@ -2,6 +2,8 @@ package com.example.MyBookShopApp.controllers;
 
 import com.example.MyBookShopApp.data.book.Book;
 import com.example.MyBookShopApp.data.book.tag.Tag;
+import com.example.MyBookShopApp.security.UserRegister;
+import com.example.MyBookShopApp.service.Book2UserService;
 import com.example.MyBookShopApp.service.BookService;
 import com.example.MyBookShopApp.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,8 @@ public class TagController extends DefaultController {
     private final BookService bookService;
 
     @Autowired
-    public TagController(TagService tagService, BookService bookService) {
+    public TagController(UserRegister userRegister, TagService tagService, BookService bookService) {
+        super(userRegister);
         this.tagService = tagService;
         this.bookService = bookService;
     }

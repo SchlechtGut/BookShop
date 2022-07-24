@@ -1,6 +1,8 @@
 package com.example.MyBookShopApp.controllers;
 
 import com.example.MyBookShopApp.data.book.Book;
+import com.example.MyBookShopApp.security.UserRegister;
+import com.example.MyBookShopApp.service.Book2UserService;
 import com.example.MyBookShopApp.service.BookPopularityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +17,8 @@ public class PopularController extends DefaultController {
     private final BookPopularityService bookPopularityService;
 
     @Autowired
-    public PopularController(BookPopularityService bookPopularityService) {
+    public PopularController(UserRegister userRegister, BookPopularityService bookPopularityService) {
+        super(userRegister);
         this.bookPopularityService = bookPopularityService;
 
     }
