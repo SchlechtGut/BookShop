@@ -12,8 +12,7 @@ public class SuccessResponse {
         this.result = result;
     }
 
-    public SuccessResponse(boolean result, String error) {
-        this.result = result;
+    public SuccessResponse(String error) {
         this.error = error;
     }
 
@@ -31,5 +30,13 @@ public class SuccessResponse {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        return "SuccessResponse{" +
+                "result=" + result +
+                ", error='" + error + '\'' +
+                '}';
     }
 }

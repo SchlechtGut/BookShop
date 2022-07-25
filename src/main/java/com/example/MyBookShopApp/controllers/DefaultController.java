@@ -51,12 +51,14 @@ public class DefaultController {
 
         long keptCount = 0;
         long cartCount = 0;
+        long myBooksCount = 0;
 
         if (authentication != null) {
             List<Book2UserEntity> list = userRegister.getCurrentUser(authentication).getBook2UserEntities();
 
             keptCount = list.stream().filter(x -> x.getType().equals(Book2UserType.KEPT)).count();
             cartCount = list.stream().filter(x -> x.getType().equals(Book2UserType.CART)).count();
+            myBooksCount = list.stream().filter(x -> x.getType().equals(Book2UserType.PAID) || x.getType().equals(Book2UserType.ARCHIVED)).count();
 
         } else if (emptyUser != null) {
             Optional<User> optional = userRegister.getUserById(emptyUser.getId());
@@ -69,5 +71,6 @@ public class DefaultController {
 
         model.addAttribute("postponedCount", keptCount);
         model.addAttribute("cartContentsCount", cartCount);
+        model.addAttribute("myBooksCount", myBooksCount);
     }
 }

@@ -40,45 +40,48 @@ public class AttachedBooksService {
         this.userRepository = userRepository;
     }
 
-    public void addToPostponedBooks(String slug, String postponedBooks, HttpServletResponse response, Model model) {
-        if (postponedBooks == null || postponedBooks.equals("")) {
-            Cookie cookie = new Cookie("postponedBooks", slug);
-            updatePostponedCount(response, model, cookie);
+    public String addToPostponedOrCart(User user, String[] ids, String status) {
+        String error = null;
+        List<Integer> idList = new ArrayList<>();
 
-        } else if (!postponedBooks.contains(slug)) {
-
-            StringJoiner stringJoiner = new StringJoiner("/");
-            stringJoiner.add(postponedBooks).add(slug);
-            Cookie cookie = new Cookie("postponedBooks", stringJoiner.toString());
-            updatePostponedCount(response, model, cookie);
-        }
-    }
-
-    public void addToPostponedOrCart(User user, String slug, String status) {
-        Book book = bookRepository.findBySlug(slug);
+        Arrays.stream(ids).forEach(x -> idList.add(Integer.valueOf(x)));
+        List<Book> books = bookRepository.findAllById(idList);
 
         Book2UserType type = status.equals("KEPT") ? Book2UserType.KEPT : Book2UserType.CART;
 
-        Book2UserEntity existingBook2UserEntity = book2UserRepository.findByBookIdAndUserIdAndTypeIn(book.getId(), user.getId(), List.of(Book2UserType.CART, Book2UserType.KEPT));
+        List<Book2UserEntity> book2UserForSave = new ArrayList<>();
 
-        if (existingBook2UserEntity == null) {
-            Book2UserEntity book2UserEntity = new Book2UserEntity();
-            book2UserEntity.setBookId(book.getId());
-            book2UserEntity.setUser(user);
-            book2UserEntity.setType(type);
-            book2UserEntity.setTime(LocalDateTime.now());
+        for (Book book : books) {
+            Book2UserEntity existingBook2UserEntity = book2UserRepository.findByBookIdAndUserId(book.getId(), user.getId());
 
-            book2UserRepository.save(book2UserEntity);
+            if (existingBook2UserEntity == null) {
+                existingBook2UserEntity = new Book2UserEntity();
+                existingBook2UserEntity.setBookId(book.getId());
+                existingBook2UserEntity.setUser(user);
+                existingBook2UserEntity.setType(type);
+                existingBook2UserEntity.setTime(LocalDateTime.now());
 
-        } else if (!existingBook2UserEntity.getType().equals(type)) {
-            existingBook2UserEntity.setType(type);
-            existingBook2UserEntity.setTime(LocalDateTime.now());
-            book2UserRepository.save(existingBook2UserEntity);
+                book2UserForSave.add(existingBook2UserEntity);
+
+            } else if (existingBook2UserEntity.getType().equals(Book2UserType.PAID) ||
+                    existingBook2UserEntity.getType().equals(Book2UserType.ARCHIVED)) {
+                error = "can't put in a book that'd been already bought";
+
+            } else if (!existingBook2UserEntity.getType().equals(type)) {
+                existingBook2UserEntity.setType(type);
+                existingBook2UserEntity.setTime(LocalDateTime.now());
+
+                book2UserForSave.add(existingBook2UserEntity);
+            }
         }
+
+        book2UserRepository.saveAll(book2UserForSave);
+
+        return error;
     }
 
-    public void removeFromCartPostponed(String slug, HttpServletRequest request, Authentication authentication, Book2UserType type) {
-        Book book = bookRepository.findBySlug(slug);
+    public void removeFromCartPostponed(String id, HttpServletRequest request, Authentication authentication) {
+        Book book = bookRepository.getById(Integer.valueOf(id));
         User user;
 
         if (authentication != null) {
@@ -88,7 +91,7 @@ public class AttachedBooksService {
             user = (User) session.getAttribute("empty_user");
         }
 
-        book2UserRepository.deleteByUserAndBookIdAndType(user, book.getId(), type);
+        book2UserRepository.deleteByUserAndBookIdAndTypeIn(user, book.getId(), List.of(Book2UserType.CART, Book2UserType.KEPT));
     }
 
     private void updatePostponedCount(HttpServletResponse response, Model model, Cookie cookie) {
@@ -205,6 +208,7 @@ public class AttachedBooksService {
             model.addAttribute("booksIn", books);
             model.addAttribute("totalPrice", books.stream().mapToInt(Book::getDiscountPrice).sum());
             model.addAttribute("totalOldPrice", books.stream().mapToInt(Book::getPriceOld).sum());
+            model.addAttribute("booksIds", books.stream().map(x -> String.valueOf(x.getId())).collect(Collectors.joining(",")));
         }
     }
 }

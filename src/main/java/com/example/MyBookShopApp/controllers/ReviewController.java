@@ -38,7 +38,7 @@ public class ReviewController {
         User user = bookstoreUserRegister.getCurrentUser(authentication);
 
         if (bookId == null || text == null || text.isBlank() ) {
-            return new SuccessResponse(false, "some error");
+            return new SuccessResponse("some error");
         }
 
         bookReviewService.addReview(bookId, text, user);

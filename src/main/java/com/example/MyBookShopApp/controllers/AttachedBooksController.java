@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.controllers;
 
+import com.example.MyBookShopApp.api.response.SuccessResponse;
 import com.example.MyBookShopApp.data.enums.Book2UserType;
 import com.example.MyBookShopApp.data.user.User;
 import com.example.MyBookShopApp.repository.UserRepository;
@@ -18,9 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
-@RequestMapping("/books")
 public class AttachedBooksController extends DefaultController {
 
     private final BookService bookService;
@@ -37,46 +39,40 @@ public class AttachedBooksController extends DefaultController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/cart")
+    @GetMapping("/books/cart")
     public String cart(Model model, HttpServletRequest request, Authentication authentication) {
         attachedBooksService.showInnerContent(model, request, authentication, Book2UserType.CART);
         return "cart";
     }
 
-    @GetMapping("/postponed")
+    @GetMapping("/books/postponed")
     public String postponed(Model model, HttpServletRequest request, Authentication authentication) {
         attachedBooksService.showInnerContent(model, request, authentication, Book2UserType.KEPT);
         return "postponed";
     }
 
-    @PostMapping("/changeBookStatus/cart/remove/{slug}")
-    public String handleRemoveBookFromCartRequest(@PathVariable String slug, HttpServletRequest request, Authentication authentication) {
-        attachedBooksService.removeFromCartPostponed(slug, request, authentication, Book2UserType.CART);
-        return "redirect:/books/cart";
-    }
-
-    @PostMapping("/changeBookStatus/postponed/remove/{slug}")
-    public String handleRemoveBookFromPostponedRequest(@PathVariable String slug, HttpServletRequest request, Authentication authentication) {
-        attachedBooksService.removeFromCartPostponed(slug, request, authentication, Book2UserType.KEPT);
-        return "redirect:/books/postponed";
-    }
-
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/changeBookStatus/my/archive/{slug}")
+    @PostMapping("/books/changeBookStatus/my/archive/{slug}")
     public String handelArchiving(@PathVariable String slug, Authentication authentication) {
         attachedBooksService.archiveBook(slug, authentication);
         return "redirect:/books/postponed";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/changeBookStatus/my/dearchive/{slug}")
+    @PostMapping("/books/changeBookStatus/my/dearchive/{slug}")
     public String handelDeArchiving(@PathVariable String slug, Authentication authentication) {
         attachedBooksService.deArchiveBook(slug, authentication);
         return "redirect:/books/postponed";
     }
 
-    @PostMapping("/changeBookStatus/{slug}")
-    public String handleChangeBookStatus(@RequestParam String status, @PathVariable String slug, HttpServletRequest request, Authentication authentication) {
+    @PostMapping("/api/changeBookStatus")
+    @ResponseBody
+    public SuccessResponse handleChangeBookStatus(@RequestParam String status, @RequestParam String booksIds,
+                                                  HttpServletRequest request, Authentication authentication) {
+        String error = null;
+
+        String[] ids = booksIds.split(",");
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("empty_user");
 
@@ -84,6 +80,7 @@ public class AttachedBooksController extends DefaultController {
             user = userRegister.getCurrentUser(authentication);
 
         } else if (user == null) {
+            System.out.println("why!!!!!");
             user = new User();
             user.setRegTime(LocalDateTime.now());
             userRepository.save(user);
@@ -92,13 +89,19 @@ public class AttachedBooksController extends DefaultController {
         }
 
         if (status.equals("KEPT") || status.equals("CART")) {
-            attachedBooksService.addToPostponedOrCart(user, slug, status);
+             error = attachedBooksService.addToPostponedOrCart(user, ids, status);
+        } else if (status.equals("UNLINK")) {
+            attachedBooksService.removeFromCartPostponed(ids[0], request, authentication);
         }
 
-        return ("redirect:/books/slugs/" + slug);
+        if (error == null) {
+            return new SuccessResponse(true);
+        } else {
+            return new SuccessResponse(error);
+        }
     }
 
-    @GetMapping("/buy")
+    @GetMapping("/books/buy")
     @PreAuthorize("isAuthenticated()")
     public String handleBuy(@CookieValue(required = false) String cartContents, HttpServletResponse response, Model model, Authentication authentication) {
         System.out.println(cartContents);

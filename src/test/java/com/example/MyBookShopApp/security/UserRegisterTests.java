@@ -9,8 +9,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,6 +26,7 @@ class UserRegisterTests {
     private final UserRegister userRegister;
     private final PasswordEncoder passwordEncoder;
     private final JWTUtil jwtUtil;
+    private static HttpServletRequest request;
 
     @MockBean
     private UserRepository userRepositoryMock;
@@ -41,6 +45,8 @@ class UserRegisterTests {
         registrationForm.setName("Tester");
         registrationForm.setPassword("123456");
         registrationForm.setPhone("9253018770");
+
+        request = new MockHttpServletRequest();
     }
 
     @AfterEach
@@ -59,7 +65,6 @@ class UserRegisterTests {
         assertTrue(CoreMatchers.is(user.getEmail()).matches(registrationForm.getEmail()));
 
         Mockito.verify(userRepositoryMock, Mockito.times(1)).save(Mockito.any(User.class));
-
     }
 
     @Test

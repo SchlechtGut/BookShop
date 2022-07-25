@@ -9,7 +9,7 @@
 <!--[if IE 9]>
 <html class="ie9" lang="ru">
 <![endif]-->
-<!--[if gt IE 9]><!--> <html lang="ru"> <!--<![endif]-->
+<!--[if gt IE 9]><!--> <html lang="ru" xmlns:th="http://www.thymeleaf.org"> <!--<![endif]-->
 <head>
   <title>Тут название страницы написать</title>
   <meta name="description" content="Описание страницы">
@@ -81,11 +81,11 @@
               <div class="Contacts-form">
                 <h2>Напишите нам:
                 </h2>
-                <form class="form" action="#" method="post">
-                  <div class="form-group">
+                <form class="form" action="/contacts" method="post">
+                  <div th:unless="${isAuthenticated}" class="form-group">
                     <input class="form-input" id="name" name="name" type="text" placeholder="Введите Имя" data-validate="require"/>
                   </div>
-                  <div class="form-group">
+                  <div th:unless="${isAuthenticated}" class="form-group">
                     <input class="form-input form-input_mail" id="mail" name="mail" type="text" placeholder="Введите e-mail" data-validate="mail require"/>
                   </div>
                   <div class="form-group">
@@ -95,7 +95,7 @@
                     <textarea class="form-textarea Contacts-message" name="message" id="message" placeholder="Введите сообщение" data-validate="require"></textarea>
                   </div>
                   <div class="form-group">
-                    <button class="btn btn_primary form-btn" type="submit" name="sendMessage" id="sendMessage">Отправить
+                    <button class="btn btn_primary form-btn" type="submit">Отправить
                     </button>
                   </div>
                 </form>

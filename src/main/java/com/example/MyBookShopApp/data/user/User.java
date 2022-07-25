@@ -4,13 +4,11 @@ import com.example.MyBookShopApp.data.book.file.FileDownloadEntity;
 import com.example.MyBookShopApp.data.book.links.Book2UserEntity;
 import com.example.MyBookShopApp.data.book.review.BookReviewEntity;
 import com.example.MyBookShopApp.data.book.review.BookReviewLikeEntity;
-import com.example.MyBookShopApp.data.book.review.MessageEntity;
 import com.example.MyBookShopApp.data.payments.BalanceTransactionEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,7 +53,7 @@ public class User {
     private List<BalanceTransactionEntity> balanceTransactions;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private List<MessageEntity> messages;
 
     @JsonIgnore

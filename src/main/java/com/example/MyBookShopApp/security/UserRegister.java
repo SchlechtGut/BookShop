@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.PasswordAuthentication;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -152,13 +153,13 @@ public class UserRegister {
     }
 
     public User getCurrentUser(Authentication authentication) {
-        User user;
+        User user = null;
 
         if (authentication instanceof OAuth2AuthenticationToken) {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
             user = userRepository.findByEmail(oAuth2User.getAttribute("email"));
 
-        } else {
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             BookstoreUserDetails userDetails = (BookstoreUserDetails) authentication.getPrincipal();
             user = userDetails.getBookstoreUser();
         }

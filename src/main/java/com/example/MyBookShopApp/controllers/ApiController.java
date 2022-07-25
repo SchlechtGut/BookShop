@@ -21,7 +21,6 @@ public class ApiController {
     private final ApiService apiService;
     private final BookPopularityService bookPopularityService;
 
-
     @Autowired
     public ApiController(BookService bookService, ApiService apiService, BookPopularityService bookPopularityService) {
         this.bookService = bookService;
@@ -98,4 +97,6 @@ public class ApiController {
 
         return apiService.putMoney(hash, sum, time);
     }
+
+
 }

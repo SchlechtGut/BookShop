@@ -19,6 +19,8 @@ public interface Book2UserRepository extends JpaRepository<Book2UserEntity, Inte
 
     List<Book2UserEntity> findByUserAndType(User user, Book2UserType type);
 
+    List<Book2UserEntity> findByType(Book2UserType type);
+
     @Transactional
-    void deleteByUserAndBookIdAndType(User user, int bookId, Book2UserType type);
+    void deleteByUserAndBookIdAndTypeIn(User user, int bookId, Collection<Book2UserType> type);
 }

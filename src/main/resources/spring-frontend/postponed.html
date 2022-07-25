@@ -99,11 +99,11 @@
                 </div>
                 <div class="Cart-buttons">
                   <div class="Cart-btn">
-                    <button class="btn btn_primary btn_outline" data-sendstatus="CART" th:attr="data-bookid = ${postponedBook.slug}" data-bookid="[1122]"><span class="btn-icon"><img src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg"/></span><span class="btn-content">Купить</span>
+                    <button class="btn btn_primary btn_outline" data-sendstatus="CART" th:attr="data-bookid = ${postponedBook.id}" data-bookid="[1122]"><span class="btn-icon"><img src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg"/></span><span class="btn-content">Купить</span>
                     </button>
                   </div>
                   <div class="Cart-btn">
-                    <button class="btn btn_danger btn_outline" data-sendstatus="UNLINK" th:attr="data-bookid = ${'postponed/remove/'+postponedBook.slug}" data-bookid="[1122]"><span class="btn-icon"><img src="/assets/img/icons/trash.svg" alt="trash.svg"/></span><span class="btn-content">Удалить</span>
+                    <button class="btn btn_danger btn_outline" data-sendstatus="UNLINK" th:attr="data-bookid = ${postponedBook.id}" data-bookid="[1122]"><span class="btn-icon"><img src="/assets/img/icons/trash.svg" alt="trash.svg"/></span><span class="btn-content">Удалить</span>
                     </button>
                   </div>
                 </div>
@@ -121,7 +121,7 @@
           <div class="Cart-block Cart-block_total">
           </div>
           <div class="Cart-block">
-            <button class="btn btn_success btn_md Cart-buyAll" data-sendstatus="CART" data-bookid="[1111, 1122, 1133]">Купить все
+            <button class="btn btn_success btn_md Cart-buyAll" data-sendstatus="CART" th:attr="data-bookid = ${booksIds}" data-bookid="[1111, 1122, 1133]">Купить все
             </button>
           </div>
         </div>

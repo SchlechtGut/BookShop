@@ -8,7 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.TestPropertySource;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,6 +24,7 @@ class LoginTest{
     private final UserRepository userRepository;
 
     private static ContactConfirmationPayload contactConfirmationPayload;
+    private static HttpServletRequest request;
 
     @Autowired
     LoginTest(JWTUtil jwtUtil, UserRegister userRegister, UserRepository userRepository) {
@@ -34,6 +38,8 @@ class LoginTest{
         contactConfirmationPayload = new ContactConfirmationPayload();
         contactConfirmationPayload.setContact("test@mail.ru");
         contactConfirmationPayload.setCode("123456");
+
+        request = new MockHttpServletRequest();
 
         RegistrationForm registrationForm = new RegistrationForm();
         registrationForm.setPassword("123456");
